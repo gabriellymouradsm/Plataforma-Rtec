@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>RTEC - Agendamento de Coleta</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: "#008744",
+              dark: "#006b2c",
+              light: "#16a34a",
+              card: "#f4faf6",
+              box: "#eaf8ee"
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    .pb-safe {
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+    }
+  </style>
+</head>
+<body class="bg-[#028a43] text-[#1e293b] font-sans antialiased min-h-screen flex justify-center selection:bg-emerald-200">
+<!-- Mobile Screen Container (480px width) -->
+<div class="w-full max-w-[480px] bg-[#028a43] min-h-screen flex flex-col relative pb-24 shadow-2xl">
+<!-- Top Floating Minimal Nav / Back & Indicator -->
+<header class="w-full pt-4 pb-2 px-5 flex items-center justify-between text-white">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[24px]">eco</span>
+<span class="font-bold tracking-tight text-lg">RTEC</span>
+</div>
+<div class="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+<span>Franco da Rocha</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 px-4 py-2 flex flex-col items-center">
+<!-- Screen Header (Exact texts from Reference Image 4) -->
+<div class="w-full text-center text-white py-2 mb-3">
+<h1 class="text-[26px] font-bold tracking-tight">Agendamento de Coleta</h1>
+<p class="text-white/90 text-sm mt-0.5">Agende sua coleta de resíduos de forma rápida e fácil</p>
+</div>
+<!-- Main Form Card (Identical to reference 4_20260929_192047_0003.jpg) -->
+<div class="w-full bg-[#f8faf8] rounded-3xl p-5 shadow-xl border border-white/60 flex flex-col gap-4">
+<!-- Local da Coleta Box -->
+<div class="bg-[#eef8f2] border border-[#d2edd9] rounded-xl p-3 text-center flex flex-col items-center justify-center">
+<div class="flex items-center justify-center gap-1 text-[#15803d] font-bold text-sm">
+<span class="text-base leading-none">📍</span>
+<span>Local da Coleta:</span>
+</div>
+<p class="text-xs text-gray-700 font-medium leading-relaxed mt-1 max-w-[340px]">
+            Rodovia Luiz Salomão Chama, 240 - Vila Ramos, Franco da Rocha - SP - CEP: 07857-050
+          </p>
+</div>
+<!-- Field: Eu sou -->
+<div class="flex flex-col gap-1.5">
+<label class="flex items-center gap-1.5 text-xs font-semibold text-gray-700" for="user-type">
+<span class="material-symbols-outlined text-[17px] text-gray-500">person</span>
+<span>Eu sou</span>
+</label>
+<div class="relative">
+<select class="w-full h-11 pl-3.5 pr-9 rounded-xl border border-gray-300 bg-white text-gray-800 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none appearance-none transition-all cursor-pointer" id="user-type">
+<option disabled="">Selecione uma opção</option>
+<option value="cidadao">Cidadão / Residencial</option>
+<option selected="" value="empresa">Empresa / Comércio</option>
+<option value="cooperativa">Cooperativa / Catador</option>
+<option value="escola">Escola / Órgão Público</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Field: Tipo de Resíduo -->
+<div class="flex flex-col gap-1.5">
+<label class="flex items-center gap-1.5 text-xs font-semibold text-gray-700" for="waste-type">
+<span class="material-symbols-outlined text-[17px] text-[#16a34a]">recycling</span>
+<span>Tipo de Resíduo</span>
+</label>
+<div class="relative">
+<select class="w-full h-11 pl-3.5 pr-9 rounded-xl border border-gray-300 bg-white text-gray-800 text-sm focus:border-brand focus:ring-1 focus:ring-brand outline-none appearance-none transition-all cursor-pointer" id="waste-type">
+<option disabled="">Selecione o tipo de resíduo</option>
+<option selected="" value="eletronico">Eletrônicos (Computadores, Telas, PCBs)</option>
+<option value="baterias">Baterias &amp; Pilhas</option>
+<option value="celulares">Celulares &amp; Tablets</option>
+<option value="papelao">Papelão &amp; Embalagens</option>
+<option value="eletro">Eletroportáteis em Geral</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">expand_more</span>
+</div>
+</div>
+<!-- Row: Data & Horário -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Data -->
+<div class="flex flex-col gap-1.5">
+<label class="flex items-center gap-1.5 text-xs font-semibold text-gray-700" for="date-input">
+<span class="material-symbols-outlined text-[17px] text-[#16a34a]">calendar_today</span>
+<span>Data</span>
+</label>
+<div class="relative">
+<input class="w-full h-11 px-3 rounded-xl border border-gray-300 bg-white text-gray-800 text-xs font-medium focus:border-brand focus:ring-1 focus:ring-brand outline-none" id="date-input" type="date" value="2026-09-30"/>
+</div>
+</div>
+<!-- Horário -->
+<div class="flex flex-col gap-1.5">
+<label class="flex items-center gap-1.5 text-xs font-semibold text-gray-700" for="time-input">
+<span class="material-symbols-outlined text-[17px] text-[#16a34a]">schedule</span>
+<span>Horário</span>
+</label>
+<div class="relative">
+<input class="w-full h-11 px-3 rounded-xl border border-gray-300 bg-white text-gray-800 text-xs font-medium focus:border-brand focus:ring-1 focus:ring-brand outline-none" id="time-input" type="time" value="15:00"/>
+</div>
+</div>
+</div>
+<!-- Botão Agendar Coleta (Identical to original mockup) -->
+<button class="w-full h-12 bg-[#028a43] hover:bg-[#007336] active:scale-[0.99] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all mt-1" type="button">
+<span class="material-symbols-outlined text-[18px]">event_available</span>
+<span>Agendar Coleta</span>
+</button>
+</div>
+<!-- Modal / Card Protocolo Gerado (Fiel à imagem 5_20260929_192047_0004.jpg) -->
+<div class="w-full bg-white rounded-3xl p-5 shadow-2xl mt-5 border border-emerald-100 flex flex-col items-center animate-fade-in relative">
+<!-- Status Badge / Checkmark Circle -->
+<div class="w-12 h-12 rounded-full bg-[#dcfce7] flex items-center justify-center text-[#16a34a] mb-2 shadow-inner">
+<span class="material-symbols-outlined text-[28px] font-bold">check</span>
+</div>
+<!-- Titulo & Subtítulo -->
+<h2 class="text-xl font-bold text-gray-900 tracking-tight">Coleta Agendada!</h2>
+<p class="text-xs text-gray-500 font-medium mt-0.5 mb-3">Seu protocolo de identificação:</p>
+<!-- Caixa de Destaque com Protocolo -->
+<div class="w-full bg-[#f0fbf3] border border-[#bbf0cb] rounded-2xl py-3 px-4 text-center mb-4">
+<span class="text-xs text-gray-500 font-medium block">Protocolo:</span>
+<span class="text-3xl font-extrabold text-[#15803d] tracking-wide block mt-0.5">597451</span>
+</div>
+<!-- Resumo Linha a Linha (Exato do original) -->
+<div class="w-full space-y-2 text-xs border-t border-b border-gray-100 py-3 mb-3">
+<div class="flex items-center justify-between">
+<span class="text-gray-500">Nome:</span>
+<span class="font-medium text-gray-800">coletor</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-gray-500">Data:</span>
+<span class="font-medium text-gray-800">2026-09-30</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-gray-500">Horário:</span>
+<span class="font-medium text-gray-800">15:00</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-gray-500">Resíduo:</span>
+<span class="font-medium text-gray-800">eletronico</span>
+</div>
+<div class="flex items-start justify-between gap-2 pt-0.5">
+<span class="text-gray-500 shrink-0">Local:</span>
+<span class="font-medium text-gray-800 text-right">Rodovia Luiz Salomão Chama, 240 - Vila Ramos, Franco da Rocha</span>
+</div>
+</div>
+<!-- Alerta de Anotação (⚠️) -->
+<div class="flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200/80 mb-4 w-full justify-center">
+<span class="text-sm">⚠️</span>
+<span class="font-medium">Anote ou tire foto deste protocolo.</span>
+</div>
+<!-- Botões de Ação Originais (Azul Imprimir e Cinza + Novo) -->
+<div class="w-full space-y-2">
+<!-- Botão Imprimir (Azul original) -->
+<button class="w-full h-11 bg-[#2563eb] hover:bg-[#1d4ed8] active:scale-[0.99] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span>Imprimir</span>
+</button>
+<!-- Botão Novo (Cinza original) -->
+<button class="w-full h-11 bg-[#e2e8f0] hover:bg-[#cbd5e1] active:scale-[0.99] text-gray-700 rounded-xl font-bold text-sm flex items-center justify-center gap-1.5 transition-all" type="button">
+<span class="text-base font-bold">+</span>
+<span>Novo</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Consistent with RTEC Hub PWA) -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center px-4 py-2 max-w-[480px] mx-auto pb-safe bg-white border-t border-gray-200 shadow-xl">
+<!-- Item 1: Início -->
+<a class="flex flex-col items-center justify-center text-gray-500 hover:text-emerald-700 px-3 py-1 transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-[11px] font-medium mt-0.5">Início</span>
+</a>
+<!-- Item 2: Agendamento (Ativo) -->
+<a class="flex flex-col items-center justify-center text-[#028a43] px-3 py-1 transition-all" href="#">
+<div class="w-8 h-8 rounded-full bg-[#dcfce7] flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px] text-[#028a43]" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+<span class="text-[11px] font-bold mt-0.5">Agendamento</span>
+</a>
+<!-- Item 3: Monitoramento de Resíduos (Slide 6) -->
+<a class="flex flex-col items-center justify-center text-gray-500 hover:text-emerald-700 px-3 py-1 transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">inventory_2</span>
+<span class="text-[11px] font-medium mt-0.5">Painel</span>
+</a>
+<!-- Item 4: Triagem -->
+<a class="flex flex-col items-center justify-center text-gray-500 hover:text-emerald-700 px-3 py-1 transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">recycling</span>
+<span class="text-[11px] font-medium mt-0.5">Triagem</span>
+</a>
+</nav>
+</div>
+</body></html>
