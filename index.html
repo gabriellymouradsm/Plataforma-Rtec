@@ -12,7 +12,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: #f7f9f7; min-height: 100vh; display: flex; flex-direction: column; }
     
-    /* Layout Responsivo Fluido (Tela inteira no PC, adaptado no mobile) */
     .app-container { width: 100%; min-height: 100vh; background: #ffffff; display: flex; flex-direction: column; position: relative; margin: 0 auto; }
     @media (min-width: 768px) {
       .app-container { max-width: 1200px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); min-height: 100vh; }
@@ -30,23 +29,23 @@
     .view-section.active { display: block; }
     
     .card { background: #ffffff; border-radius: 24px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px; }
-    .btn-primary { width: 100%; height: 50px; background: #00874e; color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-primary:hover { background: #006b3b; }
+    .btn-primary { width: 100%; height: 50px; background: #16a34a; color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-primary:hover { background: #15803d; }
     
     .input-group { margin-bottom: 16px; }
     .input-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
     .input-group input, .input-group select { width: 100%; height: 48px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; outline: none; background: #f8fafc; }
-    .input-group input:focus, .input-group select:focus { border-color: #00874e; background: #fff; }
+    .input-group input:focus, .input-group select:focus { border-color: #16a34a; background: #fff; }
     
     nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; max-width: 1200px; margin: 0 auto; }
     .nav-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: #64748b; cursor: pointer; font-size: 12px; font-weight: 600; }
-    .nav-item.active { color: #00874e; font-weight: 700; }
+    .nav-item.active { color: #16a34a; font-weight: 700; }
     .nav-item span.material-symbols-outlined { font-size: 24px; }
     
     .badge-geo { background: #ecfdf5; color: #065f46; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #a7f3d0; }
     .auth-tabs { display: flex; background: #f1f5f9; padding: 4px; border-radius: 14px; margin-bottom: 20px; }
     .auth-tab { flex: 1; padding: 12px; text-align: center; border: none; background: none; font-weight: 700; font-size: 14px; color: #64748b; cursor: pointer; border-radius: 10px; }
-    .auth-tab.active { background: #ffffff; color: #00874e; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .auth-tab.active { background: #ffffff; color: #16a34a; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
   </style>
 </head>
 <body>
@@ -69,7 +68,7 @@
 
         <!-- VIEW 1: LOGIN / CADASTRO -->
         <div id="view-login" class="view-section active">
-          <div style="background: linear-gradient(135deg, #15803d, #22c55e); border-radius: 28px; padding: 32px; color: white; text-align: center; margin-bottom: 20px;">
+          <div style="background: #16a34a; border-radius: 28px; padding: 32px; color: white; text-align: center; margin-bottom: 20px;">
             <div style="width: 72px; height: 72px; background: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;">
               <span class="material-symbols-outlined" style="font-size: 36px; font-variation-settings: 'FILL' 1;">person</span>
             </div>
@@ -83,7 +82,8 @@
               <button class="auth-tab" id="btn-signup" onclick="setAuthTab('signup')">Cadastrar</button>
             </div>
 
-            <form id="form-signin" onsubmit="event.preventDefault(); switchView('agendamento');">
+            <!-- Formulário de Login -->
+            <form id="form-signin" onsubmit="handleAuth(event)">
               <div class="input-group">
                 <label>E-mail</label>
                 <input type="email" required placeholder="seu.email@exemplo.com">
@@ -92,10 +92,11 @@
                 <label>Senha</label>
                 <input type="password" required placeholder="••••••••">
               </div>
-              <button type="submit" class="btn-primary" style="margin-top: 10px;">Acessar Sistema</button>
+              <button type="submit" class="btn-primary" style="margin-top: 10px;">Entrar</button>
             </form>
 
-            <form id="form-signup" onsubmit="event.preventDefault(); switchView('agendamento');" style="display: none;">
+            <!-- Formulário de Cadastro -->
+            <form id="form-signup" onsubmit="handleAuth(event)" style="display: none;">
               <div class="input-group">
                 <label>Nome Completo / Empresa</label>
                 <input type="text" required placeholder="Seu nome ou razão social">
@@ -108,7 +109,7 @@
                 <label>Senha</label>
                 <input type="password" required placeholder="Mínimo 6 dígitos">
               </div>
-              <button type="submit" class="btn-primary" style="margin-top: 10px; background: #2b9e2b;">Concluir Cadastro</button>
+              <button type="submit" class="btn-primary" style="margin-top: 10px;">Concluir Cadastro</button>
             </form>
           </div>
         </div>
@@ -116,7 +117,7 @@
         <!-- VIEW 2: AGENDAMENTO -->
         <div id="view-agendamento" class="view-section">
           <div style="text-align: center; margin-bottom: 20px;">
-            <h2 style="font-size: 26px; font-weight: 700; color: #00874e;">Agendamento de Coleta</h2>
+            <h2 style="font-size: 26px; font-weight: 700; color: #16a34a;">Agendamento de Coleta</h2>
             <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Solicite a retirada de resíduos com protocolo imediato</p>
           </div>
 
@@ -156,7 +157,7 @@
         <!-- VIEW 3: OPERACIONAL -->
         <div id="view-operacional" class="view-section">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="font-size: 24px; font-weight: 700; color: #00874e;">Painel Operacional</h2>
+            <h2 style="font-size: 24px; font-weight: 700; color: #16a34a;">Painel Operacional</h2>
             <span style="font-size: 12px; background: #ecfdf5; color: #065f46; padding: 6px 12px; border-radius: 12px; font-weight: 700;">Franco da Rocha</span>
           </div>
 
@@ -171,7 +172,7 @@
             </div>
             <div class="card" style="text-align: center; padding: 16px; margin:0;">
               <span style="font-size: 11px; color: #64748b; font-weight: 700;">BAIXADOS</span>
-              <strong style="font-size: 22px; display: block; color: #00874e; margin-top: 4px;">12</strong>
+              <strong style="font-size: 22px; display: block; color: #16a34a; margin-top: 4px;">12</strong>
             </div>
           </div>
 
@@ -193,14 +194,14 @@
         <!-- VIEW 4: TRIAGEM -->
         <div id="view-triagem" class="view-section">
           <div style="text-align: center; margin-bottom: 20px;">
-            <h2 style="font-size: 26px; font-weight: 700; color: #00874e;">Triagem Especializada</h2>
+            <h2 style="font-size: 26px; font-weight: 700; color: #16a34a;">Triagem Especializada</h2>
             <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Catalogação técnica de resíduos eletroeletrônicos</p>
           </div>
 
           <div class="card">
             <label style="font-size: 13px; font-weight: 700; color: #334155; display: block; margin-bottom: 10px;">Dispositivo / Material</label>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
-              <button class="device-btn" onclick="selectDevice(this)" style="padding: 16px; border-radius: 14px; border: 2px solid #00874e; background: #ecfdf5; color: #065f46; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <button class="device-btn" onclick="selectDevice(this)" style="padding: 16px; border-radius: 14px; border: 2px solid #16a34a; background: #ecfdf5; color: #065f46; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                 <span class="material-symbols-outlined" style="font-size: 24px;">computer</span> CPU / Torre
               </button>
               <button class="device-btn" onclick="selectDevice(this)" style="padding: 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;">
@@ -226,9 +227,9 @@
         <!-- VIEW 5: SOBRE -->
         <div id="view-sobre" class="view-section">
           <div class="card" style="text-align: center;">
-            <h2 style="font-size: 26px; font-weight: 700; color: #00874e; margin-bottom: 12px;">Sobre a RTEC</h2>
+            <h2 style="font-size: 26px; font-weight: 700; color: #16a34a; margin-bottom: 12px;">Sobre a RTEC</h2>
             <p style="font-size: 14px; color: #475569; line-height: 1.7; text-align: left; margin-bottom: 20px;">
-              A RTEC é o ecossistema tecnológico pioneiro na região de Franco da Rocha dedicado à gestão reversa e segregação de e-waste, transformando passivos ambientais em inclusão produtiva e sustentabilidade[cite: 5].
+              A RTEC é o ecossistema tecnológico pioneiro na região de Franco da Rocha dedicado à gestão reversa e segregação de e-waste, transformando passivos ambientais em inclusão produtiva e sustentabilidade.
             </p>
             <div style="border-top: 1px solid #f1f5f9; padding-top: 20px;">
               <h4 style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 10px;">Avalie nossa plataforma</h4>
@@ -247,21 +248,21 @@
       </div>
     </main>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation (Bloqueada se não autenticado) -->
     <nav class="bottom-nav">
-      <button onclick="switchView('login')" id="nav-login" class="nav-item">
+      <button onclick="switchView('login')" id="nav-login" class="nav-item active">
         <span class="material-symbols-outlined">home</span>
         <span>Início</span>
       </button>
-      <button onclick="switchView('agendamento')" id="nav-agendamento" class="nav-item active">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+      <button onclick="checkAccess('agendamento')" id="nav-agendamento" class="nav-item">
+        <span class="material-symbols-outlined">calendar_today</span>
         <span>Agendar</span>
       </button>
-      <button onclick="switchView('operacional')" id="nav-operacional" class="nav-item">
+      <button onclick="checkAccess('operacional')" id="nav-operacional" class="nav-item">
         <span class="material-symbols-outlined">local_shipping</span>
         <span>Operacional</span>
       </button>
-      <button onclick="switchView('triagem')" id="nav-triagem" class="nav-item">
+      <button onclick="checkAccess('triagem')" id="nav-triagem" class="nav-item">
         <span class="material-symbols-outlined">recycling</span>
         <span>Triagem</span>
       </button>
@@ -272,8 +273,10 @@
     </nav>
   </div>
 
-  <!-- Script de Navegação -->
+  <!-- Script de Controle de Acesso e Navegação -->
   <script>
+    let isAuthenticated = false;
+
     function switchView(viewId) {
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -285,6 +288,22 @@
       if (targetNav) targetNav.classList.add('active');
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function checkAccess(viewId) {
+      if (!isAuthenticated) {
+        alert('Acesso restrito! Por favor, faça login ou cadastre-se para aceder aos módulos operacionais.');
+        switchView('login');
+      } else {
+        switchView(viewId);
+      }
+    }
+
+    function handleAuth(event) {
+      event.preventDefault();
+      isAuthenticated = true;
+      alert('Autenticação realizada com sucesso! Bem-vindo à RTEC.');
+      switchView('agendamento');
     }
 
     function setAuthTab(type) {
@@ -313,7 +332,7 @@
         b.style.color = "#475569";
         b.style.fontWeight = "600";
       });
-      btn.style.borderColor = "#00874e";
+      btn.style.borderColor = "#16a34a";
       btn.style.background = "#ecfdf5";
       btn.style.color = "#065f46";
       btn.style.fontWeight = "700";
