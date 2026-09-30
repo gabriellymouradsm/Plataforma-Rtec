@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
   <title>RTEC - Gestão Sustentável e Economia Circular</title>
   <!-- Google Fonts & Material Symbols -->
-  <link href="https://fonts.googleapis.com" rel="preconnect"/>
-  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind CSS CDN Oficial -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -55,7 +55,7 @@
 </head>
 <body class="text-slate-800 font-sans antialiased flex items-center justify-center p-2 sm:p-6 selection:bg-emerald-200">
 
-  <!-- Container Responsivo Adaptável (De Mobile PWA até Desktop) -->
+  <!-- Container Responsivo Adaptável -->
   <div class="w-full max-w-4xl min-h-[90dvh] mx-auto bg-white flex flex-col relative shadow-2xl overflow-hidden rounded-2xl sm:rounded-[36px] border border-slate-200/40 pb-20">
 
     <!-- Top Header Bar Responsivo -->
@@ -67,13 +67,11 @@
         <span class="font-bold text-xl tracking-tight text-[#248724] font-display">RTEC</span>
       </div>
       
-      <!-- Quick Status / Badge -->
       <div class="hidden sm:flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-full text-xs font-semibold text-emerald-800 border border-emerald-100">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         <span>Franco da Rocha & Região</span>
       </div>
 
-      <!-- Hamburger / Ações Rápidas -->
       <button aria-label="Menu Principal" onclick="toggleMenu()" class="flex flex-col justify-center items-end gap-1 w-9 h-9 p-1.5 hover:bg-gray-100 rounded-lg transition-all">
         <span class="w-6 h-[3.5px] bg-[#2b9e2b] rounded-full"></span>
         <span class="w-6 h-[3.5px] bg-[#2b9e2b] rounded-full"></span>
@@ -81,18 +79,18 @@
       </button>
     </header>
 
-    <!-- Main Dynamic Content Canvas com Padding Responsivo -->
+    <!-- Main Dynamic Content Canvas -->
     <main class="flex-1 bg-[#f7f9f7] overflow-y-auto px-4 sm:px-8 py-6 flex flex-col">
       <div class="w-full max-w-2xl mx-auto flex-1 flex flex-col justify-center">
 
-        <!-- ================= VIEW 1: AUTENTICAÇÃO (LOGIN & CADASTRO) ================= -->
+        <!-- ================= VIEW 1: LOGIN & CADASTRO ================= -->
         <div id="view-login" class="space-y-6 my-auto w-full">
           <div class="bg-gradient-to-br from-[#15803d] to-[#22c55e] rounded-3xl p-6 sm:p-8 text-white shadow-lg text-center relative overflow-hidden">
             <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-white/20 flex items-center justify-center mb-3 backdrop-blur-sm shadow-inner">
               <span class="material-symbols-outlined text-4xl sm:text-5xl" data-weight="fill">person</span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Bem-vindo à RTEC</h2>
-            <p class="text-xs sm:text-sm text-white/90 mt-1">Gestão Sustentável e Economia Circular[cite: 5]</p>
+            <p class="text-xs sm:text-sm text-white/90 mt-1">Gestão Sustentável e Economia Circular</p>
           </div>
 
           <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-5">
@@ -137,11 +135,11 @@
           </div>
         </div>
 
-        <!-- ================= VIEW 2: AGENDAMENTO DE COLETA ================= -->
+        <!-- ================= VIEW 2: AGENDAMENTO ================= -->
         <div id="view-agendamento" class="space-y-6 hidden w-full py-4">
           <div class="text-center">
             <h1 class="text-2xl sm:text-3xl font-bold text-emerald-800 font-display">Agendamento de Coleta</h1>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">Solicite a retirada de resíduos com protocolo imediato[cite: 2]</p>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">Solicite a retirada de resíduos com protocolo imediato</p>
           </div>
 
           <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-4">
@@ -173,14 +171,14 @@
               </div>
             </div>
 
-            <button onclick="alert('Coleta agendada com sucesso! Protocolo #597451 gerado[cite: 1, 2].');" class="w-full h-12 bg-[#00874e] hover:bg-[#007040] text-white rounded-xl font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 mt-4">
+            <button onclick="alert('Coleta agendada com sucesso! Protocolo #597451 gerado.');" class="w-full h-12 bg-[#00874e] hover:bg-[#007040] text-white rounded-xl font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 mt-4">
               <span class="material-symbols-outlined">event_available</span>
               <span>Confirmar Agendamento</span>
             </button>
           </div>
         </div>
 
-        <!-- ================= VIEW 3: PAINEL OPERACIONAL ================= -->
+        <!-- ================= VIEW 3: OPERACIONAL ================= -->
         <div id="view-operacional" class="space-y-6 hidden w-full py-4">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
             <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 font-display">Painel Operacional</h2>
@@ -217,11 +215,11 @@
           </div>
         </div>
 
-        <!-- ================= VIEW 4: TRIAGEM ESPECIALIZADA ================= -->
+        <!-- ================= VIEW 4: TRIAGEM ================= -->
         <div id="view-triagem" class="space-y-6 hidden w-full py-4">
           <div class="text-center">
             <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 font-display">Triagem Especializada</h2>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">Catalogação técnica de resíduos eletroeletrônicos[cite: 4]</p>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1">Catalogação técnica de resíduos eletroeletrônicos</p>
           </div>
 
           <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-5">
@@ -242,7 +240,7 @@
               <label class="text-xs sm:text-sm font-bold text-gray-700 block">Destino Circular Definido</label>
               <div class="p-4 rounded-2xl border border-emerald-500 bg-emerald-50 text-xs sm:text-sm">
                 <span class="font-bold text-emerald-900 block">Para Coleta / Reciclagem Química</span>
-                <span class="text-emerald-700 text-xs mt-1 block">Desmonte seguro e neutralização de elementos tóxicos[cite: 4].</span>
+                <span class="text-emerald-700 text-xs mt-1 block">Desmonte seguro e neutralização de elementos tóxicos.</span>
               </div>
             </div>
 
@@ -252,12 +250,12 @@
           </div>
         </div>
 
-        <!-- ================= VIEW 5: SOBRE & AVALIAÇÃO ================= -->
+        <!-- ================= VIEW 5: SOBRE ================= -->
         <div id="view-sobre" class="space-y-6 hidden w-full py-4">
           <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-6 text-center">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-800 font-display">Sobre a RTEC</h2>
             <p class="text-xs sm:text-sm text-gray-600 leading-relaxed text-left">
-              A RTEC é o ecossistema tecnológico pioneiro na região de Franco da Rocha dedicado à gestão reversa e segregação de e-waste, transformando passivos ambientais em inclusão produtiva[cite: 5].
+              A RTEC é o ecossistema tecnológico pioneiro na região de Franco da Rocha dedicado à gestão reversa e segregação de e-waste, transformando passivos ambientais em inclusão produtiva.
             </p>
             <div class="pt-4 border-t border-gray-100 text-center">
               <h4 class="text-xs sm:text-sm font-bold text-gray-800 mb-3">Avalie nossa plataforma</h4>
@@ -278,7 +276,7 @@
       </div>
     </main>
 
-    <!-- Bottom Navigation Bar Responsiva (Dock Fixo) -->
+    <!-- Bottom Navigation Bar -->
     <nav class="absolute bottom-0 left-0 right-0 z-50 flex justify-around items-center px-4 py-2.5 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-xl max-w-4xl mx-auto">
       <button onclick="switchView('login')" id="nav-login" class="flex flex-col items-center justify-center text-gray-500 px-3 py-1 transition-all">
         <span class="material-symbols-outlined text-[22px]">home</span>
@@ -304,7 +302,7 @@
 
   </div>
 
-  <!-- JavaScript de Controle Responsivo -->
+  <!-- JavaScript -->
   <script>
     function switchView(viewId) {
       ['login', 'agendamento', 'operacional', 'triagem', 'sobre'].forEach(id => {
