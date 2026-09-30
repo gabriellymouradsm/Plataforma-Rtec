@@ -1,158 +1,134 @@
 <!DOCTYPE html>
-<html class="light" lang="pt-BR">
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
   <title>RTEC - Gestão Sustentável e Economia Circular</title>
-  <!-- Google Fonts & Material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <!-- Tailwind CSS CDN Oficial -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            primary: "#00874e",
-            "primary-dark": "#006b3b",
-            "primary-container": "#00873a",
-            secondary: "#006c49",
-            "secondary-container": "#6cf8bb",
-            "on-secondary-container": "#00714d",
-            surface: "#faf8ff",
-            "surface-container": "#eaedff",
-            "surface-container-low": "#f2f3ff",
-            "surface-container-lowest": "#ffffff",
-            "rtec-green": "#2b9e2b",
-            "rtec-title": "#46893e"
-          },
-          fontFamily: {
-            sans: ["Plus Jakarta Sans", "sans-serif"],
-            display: ["Space Grotesk", "sans-serif"]
-          }
-        }
-      }
-    }
-  </script>
   <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      display: inline-block;
-      vertical-align: middle;
-      line-height: 1;
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: #f7f9f7; min-height: 100vh; display: flex; flex-direction: column; }
+    
+    /* Layout Responsivo Fluido (Tela inteira no PC, adaptado no mobile) */
+    .app-container { width: 100%; min-height: 100vh; background: #ffffff; display: flex; flex-direction: column; position: relative; margin: 0 auto; }
+    @media (min-width: 768px) {
+      .app-container { max-width: 1200px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); min-height: 100vh; }
     }
-    .material-symbols-outlined[data-weight="fill"] {
-      font-variation-settings: 'FILL' 1;
-    }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    body { min-height: 100dvh; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+
+    header { background: #ffffff; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 50; }
+    .logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .logo-icon { width: 40px; height: 40px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #00874e; }
+    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #00874e; }
+    
+    main { flex: 1; background: #f7f9f7; padding: 24px; overflow-y: auto; padding-bottom: 90px; display: flex; justify-content: center; }
+    .content-wrapper { width: 100%; max-width: 800px; }
+    
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+    
+    .card { background: #ffffff; border-radius: 24px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px; }
+    .btn-primary { width: 100%; height: 50px; background: #00874e; color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-primary:hover { background: #006b3b; }
+    
+    .input-group { margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+    .input-group input, .input-group select { width: 100%; height: 48px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; outline: none; background: #f8fafc; }
+    .input-group input:focus, .input-group select:focus { border-color: #00874e; background: #fff; }
+    
+    nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; max-width: 1200px; margin: 0 auto; }
+    .nav-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: #64748b; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .nav-item.active { color: #00874e; font-weight: 700; }
+    .nav-item span.material-symbols-outlined { font-size: 24px; }
+    
+    .badge-geo { background: #ecfdf5; color: #065f46; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #a7f3d0; }
+    .auth-tabs { display: flex; background: #f1f5f9; padding: 4px; border-radius: 14px; margin-bottom: 20px; }
+    .auth-tab { flex: 1; padding: 12px; text-align: center; border: none; background: none; font-weight: 700; font-size: 14px; color: #64748b; cursor: pointer; border-radius: 10px; }
+    .auth-tab.active { background: #ffffff; color: #00874e; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
   </style>
 </head>
-<body class="text-slate-800 font-sans antialiased flex items-center justify-center p-2 sm:p-6 selection:bg-emerald-200">
+<body>
 
-  <!-- Container Responsivo Adaptável -->
-  <div class="w-full max-w-4xl min-h-[90dvh] mx-auto bg-white flex flex-col relative shadow-2xl overflow-hidden rounded-2xl sm:rounded-[36px] border border-slate-200/40 pb-20">
-
-    <!-- Top Header Bar Responsivo -->
-    <header class="sticky top-0 w-full bg-white/95 backdrop-blur-md px-4 sm:px-8 py-3.5 flex items-center justify-between border-b border-gray-200/70 z-50 select-none shadow-xs">
-      <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchView('login')">
-        <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#2e9e2e]">
-          <span class="material-symbols-outlined text-[22px]" data-weight="fill">eco</span>
+  <div class="app-container">
+    <!-- Header -->
+    <header>
+      <div class="logo-area" onclick="switchView('login')">
+        <div class="logo-icon">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
         </div>
-        <span class="font-bold text-xl tracking-tight text-[#248724] font-display">RTEC</span>
+        <span class="logo-text">RTEC</span>
       </div>
-      
-      <div class="hidden sm:flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-full text-xs font-semibold text-emerald-800 border border-emerald-100">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>Franco da Rocha & Região</span>
-      </div>
-
-      <button aria-label="Menu Principal" onclick="toggleMenu()" class="flex flex-col justify-center items-end gap-1 w-9 h-9 p-1.5 hover:bg-gray-100 rounded-lg transition-all">
-        <span class="w-6 h-[3.5px] bg-[#2b9e2b] rounded-full"></span>
-        <span class="w-6 h-[3.5px] bg-[#2b9e2b] rounded-full"></span>
-        <span class="w-6 h-[3.5px] bg-[#2b9e2b] rounded-full"></span>
-      </button>
+      <div class="badge-geo">Franco da Rocha & Região</div>
     </header>
 
-    <!-- Main Dynamic Content Canvas -->
-    <main class="flex-1 bg-[#f7f9f7] overflow-y-auto px-4 sm:px-8 py-6 flex flex-col">
-      <div class="w-full max-w-2xl mx-auto flex-1 flex flex-col justify-center">
+    <!-- Main Content -->
+    <main>
+      <div class="content-wrapper">
 
-        <!-- ================= VIEW 1: LOGIN & CADASTRO ================= -->
-        <div id="view-login" class="space-y-6 my-auto w-full">
-          <div class="bg-gradient-to-br from-[#15803d] to-[#22c55e] rounded-3xl p-6 sm:p-8 text-white shadow-lg text-center relative overflow-hidden">
-            <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-white/20 flex items-center justify-center mb-3 backdrop-blur-sm shadow-inner">
-              <span class="material-symbols-outlined text-4xl sm:text-5xl" data-weight="fill">person</span>
+        <!-- VIEW 1: LOGIN / CADASTRO -->
+        <div id="view-login" class="view-section active">
+          <div style="background: linear-gradient(135deg, #15803d, #22c55e); border-radius: 28px; padding: 32px; color: white; text-align: center; margin-bottom: 20px;">
+            <div style="width: 72px; height: 72px; background: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined" style="font-size: 36px; font-variation-settings: 'FILL' 1;">person</span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Bem-vindo à RTEC</h2>
-            <p class="text-xs sm:text-sm text-white/90 mt-1">Gestão Sustentável e Economia Circular</p>
+            <h2 style="font-size: 26px; font-weight: 700;">Bem-vindo à RTEC</h2>
+            <p style="font-size: 14px; opacity: 0.9; margin-top: 6px;">Gestão Sustentável e Economia Circular</p>
           </div>
 
-          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-5">
-            <div class="flex bg-gray-100 p-1.5 rounded-2xl">
-              <button onclick="setAuthTab('signin')" id="btn-signin" class="flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl bg-white text-emerald-700 shadow-sm transition-all">Entrar</button>
-              <button onclick="setAuthTab('signup')" id="btn-signup" class="flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl text-gray-500 transition-all">Cadastrar</button>
+          <div class="card">
+            <div class="auth-tabs">
+              <button class="auth-tab active" id="btn-signin" onclick="setAuthTab('signin')">Entrar</button>
+              <button class="auth-tab" id="btn-signup" onclick="setAuthTab('signup')">Cadastrar</button>
             </div>
 
-            <!-- Form Login -->
-            <form id="form-signin" onsubmit="event.preventDefault(); switchView('agendamento');" class="space-y-4">
-              <div>
-                <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">E-mail</label>
-                <input type="email" required placeholder="seu.email@exemplo.com" class="w-full h-12 px-4 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            <form id="form-signin" onsubmit="event.preventDefault(); switchView('agendamento');">
+              <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" required placeholder="seu.email@exemplo.com">
               </div>
-              <div>
-                <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">Senha</label>
-                <input type="password" required placeholder="••••••••" class="w-full h-12 px-4 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"/>
+              <div class="input-group">
+                <label>Senha</label>
+                <input type="password" required placeholder="••••••••">
               </div>
-              <button type="submit" class="w-full h-12 rounded-xl bg-[#2b9e2b] hover:bg-[#238723] text-white font-bold text-sm sm:text-base shadow-md transition-all mt-2">
-                Acessar Sistema
-              </button>
+              <button type="submit" class="btn-primary" style="margin-top: 10px;">Acessar Sistema</button>
             </form>
 
-            <!-- Form Cadastro -->
-            <form id="form-signup" onsubmit="event.preventDefault(); switchView('agendamento');" class="space-y-4 hidden">
-              <div>
-                <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">Nome Completo / Empresa</label>
-                <input type="text" required placeholder="Seu nome ou razão social" class="w-full h-12 px-4 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"/>
+            <form id="form-signup" onsubmit="event.preventDefault(); switchView('agendamento');" style="display: none;">
+              <div class="input-group">
+                <label>Nome Completo / Empresa</label>
+                <input type="text" required placeholder="Seu nome ou razão social">
               </div>
-              <div>
-                <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">E-mail</label>
-                <input type="email" required placeholder="seu.email@exemplo.com" class="w-full h-12 px-4 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"/>
+              <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" required placeholder="seu.email@exemplo.com">
               </div>
-              <div>
-                <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">Senha</label>
-                <input type="password" required placeholder="Mínimo 6 dígitos" class="w-full h-12 px-4 text-sm bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"/>
+              <div class="input-group">
+                <label>Senha</label>
+                <input type="password" required placeholder="Mínimo 6 dígitos">
               </div>
-              <button type="submit" class="w-full h-12 rounded-xl border border-[#46893e] text-[#46893e] hover:bg-[#46893e] hover:text-white font-bold text-sm sm:text-base transition-all mt-2">
-                Concluir Cadastro
-              </button>
+              <button type="submit" class="btn-primary" style="margin-top: 10px; background: #2b9e2b;">Concluir Cadastro</button>
             </form>
           </div>
         </div>
 
-        <!-- ================= VIEW 2: AGENDAMENTO ================= -->
-        <div id="view-agendamento" class="space-y-6 hidden w-full py-4">
-          <div class="text-center">
-            <h1 class="text-2xl sm:text-3xl font-bold text-emerald-800 font-display">Agendamento de Coleta</h1>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">Solicite a retirada de resíduos com protocolo imediato</p>
+        <!-- VIEW 2: AGENDAMENTO -->
+        <div id="view-agendamento" class="view-section">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="font-size: 26px; font-weight: 700; color: #00874e;">Agendamento de Coleta</h2>
+            <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Solicite a retirada de resíduos com protocolo imediato</p>
           </div>
 
-          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-4">
-            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center">
-              <span class="text-xs font-bold text-emerald-800 flex items-center justify-center gap-1">
-                <span class="material-symbols-outlined text-sm">location_on</span> Local Padrão:
-              </span>
-              <p class="text-xs sm:text-sm text-gray-700 mt-1 font-medium">Rodovia Luiz Salomão Chama, 240 - Vila Ramos, Franco da Rocha - SP</p>
+          <div class="card">
+            <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 14px; padding: 14px; text-align: center; margin-bottom: 16px;">
+              <span style="font-size: 12px; font-weight: 700; color: #065f46;">📍 Local Padrão:</span>
+              <p style="font-size: 12px; color: #334155; margin-top: 3px;">Rodovia Luiz Salomão Chama, 240 - Franco da Rocha - SP</p>
             </div>
 
-            <div>
-              <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">Tipo de Resíduo</label>
-              <select class="w-full h-12 px-4 rounded-xl border border-gray-300 bg-white text-xs sm:text-sm text-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none">
+            <div class="input-group">
+              <label>Tipo de Resíduo</label>
+              <select>
                 <option>Eletrônicos (Computadores, Telas, PCBs)</option>
                 <option>Baterias & Pilhas</option>
                 <option>Celulares & Tablets</option>
@@ -160,115 +136,110 @@
               </select>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">Data</label>
-                <input type="date" value="2026-09-30" class="w-full h-12 px-4 rounded-xl border border-gray-300 bg-white text-xs sm:text-sm text-gray-800 outline-none"/>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="input-group">
+                <label>Data</label>
+                <input type="date" value="2026-09-30">
               </div>
-              <div>
-                <label class="text-xs sm:text-sm font-semibold text-gray-700 block mb-1">Horário</label>
-                <input type="time" value="15:00" class="w-full h-12 px-4 rounded-xl border border-gray-300 bg-white text-xs sm:text-sm text-gray-800 outline-none"/>
+              <div class="input-group">
+                <label>Horário</label>
+                <input type="time" value="15:00">
               </div>
             </div>
 
-            <button onclick="alert('Coleta agendada com sucesso! Protocolo #597451 gerado.');" class="w-full h-12 bg-[#00874e] hover:bg-[#007040] text-white rounded-xl font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 mt-4">
-              <span class="material-symbols-outlined">event_available</span>
-              <span>Confirmar Agendamento</span>
+            <button onclick="alert('Coleta agendada com sucesso! Protocolo #597451 gerado.');" class="btn-primary">
+              <span class="material-symbols-outlined">event_available</span> Confirmar Agendamento
             </button>
           </div>
         </div>
 
-        <!-- ================= VIEW 3: OPERACIONAL ================= -->
-        <div id="view-operacional" class="space-y-6 hidden w-full py-4">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-            <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 font-display">Painel Operacional</h2>
-            <span class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-bold">Polo Franco da Rocha</span>
+        <!-- VIEW 3: OPERACIONAL -->
+        <div id="view-operacional" class="view-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="font-size: 24px; font-weight: 700; color: #00874e;">Painel Operacional</h2>
+            <span style="font-size: 12px; background: #ecfdf5; color: #065f46; padding: 6px 12px; border-radius: 12px; font-weight: 700;">Franco da Rocha</span>
           </div>
 
-          <div class="grid grid-cols-3 gap-3">
-            <div class="bg-white p-4 rounded-2xl border border-gray-200 text-center shadow-xs">
-              <span class="text-xs text-gray-500 uppercase font-bold block">Total</span>
-              <span class="text-2xl sm:text-3xl font-extrabold text-gray-800 mt-1 block">18</span>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+            <div class="card" style="text-align: center; padding: 16px; margin:0;">
+              <span style="font-size: 11px; color: #64748b; font-weight: 700;">TOTAL</span>
+              <strong style="font-size: 22px; display: block; color: #1e293b; margin-top: 4px;">18</strong>
             </div>
-            <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 text-center shadow-xs">
-              <span class="text-xs text-emerald-700 uppercase font-bold block">A Coletar</span>
-              <span class="text-2xl sm:text-3xl font-extrabold text-emerald-700 mt-1 block">4</span>
+            <div class="card" style="text-align: center; padding: 16px; margin:0; background: #ecfdf5; border-color: #a7f3d0;">
+              <span style="font-size: 11px; color: #065f46; font-weight: 700;">COLETAR</span>
+              <strong style="font-size: 22px; display: block; color: #065f46; margin-top: 4px;">4</strong>
             </div>
-            <div class="bg-white p-4 rounded-2xl border border-gray-200 text-center shadow-xs">
-              <span class="text-xs text-gray-500 uppercase font-bold block">Concluídos</span>
-              <span class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1 block">12</span>
+            <div class="card" style="text-align: center; padding: 16px; margin:0;">
+              <span style="font-size: 11px; color: #64748b; font-weight: 700;">BAIXADOS</span>
+              <strong style="font-size: 22px; display: block; color: #00874e; margin-top: 4px;">12</strong>
             </div>
           </div>
 
-          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-md space-y-4">
-            <div class="flex justify-between items-start">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
               <div>
-                <span class="text-xs font-bold text-gray-400 uppercase">Chamado #597451</span>
-                <h4 class="text-base font-bold text-gray-800 mt-0.5">E-Waste Logística</h4>
+                <span style="font-size: 11px; font-weight: 700; color: #64748b;">CHAMADO #597451</span>
+                <h4 style="font-size: 16px; font-weight: 700; color: #1e293b; margin-top: 2px;">E-Waste Logística</h4>
               </div>
-              <span class="bg-red-100 text-red-700 text-xs font-bold px-2.5 py-1 rounded-full">Urgente</span>
+              <span style="background: #fee2e2; color: #991b1b; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 12px;">Urgente</span>
             </div>
-            <p class="text-xs sm:text-sm text-gray-600">Rodovia Luiz Salomão Chamma, Km 38 - 5 CPUs & Celulares.</p>
-            <button onclick="alert('Iniciando rota de recolha geolocalizada...');" class="w-full h-11 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition-all">
-              <span class="material-symbols-outlined text-base">navigation</span> Iniciar Rota
+            <p style="font-size: 13px; color: #475569; margin-bottom: 16px;">Rodovia Luiz Salomão Chamma, Km 38 - 5 CPUs & Celulares.</p>
+            <button onclick="alert('Iniciando rota de recolha...');" class="btn-primary" style="height: 44px; font-size: 13px;">
+              <span class="material-symbols-outlined" style="font-size: 18px;">navigation</span> Iniciar Rota
             </button>
           </div>
         </div>
 
-        <!-- ================= VIEW 4: TRIAGEM ================= -->
-        <div id="view-triagem" class="space-y-6 hidden w-full py-4">
-          <div class="text-center">
-            <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 font-display">Triagem Especializada</h2>
-            <p class="text-xs sm:text-sm text-gray-600 mt-1">Catalogação técnica de resíduos eletroeletrônicos</p>
+        <!-- VIEW 4: TRIAGEM -->
+        <div id="view-triagem" class="view-section">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="font-size: 26px; font-weight: 700; color: #00874e;">Triagem Especializada</h2>
+            <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Catalogação técnica de resíduos eletroeletrônicos</p>
           </div>
 
-          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-5">
-            <h3 class="text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider">Dispositivo / Material</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <button onclick="selectDevice(this)" class="p-4 rounded-2xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex flex-col items-center gap-2 transition-all">
-                <span class="material-symbols-outlined text-2xl">computer</span> CPU / Torre
+          <div class="card">
+            <label style="font-size: 13px; font-weight: 700; color: #334155; display: block; margin-bottom: 10px;">Dispositivo / Material</label>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+              <button class="device-btn" onclick="selectDevice(this)" style="padding: 16px; border-radius: 14px; border: 2px solid #00874e; background: #ecfdf5; color: #065f46; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <span class="material-symbols-outlined" style="font-size: 24px;">computer</span> CPU / Torre
               </button>
-              <button onclick="selectDevice(this)" class="p-4 rounded-2xl border border-gray-200 bg-gray-50 text-gray-700 text-xs sm:text-sm font-semibold flex flex-col items-center gap-2 transition-all">
-                <span class="material-symbols-outlined text-2xl">smartphone</span> Smartphone
+              <button class="device-btn" onclick="selectDevice(this)" style="padding: 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <span class="material-symbols-outlined" style="font-size: 24px;">smartphone</span> Smartphone
               </button>
-              <button onclick="selectDevice(this)" class="p-4 rounded-2xl border border-gray-200 bg-gray-50 text-gray-700 text-xs sm:text-sm font-semibold flex flex-col items-center gap-2 transition-all">
-                <span class="material-symbols-outlined text-2xl">memory</span> Placa-Mãe
+              <button class="device-btn" onclick="selectDevice(this)" style="padding: 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <span class="material-symbols-outlined" style="font-size: 24px;">memory</span> Placa-Mãe
               </button>
             </div>
 
-            <div class="space-y-2 pt-3 border-t border-gray-100">
-              <label class="text-xs sm:text-sm font-bold text-gray-700 block">Destino Circular Definido</label>
-              <div class="p-4 rounded-2xl border border-emerald-500 bg-emerald-50 text-xs sm:text-sm">
-                <span class="font-bold text-emerald-900 block">Para Coleta / Reciclagem Química</span>
-                <span class="text-emerald-700 text-xs mt-1 block">Desmonte seguro e neutralização de elementos tóxicos.</span>
+            <div style="border-top: 1px solid #f1f5f9; padding-top: 16px; margin-bottom: 20px;">
+              <span style="font-size: 13px; font-weight: 700; color: #334155; display: block; margin-bottom: 8px;">Destino Circular</span>
+              <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 14px; padding: 14px; font-size: 13px;">
+                <strong style="color: #065f46; display: block;">Para Coleta / Reciclagem Química</strong>
+                <span style="color: #047857; font-size: 12px; margin-top: 2px; display: block;">Desmonte seguro e neutralização de elementos tóxicos.</span>
               </div>
             </div>
 
-            <button onclick="alert('Diagnóstico e lote salvos com sucesso!');" class="w-full h-12 bg-[#00874e] hover:bg-[#007040] text-white rounded-xl font-bold text-sm shadow-sm transition-all">
-              Salvar Diagnóstico do Lote
-            </button>
+            <button onclick="alert('Diagnóstico salvo com sucesso!');" class="btn-primary">Salvar Diagnóstico</button>
           </div>
         </div>
 
-        <!-- ================= VIEW 5: SOBRE ================= -->
-        <div id="view-sobre" class="space-y-6 hidden w-full py-4">
-          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100 space-y-6 text-center">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-800 font-display">Sobre a RTEC</h2>
-            <p class="text-xs sm:text-sm text-gray-600 leading-relaxed text-left">
-              A RTEC é o ecossistema tecnológico pioneiro na região de Franco da Rocha dedicado à gestão reversa e segregação de e-waste, transformando passivos ambientais em inclusão produtiva.
+        <!-- VIEW 5: SOBRE -->
+        <div id="view-sobre" class="view-section">
+          <div class="card" style="text-align: center;">
+            <h2 style="font-size: 26px; font-weight: 700; color: #00874e; margin-bottom: 12px;">Sobre a RTEC</h2>
+            <p style="font-size: 14px; color: #475569; line-height: 1.7; text-align: left; margin-bottom: 20px;">
+              A RTEC é o ecossistema tecnológico pioneiro na região de Franco da Rocha dedicado à gestão reversa e segregação de e-waste, transformando passivos ambientais em inclusão produtiva e sustentabilidade[cite: 5].
             </p>
-            <div class="pt-4 border-t border-gray-100 text-center">
-              <h4 class="text-xs sm:text-sm font-bold text-gray-800 mb-3">Avalie nossa plataforma</h4>
-              <div class="flex justify-center gap-1.5 text-amber-400 mb-4 cursor-pointer">
-                <span class="material-symbols-outlined text-3xl" data-weight="fill">star</span>
-                <span class="material-symbols-outlined text-3xl" data-weight="fill">star</span>
-                <span class="material-symbols-outlined text-3xl" data-weight="fill">star</span>
-                <span class="material-symbols-outlined text-3xl" data-weight="fill">star</span>
-                <span class="material-symbols-outlined text-3xl" data-weight="fill">star</span>
+            <div style="border-top: 1px solid #f1f5f9; padding-top: 20px;">
+              <h4 style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 10px;">Avalie nossa plataforma</h4>
+              <div style="color: #fbbf24; display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; cursor: pointer;">
+                <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
               </div>
-              <button onclick="alert('Obrigado pelo seu feedback!');" class="w-full h-12 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all">
-                Enviar Avaliação
-              </button>
+              <button onclick="alert('Obrigado pelo seu feedback!');" class="btn-primary" style="height: 44px; font-size: 13px;">Enviar Avaliação</button>
             </div>
           </div>
         </div>
@@ -276,51 +247,43 @@
       </div>
     </main>
 
-    <!-- Bottom Navigation Bar -->
-    <nav class="absolute bottom-0 left-0 right-0 z-50 flex justify-around items-center px-4 py-2.5 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-xl max-w-4xl mx-auto">
-      <button onclick="switchView('login')" id="nav-login" class="flex flex-col items-center justify-center text-gray-500 px-3 py-1 transition-all">
-        <span class="material-symbols-outlined text-[22px]">home</span>
-        <span class="text-[11px] font-semibold mt-0.5">Início</span>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button onclick="switchView('login')" id="nav-login" class="nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Início</span>
       </button>
-      <button onclick="switchView('agendamento')" id="nav-agendamento" class="flex flex-col items-center justify-center text-emerald-700 px-3 py-1 transition-all font-bold">
-        <span class="material-symbols-outlined text-[22px]" data-weight="fill">calendar_today</span>
-        <span class="text-[11px] mt-0.5">Agendar</span>
+      <button onclick="switchView('agendamento')" id="nav-agendamento" class="nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+        <span>Agendar</span>
       </button>
-      <button onclick="switchView('operacional')" id="nav-operacional" class="flex flex-col items-center justify-center text-gray-500 px-3 py-1 transition-all">
-        <span class="material-symbols-outlined text-[22px]">local_shipping</span>
-        <span class="text-[11px] font-semibold mt-0.5">Operacional</span>
+      <button onclick="switchView('operacional')" id="nav-operacional" class="nav-item">
+        <span class="material-symbols-outlined">local_shipping</span>
+        <span>Operacional</span>
       </button>
-      <button onclick="switchView('triagem')" id="nav-triagem" class="flex flex-col items-center justify-center text-gray-500 px-3 py-1 transition-all">
-        <span class="material-symbols-outlined text-[22px]">recycling</span>
-        <span class="text-[11px] font-semibold mt-0.5">Triagem</span>
+      <button onclick="switchView('triagem')" id="nav-triagem" class="nav-item">
+        <span class="material-symbols-outlined">recycling</span>
+        <span>Triagem</span>
       </button>
-      <button onclick="switchView('sobre')" id="nav-sobre" class="flex flex-col items-center justify-center text-gray-500 px-3 py-1 transition-all">
-        <span class="material-symbols-outlined text-[22px]">info</span>
-        <span class="text-[11px] font-semibold mt-0.5">Sobre</span>
+      <button onclick="switchView('sobre')" id="nav-sobre" class="nav-item">
+        <span class="material-symbols-outlined">info</span>
+        <span>Sobre</span>
       </button>
     </nav>
-
   </div>
 
-  <!-- JavaScript -->
+  <!-- Script de Navegação -->
   <script>
     function switchView(viewId) {
-      ['login', 'agendamento', 'operacional', 'triagem', 'sobre'].forEach(id => {
-        const el = document.getElementById('view-' + id);
-        if (el) el.classList.add('hidden');
-        const nav = document.getElementById('nav-' + id);
-        if (nav) {
-          nav.className = "flex flex-col items-center justify-center text-gray-500 px-3 py-1 transition-all";
-        }
-      });
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
 
-      const target = document.getElementById('view-' + viewId);
-      if (target) target.classList.remove('hidden');
+      const targetView = document.getElementById('view-' + viewId);
+      if (targetView) targetView.classList.add('active');
 
-      const activeNav = document.getElementById('nav-' + viewId);
-      if (activeNav) {
-        activeNav.className = "flex flex-col items-center justify-center text-emerald-700 px-3 py-1 transition-all font-bold";
-      }
+      const targetNav = document.getElementById('nav-' + viewId);
+      if (targetNav) targetNav.classList.add('active');
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -331,27 +294,29 @@
       const formSignup = document.getElementById('form-signup');
 
       if (type === 'signin') {
-        btnSignin.className = "flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl bg-white text-emerald-700 shadow-sm transition-all";
-        btnSignup.className = "flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl text-gray-500 transition-all";
-        formSignin.classList.remove('hidden');
-        formSignup.classList.add('hidden');
+        btnSignin.classList.add('active');
+        btnSignup.classList.remove('active');
+        formSignin.style.display = 'block';
+        formSignup.style.display = 'none';
       } else {
-        btnSignup.className = "flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl bg-white text-emerald-700 shadow-sm transition-all";
-        btnSignin.className = "flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl text-gray-500 transition-all";
-        formSignup.classList.remove('hidden');
-        formSignin.classList.add('hidden');
+        btnSignup.classList.add('active');
+        btnSignin.classList.remove('active');
+        formSignup.style.display = 'block';
+        formSignin.style.display = 'none';
       }
     }
 
-    function toggleMenu() {
-      alert('Menu RTEC: Aceda a Perfil, Definições e Sincronização PWA.');
-    }
-
     function selectDevice(btn) {
-      document.querySelectorAll('#view-triagem button').forEach(b => {
-        b.className = "p-4 rounded-2xl border border-gray-200 bg-gray-50 text-gray-700 text-xs sm:text-sm font-semibold flex flex-col items-center gap-2 transition-all";
+      document.querySelectorAll('.device-btn').forEach(b => {
+        b.style.borderColor = "#cbd5e1";
+        b.style.background = "#f8fafc";
+        b.style.color = "#475569";
+        b.style.fontWeight = "600";
       });
-      btn.className = "p-4 rounded-2xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex flex-col items-center gap-2 transition-all";
+      btn.style.borderColor = "#00874e";
+      btn.style.background = "#ecfdf5";
+      btn.style.color = "#065f46";
+      btn.style.fontWeight = "700";
     }
   </script>
 </body>
