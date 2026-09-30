@@ -20,7 +20,7 @@
     .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: #16a34a; }
 
     .top-nav-pills { display: flex; background: #f8fafc; padding: 3px; border-radius: 20px; border: 1px solid #e2e8f0; align-items: center; gap: 2px; }
-    .top-pill { padding: 6px 14px; font-size: 12px; font-weight: 600; color: #64748b; border: none; background: transparent; border-radius: 16px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+    .top-pill { padding: 6px 16px; font-size: 12px; font-weight: 600; color: #64748b; border: none; background: transparent; border-radius: 16px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
     .top-pill.active { background: #16a34a; color: white; font-weight: 700; box-shadow: 0 2px 4px rgba(22,163,74,0.3); }
 
     main { flex: 1; background: #16a34a; padding: 24px; display: flex; align-items: center; justify-content: center; width: 100%; }
@@ -43,7 +43,6 @@
 <body>
 
   <div class="app-container">
-    <!-- Header -->
     <header>
       <a href="index.html" class="logo-area">
         <div class="logo-icon">
@@ -55,7 +54,6 @@
       <div class="top-nav-pills">
         <a href="index.html" class="top-pill">Login</a>
         <a href="cadastro.html" class="top-pill active">Cadastro</a>
-        <a href="sobre.html" class="top-pill">Sobre</a>
       </div>
 
       <button style="background:none; border:none; color:#16a34a; cursor:pointer;" onclick="alert('Menu RTEC Principal')">
@@ -63,7 +61,6 @@
       </button>
     </header>
 
-    <!-- Main Content -->
     <main>
       <div class="auth-card">
         <div class="user-avatar">
@@ -98,13 +95,11 @@
       </div>
     </main>
 
-    <!-- Footer Institucional -->
     <footer>
       Franco da Rocha & Região Metropolitana · RTEC 2026
     </footer>
   </div>
 
-  <!-- Scripts -->
   <script>
     function handleRegister(event) {
       event.preventDefault();
