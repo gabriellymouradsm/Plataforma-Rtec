@@ -10,9 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: #15803d; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     
-    /* Layout Responsivo Fluido e Centralizado */
+    /* Configuração para ocupar a tela inteira com o fundo verde institucional */
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #15803d;
+      overflow-x: hidden;
+    }
+
     .app-container { 
       width: 100%; 
       min-height: 100vh; 
@@ -20,27 +26,14 @@
       display: flex; 
       flex-direction: column; 
       position: relative; 
-      margin: 0 auto; 
-    }
-
-    @media (min-width: 768px) {
-      .app-container { 
-        max-width: 640px; 
-        box-shadow: 0 10px 40px rgba(0,0,0,0.25); 
-        border-left: 1px solid rgba(255,255,255,0.15);
-        border-right: 1px solid rgba(255,255,255,0.15);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .app-container { 
-        max-width: 720px; 
-      }
+      margin: 0;
+      padding: 0;
     }
 
     header { 
       background: #15803d; 
-      padding: 16px 20px; 
+      width: 100%;
+      padding: 16px 24px; 
       display: flex; 
       align-items: center; 
       justify-content: space-between; 
@@ -48,6 +41,7 @@
       top: 0; 
       z-index: 50; 
     }
+    
     .logo-area { display: flex; align-items: center; gap: 8px; text-decoration: none; }
     .logo-icon { width: 34px; height: 34px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; }
     .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; color: #ffffff; letter-spacing: -0.5px; }
@@ -55,59 +49,92 @@
     main { 
       flex: 1; 
       background: #15803d; 
-      padding: 12px 16px 110px 16px; 
+      width: 100%;
+      padding: 10px 16px 100px 16px; 
       display: flex; 
       justify-content: center; 
-      width: 100%;
+      align-items: flex-start;
     }
+
     .content-wrapper { 
       width: 100%; 
-      max-width: 540px; 
+      max-width: 650px; 
+      margin: 0 auto;
     }
     
-    /* Card Container Responsivo */
+    /* Card central ocupando a largura total permitida e adaptável */
     .card-box { 
       background: #ffffff; 
-      border-radius: 24px; 
+      border-radius: 28px; 
       padding: 24px 20px; 
-      box-shadow: 0 12px 35px rgba(0,0,0,0.15); 
+      box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
       margin-bottom: 20px; 
       width: 100%;
     }
     
     @media (min-width: 640px) {
-      .card-box { padding: 32px 28px; }
+      .card-box { padding: 36px 32px; }
     }
 
     /* Form Elements */
-    .input-group { margin-bottom: 16px; }
+    .input-group { margin-bottom: 18px; }
     .input-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
     .input-group label .material-symbols-outlined { font-size: 18px; color: #16a34a; }
+    
     .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
-    .input-wrapper input, .input-wrapper select { width: 100%; height: 48px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; color: #0f172a; outline: none; background: #ffffff; font-weight: 500; appearance: none; }
+    .input-wrapper input, .input-wrapper select { 
+      width: 100%; 
+      height: 52px; 
+      padding: 0 16px; 
+      border: 1px solid #cbd5e1; 
+      border-radius: 14px; 
+      font-size: 14px; 
+      color: #0f172a; 
+      outline: none; 
+      background: #ffffff; 
+      font-weight: 500; 
+      appearance: none; 
+    }
     .input-wrapper input:focus, .input-wrapper select:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12); }
-    .input-wrapper .select-icon { position: absolute; right: 14px; pointer-events: none; color: #64748b; font-size: 20px; }
+    .input-wrapper .select-icon { position: absolute; right: 16px; pointer-events: none; color: #64748b; font-size: 20px; }
     
     .form-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    @media (min-width: 480px) {
+    @media (min-width: 500px) {
       .form-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        gap: 16px;
       }
     }
 
-    .btn-primary { width: 100%; height: 50px; background: #16a34a; color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s, transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3); margin-top: 6px; }
+    .btn-primary { 
+      width: 100%; 
+      height: 52px; 
+      background: #16a34a; 
+      color: white; 
+      border: none; 
+      border-radius: 14px; 
+      font-weight: 700; 
+      font-size: 15px; 
+      cursor: pointer; 
+      transition: background 0.2s, transform 0.1s; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 8px; 
+      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); 
+      margin-top: 8px; 
+    }
     .btn-primary:hover { background: #15803d; }
     .btn-primary:active { transform: scale(0.98); }
 
-    /* Modal Protocolo Responsivo */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+    /* Modal Protocolo */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
     .modal-overlay.active { display: flex; }
-    .modal-content { background: #ffffff; width: 100%; max-width: 440px; border-radius: 28px; padding: 24px 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
+    .modal-content { background: #ffffff; width: 100%; max-width: 440px; border-radius: 28px; padding: 28px 22px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
     
     @media (min-width: 480px) {
       .modal-content { padding: 32px 28px; }
@@ -115,47 +142,61 @@
 
     @keyframes scaleUp { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     
-    .success-icon { width: 52px; height: 52px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; font-size: 28px; }
-    .protocol-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 12px; text-align: center; margin: 14px 0; }
-    .protocol-number { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: #16a34a; letter-spacing: 1px; margin-top: 2px; }
+    .success-icon { width: 56px; height: 56px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; font-size: 30px; }
+    .protocol-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 14px; text-align: center; margin: 16px 0; }
+    .protocol-number { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; color: #16a34a; letter-spacing: 1px; margin-top: 2px; }
     
-    .summary-table { width: 100%; font-size: 13px; margin-bottom: 14px; }
-    .summary-table tr td { padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+    .summary-table { width: 100%; font-size: 13px; margin-bottom: 16px; }
+    .summary-table tr td { padding: 7px 0; border-bottom: 1px solid #f1f5f9; }
     .summary-table tr td:first-child { color: #64748b; font-weight: 600; width: 32%; }
     .summary-table tr td:last-child { color: #1e293b; font-weight: 600; text-align: right; word-break: break-word; }
     
-    .warning-box { background: #fefce8; border: 1px solid #fef08a; border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: #854d0e; margin-bottom: 18px; line-height: 1.4; }
+    .warning-box { background: #fefce8; border: 1px solid #fef08a; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: #854d0e; margin-bottom: 20px; line-height: 1.4; }
     
-    .btn-secondary { width: 100%; height: 46px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 8px; transition: background 0.2s; }
+    .btn-secondary { width: 100%; height: 48px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; transition: background 0.2s; }
     .btn-secondary:hover { background: #1d4ed8; }
     
-    .btn-outline { width: 100%; height: 46px; background: #e2e8f0; color: #334155; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s; }
+    .btn-outline { width: 100%; height: 48px; background: #e2e8f0; color: #334155; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s; }
     .btn-outline:hover { background: #cbd5e1; }
 
-    /* Barra de Navegação Inferior Responsiva */
+    /* Barra de Navegação Inferior Fixa Ocupando Toda a Largura */
     .bottom-nav { 
       position: fixed; 
       bottom: 0; 
       left: 0; 
       right: 0; 
+      width: 100%;
       background: rgba(255,255,255,0.98); 
       backdrop-filter: blur(10px); 
       border-top: 1px solid #e2e8f0; 
       display: flex; 
       justify-content: space-around; 
-      padding: 10px 4px; 
+      padding: 10px 8px; 
       z-index: 100; 
-      max-width: 720px; 
-      margin: 0 auto; 
-      box-shadow: 0 -4px 15px rgba(0,0,0,0.05); 
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08); 
     }
-    .nav-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: #64748b; cursor: pointer; font-size: 10.5px; font-weight: 600; text-decoration: none; transition: color 0.2s; flex: 1; }
+    
+    .nav-item { 
+      background: none; 
+      border: none; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      color: #64748b; 
+      cursor: pointer; 
+      font-size: 11px; 
+      font-weight: 600; 
+      text-decoration: none; 
+      transition: color 0.2s; 
+      flex: 1; 
+      padding: 4px 0;
+    }
     .nav-item.active { color: #16a34a; font-weight: 700; }
-    .nav-item span.material-symbols-outlined { font-size: 22px; margin-bottom: 2px; }
+    .nav-item span.material-symbols-outlined { font-size: 24px; margin-bottom: 2px; }
 
-    @media (min-width: 480px) {
-      .nav-item { font-size: 11.5px; }
-      .nav-item span.material-symbols-outlined { font-size: 24px; }
+    @media (min-width: 640px) {
+      .nav-item { font-size: 12px; }
+      .nav-item span.material-symbols-outlined { font-size: 26px; }
     }
   </style>
 </head>
@@ -166,25 +207,25 @@
         <div class="logo-icon"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 18px;">eco</span></div>
         <span class="logo-text">RTEC</span>
       </a>
-      <div style="background: rgba(255,255,255,0.2); color: white; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px;">
-        <span style="width: 6px; height: 6px; background: #4ade80; border-radius: 50%; display: inline-block;"></span> Franco da Rocha
+      <div style="background: rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+        <span style="width: 7px; height: 7px; background: #4ade80; border-radius: 50%; display: inline-block;"></span> Franco da Rocha
       </div>
     </header>
 
     <main>
       <div class="content-wrapper">
-        <div style="text-align: center; margin: 12px 0 18px 0; color: white;">
-          <h2 style="font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">Agendamento de Coleta</h2>
-          <p style="font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 3px;">Agende sua coleta de resíduos de forma rápida e fácil</p>
+        <div style="text-align: center; margin: 16px 0 22px 0; color: white;">
+          <h2 style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Agendamento de Coleta</h2>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.9); margin-top: 4px;">Agende sua coleta de resíduos de forma rápida e fácil</p>
         </div>
 
         <div class="card-box">
           <!-- Local da Coleta -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 18px;">
-            <div style="display: flex; align-items: center; gap: 6px; color: #16a34a; font-weight: 700; font-size: 13px; margin-bottom: 4px;">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 6px; color: #16a34a; font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">
               <span class="material-symbols-outlined" style="font-size: 18px;">location_on</span> Local da Coleta:
             </div>
-            <p style="font-size: 12px; color: #475569; line-height: 1.4; font-weight: 500;">
+            <p style="font-size: 12.5px; color: #475569; line-height: 1.45; font-weight: 500;">
               Rodovia Luiz Salomão Chama, 240 – Vila Ramos, Franco da Rocha – SP – CEP: 07857-050
             </p>
           </div>
@@ -246,10 +287,10 @@
     <div class="modal-overlay" id="modal-protocolo">
       <div class="modal-content">
         <div class="success-icon">
-          <span class="material-symbols-outlined" style="font-size: 28px; font-weight: 700;">check</span>
+          <span class="material-symbols-outlined" style="font-size: 32px; font-weight: 700;">check</span>
         </div>
-        <h3 style="text-align: center; font-size: 19px; font-weight: 800; color: #0f172a;">Coleta Agendada!</h3>
-        <p style="text-align: center; font-size: 12px; color: #64748b; margin-top: 2px; margin-bottom: 10px;">Seu protocolo de identificação:</p>
+        <h3 style="text-align: center; font-size: 20px; font-weight: 800; color: #0f172a;">Coleta Agendada!</h3>
+        <p style="text-align: center; font-size: 12.5px; color: #64748b; margin-top: 2px; margin-bottom: 12px;">Seu protocolo de identificação:</p>
         
         <div class="protocol-box">
           <div style="font-size: 11px; font-weight: 700; color: #16a34a; text-transform: uppercase;">Protocolo</div>
