@@ -3,115 +3,284 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-  <title>RTEC - Cadastro de Utilizador</title>
+  <title>RTEC - Cadastro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: #16a34a; min-height: 100vh; display: flex; flex-direction: column; }
     
-    .app-container { width: 100%; min-height: 100vh; background: #16a34a; display: flex; flex-direction: column; position: relative; margin: 0 auto; justify-content: space-between; }
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
 
-    header { background: #ffffff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 50; width: 100%; }
-    .logo-area { display: flex; align-items: center; gap: 8px; text-decoration: none; cursor: pointer; }
-    .logo-icon { width: 32px; height: 32px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #16a34a; }
-    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: #16a34a; }
+    .app-container { 
+      width: 100%; 
+      min-height: 100vh; 
+      background: #ffffff; 
+      display: flex; 
+      flex-direction: column; 
+      position: relative; 
+      margin: 0;
+      padding: 0;
+    }
 
-    .top-nav-pills { display: flex; background: #f8fafc; padding: 3px; border-radius: 20px; border: 1px solid #e2e8f0; align-items: center; gap: 2px; }
-    .top-pill { padding: 6px 16px; font-size: 12px; font-weight: 600; color: #64748b; border: none; background: transparent; border-radius: 16px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-    .top-pill.active { background: #16a34a; color: white; font-weight: 700; box-shadow: 0 2px 4px rgba(22,163,74,0.3); }
+    header { 
+      background: #ffffff; 
+      width: 100%;
+      height: 70px;
+      padding: 0 24px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      position: fixed; 
+      top: 0; 
+      left: 0;
+      z-index: 1000; 
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #16a34a; font-size: 18px; }
+    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #16a34a; letter-spacing: -0.5px; }
+    
+    /* Alternador Desktop (Padrão para Tablet / Notebook) */
+    .auth-switcher {
+      display: flex;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 4px;
+      border-radius: 30px;
+      gap: 4px;
+    }
 
-    main { flex: 1; background: #16a34a; padding: 24px; display: flex; align-items: center; justify-content: center; width: 100%; }
-    
-    .auth-card { background: #ffffff; border-radius: 32px; padding: 36px 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 100%; max-width: 440px; text-align: center; }
-    
-    .user-avatar { width: 72px; height: 72px; background: #ecfdf5; border: 3px solid #d1fae5; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; color: #16a34a; }
-    
-    .input-icon-group { position: relative; margin-bottom: 14px; }
-    .input-icon-group span.material-symbols-outlined { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 20px; }
-    .input-icon-group input { width: 100%; height: 48px; padding: 0 45px 0 48px; border: 1px solid #cbd5e1; border-radius: 16px; font-size: 13px; outline: none; background: #ffffff; color: #1e293b; transition: all 0.2s; }
-    .input-icon-group input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
-    
-    .btn-main { width: 100%; height: 50px; background: #16a34a; color: white; border: none; border-radius: 25px; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 12px rgba(22,163,74,0.3); margin-top: 6px; }
-    .btn-main:hover { background: #15803d; }
+    .switcher-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 24px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
 
-    footer { background: #ffffff; padding: 14px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #f1f5f9; font-weight: 500; width: 100%; }
+    .switcher-btn.active {
+      background: #16a34a;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+    }
+
+    /* Botão de Menu Hambúrguer (Oculto em telas grandes, visível apenas em Mobile) */
+    .hamburger-btn {
+      display: none;
+      background: #f0fdf4;
+      border: 1px solid #d1fae5;
+      color: #16a34a;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .hamburger-btn:hover { background: #dcfce7; }
+
+    /* Menu Mobile Dropdown (Visível apenas em Celulares ao clicar no menu) */
+    .mobile-dropdown-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      flex-direction: column;
+      padding: 20px;
+      gap: 10px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      border-top: 1px solid #f1f5f9;
+      z-index: 999;
+      animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-dropdown-menu.open { display: flex; }
+
+    .mobile-menu-item {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 14.5px;
+      font-weight: 700;
+      text-align: center;
+      border-radius: 14px;
+      text-decoration: none;
+      color: #64748b;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+    .mobile-menu-item.active {
+      background: #16a34a;
+      color: #ffffff;
+      border-color: #16a34a;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Regra responsiva para Celular (Max-width 768px) */
+    @media (max-width: 768px) {
+      .auth-switcher {
+        display: none !important;
+      }
+      .hamburger-btn {
+        display: flex !important;
+      }
+    }
+    
+    main { 
+      flex: 1; 
+      background: #16a34a; 
+      width: 100%;
+      padding: 96px 16px 40px 16px;
+      display: flex; 
+      flex-direction: column;
+      justify-content: center; 
+      align-items: center;
+    }
+
+    .content-card { 
+      background: #ffffff; 
+      border-radius: 32px; 
+      padding: 36px 28px; 
+      box-shadow: 0 20px 45px rgba(0,0,0,0.15); 
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .user-avatar-icon {
+      width: 64px;
+      height: 64px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #16a34a;
+      margin: 0 auto 16px auto;
+      font-size: 32px;
+    }
+
+    .input-group { margin-bottom: 16px; text-align: left; }
+    .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+    .input-wrapper input { 
+      width: 100%; height: 52px; padding: 0 16px 0 46px; border: 1px solid #cbd5e1; border-radius: 14px; 
+      font-size: 14px; color: #0f172a; outline: none; background: #ffffff; font-weight: 500; 
+    }
+    .input-wrapper input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12); }
+    .input-icon { position: absolute; left: 16px; color: #64748b; font-size: 20px; pointer-events: none; }
+
+    .btn-submit { 
+      width: 100%; height: 52px; background: #16a34a; color: white; border: none; border-radius: 14px; 
+      font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s, transform 0.1s; 
+      display: flex; align-items: center; justify-content: center; gap: 8px; 
+      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); margin-top: 8px; 
+    }
+    .btn-submit:hover { background: #15803d; }
   </style>
 </head>
 <body>
-
   <div class="app-container">
     <header>
       <a href="index.html" class="logo-area">
-        <div class="logo-icon">
-          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 20px;">eco</span>
-        </div>
+        <div class="logo-icon"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span></div>
         <span class="logo-text">RTEC</span>
       </a>
 
-      <div class="top-nav-pills">
-        <a href="index.html" class="top-pill">Login</a>
-        <a href="cadastro.html" class="top-pill active">Cadastro</a>
+      <!-- Opções visíveis em Tablet / Notebook (Ocultas no telemóvel) -->
+      <div class="auth-switcher">
+        <a href="index.html" class="switcher-btn">Login</a>
+        <a href="cadastro.html" class="switcher-btn active">Cadastro</a>
       </div>
 
-      <button style="background:none; border:none; color:#16a34a; cursor:pointer;" onclick="alert('Menu RTEC Principal')">
-        <span class="material-symbols-outlined" style="font-size: 26px;">menu</span>
+      <!-- Botão de três risquinhos visível APENAS em Celular -->
+      <button class="hamburger-btn" onclick="toggleMobileMenu()">
+        <span class="material-symbols-outlined">menu</span>
       </button>
+
+      <!-- Menu suspenso para telemóveis contendo as opções -->
+      <nav class="mobile-dropdown-menu" id="mobileMenu">
+        <a href="index.html" class="mobile-menu-item">Login</a>
+        <a href="cadastro.html" class="mobile-menu-item active">Cadastro</a>
+      </nav>
     </header>
 
     <main>
-      <div class="auth-card">
-        <div class="user-avatar">
-          <span class="material-symbols-outlined" style="font-size: 38px; font-variation-settings: 'FILL' 1;">person_add</span>
+      <div class="content-card">
+        <div class="user-avatar-icon">
+          <span class="material-symbols-outlined" style="font-size: 32px;">person_add</span>
         </div>
-        <h2 style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">Criar Conta</h2>
-        <p style="font-size: 13px; color: #64748b; margin-bottom: 22px;">Cadastre-se na plataforma RTEC</p>
+        <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Crie sua Conta</h2>
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 24px;">Preencha os dados para começar</p>
 
-        <form onsubmit="handleRegister(event)">
-          <div class="input-icon-group">
-            <span class="material-symbols-outlined">badge</span>
-            <input type="text" required placeholder="Nome Completo / Empresa">
+        <form onsubmit="fazerCadastro(event)">
+          <div class="input-group">
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined input-icon">badge</span>
+              <input type="text" placeholder="Nome completo ou Empresa" required>
+            </div>
           </div>
-          <div class="input-icon-group">
-            <span class="material-symbols-outlined">mail</span>
-            <input type="email" required placeholder="Seu E-mail">
+
+          <div class="input-group">
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined input-icon">mail</span>
+              <input type="email" placeholder="Seu E-mail" required>
+            </div>
           </div>
-          <div class="input-icon-group">
-            <span class="material-symbols-outlined">lock</span>
-            <input type="password" id="reg-pass" required placeholder="Mínimo 6 dígitos">
+
+          <div class="input-group">
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined input-icon">lock</span>
+              <input type="password" placeholder="Crie uma senha" required>
+            </div>
           </div>
-          <div class="input-icon-group">
-            <span class="material-symbols-outlined">lock_reset</span>
-            <input type="password" id="reg-confirm-pass" required placeholder="Confirme a senha">
-          </div>
-          <button type="submit" class="btn-main">Concluir Cadastro</button>
+
+          <button type="submit" class="btn-submit">Cadastrar</button>
         </form>
 
-        <p style="font-size: 13px; color: #64748b; margin-top: 18px;">
-          Já tem conta? <a href="index.html" style="color: #16a34a; font-weight: 700; text-decoration: none;">Entrar</a>
+        <p style="font-size: 13px; color: #64748b; margin-top: 20px;">
+          Já tem uma conta? <a href="index.html" style="color: #16a34a; font-weight: 700; text-decoration: none;">Faça login</a>
         </p>
       </div>
-    </main>
 
-    <footer>
-      Franco da Rocha & Região Metropolitana · RTEC 2026
-    </footer>
+      <div style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; text-align: center;">
+        Franco da Rocha & Região Metropolitana · RTEC 2026
+      </div>
+    </main>
   </div>
 
   <script>
-    function handleRegister(event) {
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('open');
+    }
+
+    function fazerCadastro(event) {
       event.preventDefault();
-      const pass = document.getElementById('reg-pass').value;
-      const confirmPass = document.getElementById('reg-confirm-pass').value;
-
-      if (pass !== confirmPass) {
-        alert('As senhas não coincidem. Por favor, verifique.');
-        return;
-      }
-
-      alert('Cadastro realizado com sucesso! Redirecionando para a tela de login...');
+      alert('Cadastro realizado com sucesso!');
       window.location.href = 'index.html';
     }
   </script>
