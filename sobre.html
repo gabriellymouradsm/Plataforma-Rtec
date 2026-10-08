@@ -3,71 +3,559 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-  <title>RTEC - Sobre</title>
+  <title>RTEC - Sobre e Avaliação do Usuário</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: #f7f9f7; min-height: 100vh; display: flex; flex-direction: column; }
-    .app-container { width: 100%; min-height: 100vh; background: #ffffff; display: flex; flex-direction: column; position: relative; margin: 0 auto; }
-    @media (min-width: 768px) {
-      .app-container { max-width: 1200px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); min-height: 100vh; }
+    
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #f7f9f7;
+      overflow-x: hidden;
     }
-    header { background: #ffffff; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 50; }
+
+    .app-container { 
+      width: 100%; 
+      min-height: 100vh; 
+      background: #f7f9f7; 
+      display: flex; 
+      flex-direction: column; 
+      position: relative; 
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Barra Superior Fixa */
+    header { 
+      background: #15803d; 
+      width: 100%;
+      height: 70px;
+      padding: 0 24px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      position: fixed; 
+      top: 0; 
+      left: 0;
+      z-index: 1000; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
     .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-icon { width: 40px; height: 40px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #16a34a; }
-    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #16a34a; }
-    main { flex: 1; background: #f7f9f7; padding: 24px; overflow-y: auto; padding-bottom: 100px; display: flex; justify-content: center; }
-    .content-wrapper { width: 100%; max-width: 800px; }
-    .card { background: #ffffff; border-radius: 24px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px; }
-    .btn-primary { width: 100%; height: 44px; background: #16a34a; color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 13px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-primary:hover { background: #15803d; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; max-width: 1200px; margin: 0 auto; }
-    .nav-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: #64748b; cursor: pointer; font-size: 12px; font-weight: 600; text-decoration: none; }
-    .nav-item.active { color: #16a34a; font-weight: 700; }
-    .nav-item span { font-size: 24px; }
-    .badge-geo { background: #ecfdf5; color: #065f46; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #a7f3d0; }
+    .logo-icon { width: 36px; height: 36px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; }
+    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
+    
+    /* Menu Superior Desktop & Mobile Redesenhado */
+    .top-menu { 
+      display: flex; 
+      align-items: center; 
+      gap: 6px; 
+    }
+
+    .menu-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
+    .menu-btn span.material-symbols-outlined { font-size: 18px; }
+
+    .hamburger-btn {
+      display: none;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #ffffff;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .hamburger-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+    /* Menu Mobile Estilizado (Dropdown Moderno) */
+    @media (max-width: 768px) {
+      .top-menu {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: #14532d;
+        flex-direction: column;
+        padding: 20px;
+        gap: 8px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
+        animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .top-menu.open { display: flex; }
+      .hamburger-btn { display: flex; }
+      .badge-geo { display: none; }
+
+      .menu-btn {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 14.5px;
+        justify-content: flex-start;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+      }
+      .menu-btn.active {
+        background: #ffffff;
+        color: #15803d;
+      }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    main { 
+      flex: 1; 
+      width: 100%;
+      padding: 96px 20px 40px 20px;
+      display: flex; 
+      justify-content: center; 
+      align-items: flex-start;
+    }
+
+    .content-wrapper { 
+      width: 100%; 
+      max-width: 1100px; 
+      margin: 0 auto;
+    }
+
+    .dashboard-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .action-pills-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-stat {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .btn-action-top {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+    }
+    .btn-action-top:hover { background: #15803d; }
+
+    /* Bloco Superior: SOBRE */
+    .card-institucional {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+      border: 1px solid #e2e8f0;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .card-institucional h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: #16a34a;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .card-institucional > p {
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto 32px auto;
+    }
+
+    .pilares-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 768px) {
+      .pilares-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .pilar-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 20px;
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .pilar-card strong {
+      font-size: 16px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .pilar-card span {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    /* Bloco Inferior: Cartão Verde de Avaliação */
+    .card-avaliacao-main {
+      background: #16a34a;
+      border-radius: 28px;
+      padding: 36px 32px;
+      box-shadow: 0 15px 40px rgba(22, 163, 74, 0.25);
+      color: white;
+      margin-top: 24px;
+    }
+
+    .feedback-form-box {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 28px;
+      color: #0f172a;
+      margin-top: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .stars-group {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 12px 0 6px 0;
+      cursor: pointer;
+    }
+
+    .star-icon {
+      font-size: 32px;
+      color: #cbd5e1;
+      transition: color 0.2s, transform 0.1s;
+      font-variation-settings: 'FILL' 0;
+    }
+
+    .star-icon.active {
+      color: #fbbf24;
+      font-variation-settings: 'FILL' 1;
+    }
+
+    .star-icon:hover {
+      transform: scale(1.15);
+    }
+
+    .radio-pill-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .radio-pill {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13.5px;
+      cursor: pointer;
+      background: #f8fafc;
+      color: #334155;
+      transition: all 0.2s;
+    }
+    .radio-pill.selected {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #15803d;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    @media (max-width: 600px) {
+      .checkbox-grid { grid-template-columns: 1fr; }
+    }
+
+    .check-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .check-item.checked {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #15803d;
+    }
+
+    .btn-enviar-avaliacao {
+      background: #16a34a;
+      color: white;
+      border: none;
+      width: 100%;
+      height: 52px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+      transition: background 0.2s;
+    }
+    .btn-enviar-avaliacao:hover { background: #15803d; }
   </style>
 </head>
 <body>
   <div class="app-container">
     <header>
       <a href="agendamento.html" class="logo-area">
-        <div class="logo-icon"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span></div>
+        <div class="logo-icon"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 18px;">eco</span></div>
         <span class="logo-text">RTEC</span>
       </a>
-      <div class="badge-geo">Franco da Rocha</div>
+
+      <!-- Menu Superior / Dropdown Mobile Moderno -->
+      <nav class="top-menu" id="topMenu">
+        <a href="agendamento.html" class="menu-btn"><span class="material-symbols-outlined">calendar_today</span><span>Agendar</span></a>
+        <a href="operacional.html" class="menu-btn"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
+        <a href="triagem.html" class="menu-btn"><span class="material-symbols-outlined">recycling</span><span>Triagem</span></a>
+        <a href="sobre.html" class="menu-btn active"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">info</span><span>Sobre</span></a>
+        <a href="index.html" class="menu-btn"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
+      </nav>
+
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+          <span style="width: 7px; height: 7px; background: #4ade80; border-radius: 50%; display: inline-block;"></span> Franco da Rocha
+        </div>
+        <button class="hamburger-btn" onclick="toggleMenu()">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
     </header>
+
     <main>
       <div class="content-wrapper">
-        <div class="card" style="text-align: center;">
-          <h2 style="font-size: 26px; font-weight: 700; color: #16a34a; margin-bottom: 12px;">Sobre a RTEC</h2>
-          <p style="font-size: 14px; color: #475569; line-height: 1.7; text-align: left; margin-bottom: 20px;">
-            A RTEC é o ecossistema tecnológico pioneiro na região de Franco da Rocha dedicado à gestão reversa e segregação de e-waste, transformando passivos ambientais em inclusão produtiva e sustentabilidade[cite: 5].
-          </p>
-          <div style="border-top: 1px solid #f1f5f9; padding-top: 20px;">
-            <h4 style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 10px;">Avalie nossa plataforma</h4>
-            <div style="color: #fbbf24; display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; cursor: pointer;">
-              <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
-              <span class="material-symbols-outlined" style="font-size: 28px; font-variation-settings: 'FILL' 1;">star</span>
+        
+        <div class="dashboard-top">
+          <div>
+            <span style="font-size: 11px; font-weight: 700; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px;">Institucional & Satisfação</span>
+            <h1 style="font-size: 26px; font-weight: 800; color: #0f172a; margin-top: 2px;">Sobre a RTEC & Avaliação do Usuário</h1>
+            <p style="font-size: 13.5px; color: #64748b; margin-top: 4px;">Conheça nosso compromisso socioambiental em Franco da Rocha e compartilhe sua experiência.</p>
+          </div>
+
+          <div class="action-pills-group">
+            <div class="pill-stat">
+              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 18px;">star</span>
+              <span>SATISFAÇÃO GERAL: <strong style="color: #16a34a;">94.8%</strong> ★4.9</span>
             </div>
-            <button onclick="alert('Obrigado pelo seu feedback!');" class="btn-primary">Enviar Avaliação</button>
+            <button onclick="document.getElementById('form-feedback').scrollIntoView({behavior: 'smooth'})" class="btn-action-top">
+              <span class="material-symbols-outlined" style="font-size: 18px;">add</span> Nova Avaliação
+            </button>
           </div>
         </div>
+
+        <div class="card-institucional">
+          <h2>Sobre</h2>
+          <p>
+            A reciclagem adequada de resíduos eletrônicos é fundamental para reduzir a poluição do solo, da água e do ar, causada pela presença de substâncias tóxicas em sua composição. Nossa missão é facilitar o descarte responsável e promover a sustentabilidade ambiental.
+          </p>
+
+          <div class="pilares-grid">
+            <div class="pilar-card">
+              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 36px;">autorenew</span>
+              <strong>Reciclagem Responsável</strong>
+              <span>Processamos resíduos eletrônicos de forma segura e ambientalmente correta.</span>
+            </div>
+
+            <div class="pilar-card">
+              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 36px;">eco</span>
+              <strong>Sustentabilidade</strong>
+              <span>Contribuímos para um futuro mais verde e sustentável para todos.</span>
+            </div>
+
+            <div class="pilar-card">
+              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 36px;">diversity_3</span>
+              <strong>Comunidade</strong>
+              <span>Conectamos pessoas e empresas em prol do meio ambiente.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-avaliacao-main" id="form-feedback">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span style="font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 10px; text-transform: uppercase;">INTERAÇÃO E QUALIDADE</span>
+              <h2 style="font-size: 26px; font-weight: 800; margin-top: 8px;">Sua Opinião Ajuda o Planeta!</h2>
+              <p style="font-size: 13.5px; color: rgba(255,255,255,0.9); margin-top: 4px;">Avalie os serviços de triagem, coleta seletiva e agendamento da RTEC.</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 40px; color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+          </div>
+
+          <div class="feedback-form-box">
+            <form onsubmit="enviarFeedback(event)">
+              <label style="display: block; text-align: center; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 2px;">Qual nota você dá para a plataforma?</label>
+              
+              <div class="stars-group" id="rating-stars">
+                <span class="material-symbols-outlined star-icon active" onclick="avaliarEstrelas(1)">star</span>
+                <span class="material-symbols-outlined star-icon active" onclick="avaliarEstrelas(2)">star</span>
+                <span class="material-symbols-outlined star-icon active" onclick="avaliarEstrelas(3)">star</span>
+                <span class="material-symbols-outlined star-icon active" onclick="avaliarEstrelas(4)">star</span>
+                <span class="material-symbols-outlined star-icon active" onclick="avaliarEstrelas(5)">star</span>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: #64748b; font-weight: 600; margin-bottom: 20px;">
+                <span>Insatisfeito (1)</span>
+                <span id="txt-avaliacao-status" style="color: #16a34a; font-weight: 700;">Excelente (5 estrelas)</span>
+                <span>Excelente (5)</span>
+              </div>
+
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 6px;">Você recomendaria a RTEC a um amigo ou cooperativa?</label>
+              <div class="radio-pill-group">
+                <div class="radio-pill selected" onclick="toggleRadio(this)">👍 SIM</div>
+                <div class="radio-pill" onclick="toggleRadio(this)">👎 NÃO</div>
+              </div>
+
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 20px 0 8px 0;">Destaque o que mais e o que menos chamou sua atenção:</label>
+              <div class="checkbox-grid">
+                <div>
+                  <span style="font-size: 11.5px; font-weight: 700; color: #16a34a; display: block; margin-bottom: 8px;">✓ O QUE VOCÊ MAIS GOSTOU:</span>
+                  <div class="check-item checked" onclick="toggleCheck(this)"><span class="material-symbols-outlined" style="font-size: 18px;">check</span> Design Visual</div>
+                  <div class="check-item checked" onclick="toggleCheck(this)" style="margin-top: 8px;"><span class="material-symbols-outlined" style="font-size: 18px;">check</span> Rapidez na Navegação</div>
+                  <div class="check-item checked" onclick="toggleCheck(this)" style="margin-top: 8px;"><span class="material-symbols-outlined" style="font-size: 18px;">check</span> Clareza das Info</div>
+                  <div class="check-item checked" onclick="toggleCheck(this)" style="margin-top: 8px;"><span class="material-symbols-outlined" style="font-size: 18px;">check</span> Facilidade do Agendamento</div>
+                </div>
+                <div>
+                  <span style="font-size: 11.5px; font-weight: 700; color: #d97706; display: block; margin-bottom: 8px;">⚡ O QUE PODEMOS MELHORAR:</span>
+                  <div class="check-item" onclick="toggleCheck(this)">Design Visual</div>
+                  <div class="check-item" onclick="toggleCheck(this)" style="margin-top: 8px;">Rapidez na Navegação</div>
+                  <div class="check-item" onclick="toggleCheck(this)" style="margin-top: 8px;">Clareza das Info</div>
+                  <div class="check-item" onclick="toggleCheck(this)" style="margin-top: 8px;">Facilidade do Agendamento</div>
+                </div>
+              </div>
+
+              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 20px 0 6px 0;">Comentário Adicional <span style="font-weight: 400; color: #94a3b8;">(opcional)</span></label>
+              <textarea rows="3" placeholder="Conte mais sobre sua coleta ou experiência com o descarte em Franco da Rocha..." style="width: 100%; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 13px; outline: none; background: #f8fafc; color: #0f172a; resize: none;"></textarea>
+
+              <button type="submit" class="btn-enviar-avaliacao">
+                <span class="material-symbols-outlined">send</span> Enviar Avaliação
+              </button>
+            </form>
+          </div>
+        </div>
+
       </div>
     </main>
-    <nav class="bottom-nav">
-      <a href="agendamento.html" class="nav-item"><span class="material-symbols-outlined">calendar_today</span><span>Agendar</span></a>
-      <a href="operacional.html" class="nav-item"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
-      <a href="triagem.html" class="nav-item"><span class="material-symbols-outlined">recycling</span><span>Triagem</span></a>
-      <a href="sobre.html" class="nav-item active"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">info</span><span>Sobre</span></a>
-      <a href="index.html" class="nav-item"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
-    </nav>
   </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('topMenu');
+      menu.classList.toggle('open');
+    }
+
+    function avaliarEstrelas(nota) {
+      const stars = document.querySelectorAll('#rating-stars .star-icon');
+      const statusText = document.getElementById('txt-avaliacao-status');
+      
+      const descricoes = [
+        "Insatisfeito (1 estrela)",
+        "Pouco satisfeito (2 estrelas)",
+        "Bom (3 estrelas)",
+        "Muito bom (4 estrelas)",
+        "Excelente (5 estrelas)"
+      ];
+
+      stars.forEach((star, index) => {
+        if (index < nota) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+
+      statusText.textContent = descricoes[nota - 1];
+    }
+
+    function toggleRadio(element) {
+      element.parentElement.querySelectorAll('.radio-pill').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function toggleCheck(element) {
+      element.classList.toggle('checked');
+    }
+
+    function enviarFeedback(event) {
+      event.preventDefault();
+      alert('Muito obrigado! Sua avaliação foi enviada com sucesso e somada ao nosso indicador ESG.');
+      location.reload();
+    }
+  </script>
 </body>
 </html>
