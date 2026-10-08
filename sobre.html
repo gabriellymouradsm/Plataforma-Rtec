@@ -29,7 +29,6 @@
       padding: 0;
     }
 
-    /* Barra Superior Fixa */
     header { 
       background: #15803d; 
       width: 100%;
@@ -49,12 +48,7 @@
     .logo-icon { width: 36px; height: 36px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; }
     .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
     
-    /* Menu Superior Desktop & Mobile Redesenhado */
-    .top-menu { 
-      display: flex; 
-      align-items: center; 
-      gap: 6px; 
-    }
+    .top-menu { display: flex; align-items: center; gap: 6px; }
 
     .menu-btn {
       background: rgba(255, 255, 255, 0.15);
@@ -86,11 +80,8 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.2s;
     }
-    .hamburger-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
-    /* Menu Mobile Estilizado (Dropdown Moderno) */
     @media (max-width: 768px) {
       .top-menu {
         display: none;
@@ -106,6 +97,7 @@
         border-bottom-left-radius: 24px;
         border-bottom-right-radius: 24px;
         animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1001;
       }
       .top-menu.open { display: flex; }
       .hamburger-btn { display: flex; }
@@ -133,7 +125,7 @@
     main { 
       flex: 1; 
       width: 100%;
-      padding: 96px 20px 40px 20px;
+      padding: 96px 16px 40px 16px;
       display: flex; 
       justify-content: center; 
       align-items: flex-start;
@@ -191,39 +183,42 @@
     }
     .btn-action-top:hover { background: #15803d; }
 
-    /* Bloco Superior: SOBRE */
     .card-institucional {
       background: #ffffff;
       border-radius: 24px;
-      padding: 36px;
+      padding: 28px 20px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.04);
       border: 1px solid #e2e8f0;
       margin-bottom: 24px;
       text-align: center;
     }
 
+    @media (min-width: 768px) {
+      .card-institucional { padding: 36px; }
+    }
+
     .card-institucional h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       color: #16a34a;
       letter-spacing: 1px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       text-transform: uppercase;
     }
 
     .card-institucional > p {
-      font-size: 14.5px;
+      font-size: 14px;
       color: #334155;
       line-height: 1.6;
       max-width: 900px;
-      margin: 0 auto 32px auto;
+      margin: 0 auto 28px auto;
     }
 
     .pilares-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 16px;
     }
     @media (min-width: 768px) {
       .pilares-grid {
@@ -235,55 +230,54 @@
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
       border-radius: 20px;
-      padding: 28px 20px;
+      padding: 24px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .pilar-card strong {
-      font-size: 16px;
-      color: #0f172a;
-      font-weight: 700;
-    }
+    .pilar-card strong { font-size: 15px; color: #0f172a; font-weight: 700; }
+    .pilar-card span { font-size: 12.5px; color: #475569; line-height: 1.45; }
 
-    .pilar-card span {
-      font-size: 13px;
-      color: #475569;
-      line-height: 1.45;
-    }
-
-    /* Bloco Inferior: Cartão Verde de Avaliação */
+    /* Cartão Verde de Avaliação Ajustado e Desimpedido */
     .card-avaliacao-main {
       background: #16a34a;
-      border-radius: 28px;
-      padding: 36px 32px;
+      border-radius: 24px;
+      padding: 24px 16px;
       box-shadow: 0 15px 40px rgba(22, 163, 74, 0.25);
       color: white;
       margin-top: 24px;
     }
 
+    @media (min-width: 768px) {
+      .card-avaliacao-main { padding: 36px 32px; }
+    }
+
     .feedback-form-box {
       background: #ffffff;
       border-radius: 20px;
-      padding: 28px;
+      padding: 20px 16px;
       color: #0f172a;
-      margin-top: 20px;
+      margin-top: 16px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    @media (min-width: 768px) {
+      .feedback-form-box { padding: 28px; }
     }
 
     .stars-group {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       margin: 12px 0 6px 0;
       cursor: pointer;
     }
 
     .star-icon {
-      font-size: 32px;
+      font-size: 30px;
       color: #cbd5e1;
       transition: color 0.2s, transform 0.1s;
       font-variation-settings: 'FILL' 0;
@@ -294,13 +288,9 @@
       font-variation-settings: 'FILL' 1;
     }
 
-    .star-icon:hover {
-      transform: scale(1.15);
-    }
-
     .radio-pill-group {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       margin-top: 8px;
     }
     .radio-pill {
@@ -322,28 +312,33 @@
       color: #15803d;
     }
 
+    /* Grelha ajustada: 1 coluna em telemóvel, 2 colunas em telas maiores */
     .checkbox-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: 1fr;
+      gap: 16px;
       margin-top: 8px;
     }
-    @media (max-width: 600px) {
-      .checkbox-grid { grid-template-columns: 1fr; }
+    @media (min-width: 768px) {
+      .checkbox-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
     }
 
     .check-item {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      padding: 10px 14px;
+      padding: 12px 14px;
       border-radius: 12px;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       color: #475569;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
+      width: 100%;
     }
     .check-item.checked {
       background: #dcfce7;
@@ -380,7 +375,6 @@
         <span class="logo-text">RTEC</span>
       </a>
 
-      <!-- Menu Superior / Dropdown Mobile Moderno -->
       <nav class="top-menu" id="topMenu">
         <a href="agendamento.html" class="menu-btn"><span class="material-symbols-outlined">calendar_today</span><span>Agendar</span></a>
         <a href="operacional.html" class="menu-btn"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
@@ -405,17 +399,17 @@
         <div class="dashboard-top">
           <div>
             <span style="font-size: 11px; font-weight: 700; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px;">Institucional & Satisfação</span>
-            <h1 style="font-size: 26px; font-weight: 800; color: #0f172a; margin-top: 2px;">Sobre a RTEC & Avaliação do Usuário</h1>
-            <p style="font-size: 13.5px; color: #64748b; margin-top: 4px;">Conheça nosso compromisso socioambiental em Franco da Rocha e compartilhe sua experiência.</p>
+            <h1 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 2px;">Sobre a RTEC & Avaliação do Usuário</h1>
+            <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Conheça nosso compromisso socioambiental em Franco da Rocha e compartilhe sua experiência.</p>
           </div>
 
           <div class="action-pills-group">
             <div class="pill-stat">
               <span class="material-symbols-outlined" style="color: #16a34a; font-size: 18px;">star</span>
-              <span>SATISFAÇÃO GERAL: <strong style="color: #16a34a;">94.8%</strong> ★4.9</span>
+              <span>SATISFAÇÃO: <strong style="color: #16a34a;">94.8%</strong></span>
             </div>
             <button onclick="document.getElementById('form-feedback').scrollIntoView({behavior: 'smooth'})" class="btn-action-top">
-              <span class="material-symbols-outlined" style="font-size: 18px;">add</span> Nova Avaliação
+              <span class="material-symbols-outlined" style="font-size: 18px;">add</span> Avaliar
             </button>
           </div>
         </div>
@@ -428,19 +422,19 @@
 
           <div class="pilares-grid">
             <div class="pilar-card">
-              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 36px;">autorenew</span>
+              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 32px;">autorenew</span>
               <strong>Reciclagem Responsável</strong>
               <span>Processamos resíduos eletrônicos de forma segura e ambientalmente correta.</span>
             </div>
 
             <div class="pilar-card">
-              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 36px;">eco</span>
+              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 32px;">eco</span>
               <strong>Sustentabilidade</strong>
               <span>Contribuímos para um futuro mais verde e sustentável para todos.</span>
             </div>
 
             <div class="pilar-card">
-              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 36px;">diversity_3</span>
+              <span class="material-symbols-outlined" style="color: #16a34a; font-size: 32px;">diversity_3</span>
               <strong>Comunidade</strong>
               <span>Conectamos pessoas e empresas em prol do meio ambiente.</span>
             </div>
@@ -451,15 +445,15 @@
           <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
             <div>
               <span style="font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 10px; text-transform: uppercase;">INTERAÇÃO E QUALIDADE</span>
-              <h2 style="font-size: 26px; font-weight: 800; margin-top: 8px;">Sua Opinião Ajuda o Planeta!</h2>
-              <p style="font-size: 13.5px; color: rgba(255,255,255,0.9); margin-top: 4px;">Avalie os serviços de triagem, coleta seletiva e agendamento da RTEC.</p>
+              <h2 style="font-size: 22px; font-weight: 800; margin-top: 6px;">Sua Opinião Ajuda o Planeta!</h2>
+              <p style="font-size: 13px; color: rgba(255,255,255,0.9); margin-top: 2px;">Avalie os serviços de triagem, coleta seletiva e agendamento da RTEC.</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 40px; color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-size: 36px; color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
           </div>
 
           <div class="feedback-form-box">
             <form onsubmit="enviarFeedback(event)">
-              <label style="display: block; text-align: center; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 2px;">Qual nota você dá para a plataforma?</label>
+              <label style="display: block; text-align: center; font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 2px;">Qual nota você dá para a plataforma?</label>
               
               <div class="stars-group" id="rating-stars">
                 <span class="material-symbols-outlined star-icon active" onclick="avaliarEstrelas(1)">star</span>
@@ -469,19 +463,21 @@
                 <span class="material-symbols-outlined star-icon active" onclick="avaliarEstrelas(5)">star</span>
               </div>
               
-              <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: #64748b; font-weight: 600; margin-bottom: 20px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 18px;">
                 <span>Insatisfeito (1)</span>
                 <span id="txt-avaliacao-status" style="color: #16a34a; font-weight: 700;">Excelente (5 estrelas)</span>
                 <span>Excelente (5)</span>
               </div>
 
-              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 6px;">Você recomendaria a RTEC a um amigo ou cooperativa?</label>
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 6px;">Você recomendaria a RTEC a um amigo ou cooperativa?</label>
               <div class="radio-pill-group">
                 <div class="radio-pill selected" onclick="toggleRadio(this)">👍 SIM</div>
                 <div class="radio-pill" onclick="toggleRadio(this)">👎 NÃO</div>
               </div>
 
-              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 20px 0 8px 0;">Destaque o que mais e o que menos chamou sua atenção:</label>
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 18px 0 8px 0;">Destaque o que mais e o que menos chamou sua atenção:</label>
+              
+              <!-- Estrutura ajustada para empilhar confortavelmente em telemóveis -->
               <div class="checkbox-grid">
                 <div>
                   <span style="font-size: 11.5px; font-weight: 700; color: #16a34a; display: block; margin-bottom: 8px;">✓ O QUE VOCÊ MAIS GOSTOU:</span>
@@ -499,7 +495,7 @@
                 </div>
               </div>
 
-              <label style="display: block; font-size: 12.5px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 20px 0 6px 0;">Comentário Adicional <span style="font-weight: 400; color: #94a3b8;">(opcional)</span></label>
+              <label style="display: block; font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 18px 0 6px 0;">Comentário Adicional <span style="font-weight: 400; color: #94a3b8;">(opcional)</span></label>
               <textarea rows="3" placeholder="Conte mais sobre sua coleta ou experiência com o descarte em Franco da Rocha..." style="width: 100%; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 13px; outline: none; background: #f8fafc; color: #0f172a; resize: none;"></textarea>
 
               <button type="submit" class="btn-enviar-avaliacao">
