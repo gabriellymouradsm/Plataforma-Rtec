@@ -171,7 +171,6 @@
     
     .warning-box { background: #fefce8; border: 1px solid #fef08a; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: #854d0e; margin-bottom: 20px; line-height: 1.4; }
     
-    /* Botões dentro do Modal, um abaixo do outro */
     .btn-secondary { width: 100%; height: 48px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; transition: background 0.2s; }
     .btn-secondary:hover { background: #1d4ed8; }
 
@@ -181,7 +180,6 @@
     .btn-outline { width: 100%; height: 48px; background: #e2e8f0; color: #334155; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s; }
     .btn-outline:hover { background: #cbd5e1; }
 
-    /* Ocultar botões ao imprimir ou gerar PDF */
     @media print {
       .no-print { display: none !important; }
     }
@@ -217,7 +215,7 @@
       <div class="content-wrapper">
         <div style="text-align: center; margin: 16px 0 22px 0; color: white;">
           <h2 style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Agendamento de Coleta</h2>
-          <p style="font-size: 14px; color: rgba(255,255,255,0.9); margin-top: 4px;">Agende sua coleta de resíduos de forma rápida e fácil[cite: 2]</p>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.9); margin-top: 4px;">Agende sua coleta de resíduos de forma rápida e fácil</p>
         </div>
 
         <div class="card-box">
@@ -284,14 +282,14 @@
 
     <!-- Modal de Protocolo Gerado -->
     <div class="modal-overlay" id="modal-protocolo">
-      <div class="modal-content">
-        <!-- Apenas esta parte interna vai para o PDF -->
-        <div id="pdf-conteudo">
+      <div class="modal-content" style="max-width: 520px;">
+        <!-- Área do PDF com largura e margens ajustadas para não cortar -->
+        <div id="pdf-conteudo" style="padding: 10px; background: #ffffff;">
           <div class="success-icon">
             <span class="material-symbols-outlined" style="font-size: 32px; font-weight: 700;">check</span>
           </div>
           <h3 style="text-align: center; font-size: 20px; font-weight: 800; color: #0f172a;">Coleta Agendada!</h3>
-          <p style="text-align: center; font-size: 12.5px; color: #64748b; margin-top: 2px; margin-bottom: 12px;">Seu protocolo de identificação[cite: 2]:</p>
+          <p style="text-align: center; font-size: 12.5px; color: #64748b; margin-top: 2px; margin-bottom: 12px;">Seu protocolo de identificação:</p>
           
           <div class="protocol-box">
             <div style="font-size: 11px; font-weight: 700; color: #16a34a; text-transform: uppercase;">Protocolo</div>
@@ -327,7 +325,7 @@
           </div>
         </div>
 
-        <!-- Botões separados com a classe no-print (não aparecem no PDF/impressão) -->
+        <!-- Botões de ação (ocultos no PDF e na impressão) -->
         <div class="no-print" style="margin-top: 16px;">
           <button onclick="window.print()" class="btn-secondary">
             <span class="material-symbols-outlined">print</span> Imprimir / Salvar
@@ -373,10 +371,10 @@
       const protocoloNum = document.getElementById('txt-protocolo').textContent;
       
       const opt = {
-        margin:       15,
+        margin:       [10, 10, 10, 10], // Margens seguras superior, esquerda, inferior, direita
         filename:     `Protocolo_RTEC_${protocoloNum}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        html2canvas:  { scale: 2, useCORS: true, logging: false, letterRendering: true },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
