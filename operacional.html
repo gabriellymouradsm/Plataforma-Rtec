@@ -29,7 +29,6 @@
       padding: 0;
     }
 
-    /* Barra Superior Fixa */
     header { 
       background: #15803d; 
       width: 100%;
@@ -49,19 +48,14 @@
     .logo-icon { width: 36px; height: 36px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; }
     .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
     
-    /* Menu Superior */
-    .top-menu {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .top-menu { display: flex; align-items: center; gap: 6px; }
 
     .menu-btn {
       background: rgba(255, 255, 255, 0.15);
       border: none;
       color: #ffffff;
-      padding: 8px 12px;
-      border-radius: 10px;
+      padding: 8px 14px;
+      border-radius: 12px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -69,26 +63,20 @@
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
 
-    .menu-btn:hover, .menu-btn.active {
-      background: #ffffff;
-      color: #15803d;
-    }
-
-    .menu-btn span.material-symbols-outlined {
-      font-size: 18px;
-    }
+    .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
+    .menu-btn span.material-symbols-outlined { font-size: 18px; }
 
     .hamburger-btn {
       display: none;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.2);
       border: none;
       color: #ffffff;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -97,25 +85,40 @@
     @media (max-width: 768px) {
       .top-menu {
         display: none;
-        position: absolute;
+        position: fixed;
         top: 70px;
         left: 0;
         width: 100%;
         background: #14532d;
         flex-direction: column;
-        padding: 16px;
-        gap: 10px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        padding: 20px;
+        gap: 8px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
+        animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .top-menu.open {
-        display: flex;
+      .top-menu.open { display: flex; }
+      .hamburger-btn { display: flex; }
+      .badge-geo { display: none; }
+
+      .menu-btn {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 14.5px;
+        justify-content: flex-start;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
       }
-      .hamburger-btn {
-        display: flex;
+      .menu-btn.active {
+        background: #ffffff;
+        color: #15803d;
       }
-      .badge-geo {
-        display: none;
-      }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
     
     main { 
@@ -127,13 +130,8 @@
       align-items: flex-start;
     }
 
-    .content-wrapper { 
-      width: 100%; 
-      max-width: 780px; 
-      margin: 0 auto;
-    }
+    .content-wrapper { width: 100%; max-width: 780px; margin: 0 auto; }
 
-    /* Cartão Verde Principal Estilizado conforme a referência */
     .dashboard-card {
       background: #16a34a;
       border-radius: 32px;
@@ -144,11 +142,8 @@
       width: 100%;
     }
 
-    @media (min-width: 640px) {
-      .dashboard-card { padding: 40px 36px; }
-    }
+    @media (min-width: 640px) { .dashboard-card { padding: 40px 36px; } }
 
-    /* Tabela Interna Branca */
     .materials-table-box {
       background: #ffffff;
       border-radius: 20px;
@@ -178,88 +173,30 @@
       border-bottom: 1px solid #f1f5f9;
       transition: background 0.2s;
     }
-
     .table-row:last-child { border-bottom: none; }
     .table-row:hover { background: #f8fafc; }
 
-    .material-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .material-info { display: flex; align-items: center; gap: 12px; }
+    .material-icon { width: 36px; height: 36px; background: #ecfdf5; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #16a34a; font-size: 20px; flex-shrink: 0; }
+    .material-name { font-size: 13.5px; font-weight: 700; color: #0f172a; }
 
-    .material-icon {
-      width: 36px;
-      height: 36px;
-      background: #ecfdf5;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #16a34a;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .material-name {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .quantity-info {
-      text-align: center;
-    }
-
-    .quantity-val {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: #0f172a;
-      display: block;
-    }
-
-    .quantity-unit {
-      font-size: 11px;
-      color: #64748b;
-      font-weight: 500;
-    }
+    .quantity-info { text-align: center; }
+    .quantity-val { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #0f172a; display: block; }
+    .quantity-unit { font-size: 11px; color: #64748b; font-weight: 500; }
 
     .status-badge {
-      background: #16a34a;
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 20px;
-      text-align: center;
-      display: inline-block;
-      letter-spacing: 0.3px;
-      box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+      background: #16a34a; color: white; font-size: 11px; font-weight: 700;
+      padding: 6px 12px; border-radius: 20px; text-align: center; display: inline-block;
+      letter-spacing: 0.3px; box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
     }
 
     .btn-agendar-coleta {
-      margin-top: 28px;
-      background: #14532d;
-      color: white;
-      border: none;
-      width: 100%;
-      height: 52px;
-      border-radius: 16px;
-      font-weight: 700;
-      font-size: 14.5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      transition: background 0.2s, transform 0.1s;
-      text-decoration: none;
+      margin-top: 28px; background: #14532d; color: white; border: none; width: 100%; height: 52px;
+      border-radius: 16px; font-weight: 700; font-size: 14.5px; display: flex; align-items: center;
+      justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      transition: background 0.2s, transform 0.1s; text-decoration: none;
     }
-
     .btn-agendar-coleta:hover { background: #0f3d22; }
-    .btn-agendar-coleta:active { transform: scale(0.98); }
   </style>
 </head>
 <body>
@@ -290,19 +227,15 @@
 
     <main>
       <div class="content-wrapper">
-        
-        <!-- Título do Painel -->
         <div style="margin-bottom: 20px;">
           <span style="font-size: 11.5px; font-weight: 700; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px;">Painel de Materiais</span>
           <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 2px;">Monitoramento de Resíduos para Coleta</h2>
         </div>
 
-        <!-- Cartão Verde Estilizado Exatamente como na Referência -->
         <div class="dashboard-card">
           <h1 style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px;">Resíduos para Coleta</h1>
           <p style="font-size: 13.5px; color: rgba(255,255,255,0.9);">Confira os materiais disponíveis para coleta</p>
 
-          <!-- Tabela Branca de Materiais -->
           <div class="materials-table-box">
             <div class="table-header">
               <div style="display: flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined" style="font-size: 16px;">recycling</span> TIPOS DE RESÍDUOS</div>
@@ -310,73 +243,47 @@
               <div style="text-align: right;"><span class="material-symbols-outlined" style="font-size: 14px;">info</span> STATUS</div>
             </div>
 
-            <!-- Item 1: Papelão -->
             <div class="table-row">
               <div class="material-info">
                 <div class="material-icon"><span class="material-symbols-outlined">drafts</span></div>
                 <div class="material-name">PAPELÃO</div>
               </div>
-              <div class="quantity-info">
-                <strong class="quantity-val">24</strong>
-                <span class="quantity-unit">unidades</span>
-              </div>
-              <div style="text-align: right;">
-                <span class="status-badge">A COLETAR</span>
-              </div>
+              <div class="quantity-info"><strong class="quantity-val">24</strong><span class="quantity-unit">unidades</span></div>
+              <div style="text-align: right;"><span class="status-badge">A COLETAR</span></div>
             </div>
 
-            <!-- Item 2: Computadores -->
             <div class="table-row">
               <div class="material-info">
                 <div class="material-icon"><span class="material-symbols-outlined">computer</span></div>
                 <div class="material-name">COMPUTADORES</div>
               </div>
-              <div class="quantity-info">
-                <strong class="quantity-val">12</strong>
-                <span class="quantity-unit">unidades</span>
-              </div>
-              <div style="text-align: right;">
-                <span class="status-badge">A COLETAR</span>
-              </div>
+              <div class="quantity-info"><strong class="quantity-val">12</strong><span class="quantity-unit">unidades</span></div>
+              <div style="text-align: right;"><span class="status-badge">A COLETAR</span></div>
             </div>
 
-            <!-- Item 3: Celulares -->
             <div class="table-row">
               <div class="material-info">
                 <div class="material-icon"><span class="material-symbols-outlined">smartphone</span></div>
                 <div class="material-name">CELULARES</div>
               </div>
-              <div class="quantity-info">
-                <strong class="quantity-val">17</strong>
-                <span class="quantity-unit">unidades</span>
-              </div>
-              <div style="text-align: right;">
-                <span class="status-badge">A COLETAR</span>
-              </div>
+              <div class="quantity-info"><strong class="quantity-val">17</strong><span class="quantity-unit">unidades</span></div>
+              <div style="text-align: right;"><span class="status-badge">A COLETAR</span></div>
             </div>
 
-            <!-- Item 4: Pilhas -->
             <div class="table-row">
               <div class="material-info">
                 <div class="material-icon"><span class="material-symbols-outlined">bolt</span></div>
                 <div class="material-name">PILHAS</div>
               </div>
-              <div class="quantity-info">
-                <strong class="quantity-val">9</strong>
-                <span class="quantity-unit">unidades</span>
-              </div>
-              <div style="text-align: right;">
-                <span class="status-badge">A COLETAR</span>
-              </div>
+              <div class="quantity-info"><strong class="quantity-val">9</strong><span class="quantity-unit">unidades</span></div>
+              <div style="text-align: right;"><span class="status-badge">A COLETAR</span></div>
             </div>
           </div>
 
-          <!-- Botão Agendar Coleta na parte inferior do cartão -->
           <a href="agendamento.html" class="btn-agendar-coleta">
             <span class="material-symbols-outlined">calendar_today</span> Agendar Coleta
           </a>
         </div>
-
       </div>
     </main>
   </div>
