@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <!-- Biblioteca html2pdf para gerar o PDF -->
+  <!-- Biblioteca html2pdf -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -31,7 +31,6 @@
       padding: 0;
     }
 
-    /* Barra Superior Fixa */
     header { 
       background: #15803d; 
       width: 100%;
@@ -51,12 +50,7 @@
     .logo-icon { width: 36px; height: 36px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; }
     .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
     
-    /* Menu Superior */
-    .top-menu {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .top-menu { display: flex; align-items: center; gap: 6px; }
 
     .menu-btn {
       background: rgba(255, 255, 255, 0.15);
@@ -74,14 +68,8 @@
       transition: background 0.2s;
     }
 
-    .menu-btn:hover, .menu-btn.active {
-      background: #ffffff;
-      color: #15803d;
-    }
-
-    .menu-btn span.material-symbols-outlined {
-      font-size: 18px;
-    }
+    .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
+    .menu-btn span.material-symbols-outlined { font-size: 18px; }
 
     .hamburger-btn {
       display: none;
@@ -109,15 +97,9 @@
         gap: 10px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
       }
-      .top-menu.open {
-        display: flex;
-      }
-      .hamburger-btn {
-        display: flex;
-      }
-      .badge-geo {
-        display: none;
-      }
+      .top-menu.open { display: flex; }
+      .hamburger-btn { display: flex; }
+      .badge-geo { display: none; }
     }
     
     main { 
@@ -130,11 +112,7 @@
       align-items: flex-start;
     }
 
-    .content-wrapper { 
-      width: 100%; 
-      max-width: 650px; 
-      margin: 0 auto;
-    }
+    .content-wrapper { width: 100%; max-width: 650px; margin: 0 auto; }
     
     .card-box { 
       background: #ffffff; 
@@ -145,9 +123,7 @@
       width: 100%;
     }
     
-    @media (min-width: 640px) {
-      .card-box { padding: 36px 32px; }
-    }
+    @media (min-width: 640px) { .card-box { padding: 36px 32px; } }
 
     .input-group { margin-bottom: 18px; }
     .input-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
@@ -155,63 +131,33 @@
     
     .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
     .input-wrapper input, .input-wrapper select { 
-      width: 100%; 
-      height: 52px; 
-      padding: 0 16px; 
-      border: 1px solid #cbd5e1; 
-      border-radius: 14px; 
-      font-size: 14px; 
-      color: #0f172a; 
-      outline: none; 
-      background: #ffffff; 
-      font-weight: 500; 
-      appearance: none; 
+      width: 100%; height: 52px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 14px; 
+      font-size: 14px; color: #0f172a; outline: none; background: #ffffff; font-weight: 500; appearance: none; 
     }
     .input-wrapper input:focus, .input-wrapper select:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12); }
     .input-wrapper .select-icon { position: absolute; right: 16px; pointer-events: none; color: #64748b; font-size: 20px; }
     
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    @media (min-width: 500px) {
-      .form-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-    }
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 500px) { .form-grid { grid-template-columns: 1fr 1fr; gap: 16px; } }
 
     .btn-primary { 
-      width: 100%; 
-      height: 52px; 
-      background: #16a34a; 
-      color: white; 
-      border: none; 
-      border-radius: 14px; 
-      font-weight: 700; 
-      font-size: 15px; 
-      cursor: pointer; 
-      transition: background 0.2s, transform 0.1s; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 8px; 
-      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); 
-      margin-top: 8px; 
+      width: 100%; height: 52px; background: #16a34a; color: white; border: none; border-radius: 14px; 
+      font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s, transform 0.1s; 
+      display: flex; align-items: center; justify-content: center; gap: 8px; 
+      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); margin-top: 8px; 
     }
     .btn-primary:hover { background: #15803d; }
-    .btn-primary:active { transform: scale(0.98); }
 
     /* Modal Protocolo */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 16px; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 16px; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .modal-content { background: #ffffff; width: 100%; max-width: 440px; border-radius: 28px; padding: 28px 22px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
     
-    @media (min-width: 480px) {
-      .modal-content { padding: 32px 28px; }
+    .modal-content { 
+      background: #ffffff; width: 100%; max-width: 480px; border-radius: 28px; 
+      padding: 32px 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); 
+      animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin: auto; 
     }
-
+    
     @keyframes scaleUp { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     
     .success-icon { width: 56px; height: 56px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; font-size: 30px; }
@@ -219,12 +165,13 @@
     .protocol-number { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; color: #16a34a; letter-spacing: 1px; margin-top: 2px; }
     
     .summary-table { width: 100%; font-size: 13px; margin-bottom: 16px; }
-    .summary-table tr td { padding: 7px 0; border-bottom: 1px solid #f1f5f9; }
+    .summary-table tr td { padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
     .summary-table tr td:first-child { color: #64748b; font-weight: 600; width: 32%; }
     .summary-table tr td:last-child { color: #1e293b; font-weight: 600; text-align: right; word-break: break-word; }
     
     .warning-box { background: #fefce8; border: 1px solid #fef08a; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: #854d0e; margin-bottom: 20px; line-height: 1.4; }
     
+    /* Botões dentro do Modal, um abaixo do outro */
     .btn-secondary { width: 100%; height: 48px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; transition: background 0.2s; }
     .btn-secondary:hover { background: #1d4ed8; }
 
@@ -330,7 +277,7 @@
       </div>
     </main>
 
-    <!-- Modal de Protocolo Gerado -->
+    <!-- Modal de Protocolo Gerado (Com os botões integrados dentro da caixa branca) -->
     <div class="modal-overlay" id="modal-protocolo">
       <div class="modal-content" id="pdf-conteudo">
         <div class="success-icon">
@@ -371,19 +318,19 @@
           <span class="material-symbols-outlined" style="font-size: 20px; flex-shrink: 0;">warning</span>
           <span>Anote ou tire foto deste protocolo para validação no ponto de descarte.</span>
         </div>
-      </div>
 
-      <!-- Botões de Ação fora do PDF gerado para manter a estética limpa -->
-      <div style="width: 100%; max-width: 440px; margin-top: 12px;">
-        <button onclick="window.print()" class="btn-secondary">
-          <span class="material-symbols-outlined">print</span> Imprimir / Salvar
-        </button>
-        <button onclick="baixarPDF()" class="btn-pdf">
-          <span class="material-symbols-outlined">picture_as_pdf</span> Baixar PDF
-        </button>
-        <button onclick="fecharModal()" class="btn-outline">
-          <span class="material-symbols-outlined">add</span> Novo Agendamento
-        </button>
+        <!-- Botões alinhados um abaixo do outro dentro do próprio modal -->
+        <div style="margin-top: 16px;">
+          <button onclick="window.print()" class="btn-secondary">
+            <span class="material-symbols-outlined">print</span> Imprimir / Salvar
+          </button>
+          <button onclick="baixarPDF()" class="btn-pdf">
+            <span class="material-symbols-outlined">picture_as_pdf</span> Baixar PDF
+          </button>
+          <button onclick="fecharModal()" class="btn-outline">
+            <span class="material-symbols-outlined">add</span> Novo Agendamento
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -416,14 +363,23 @@
     function baixarPDF() {
       const element = document.getElementById('pdf-conteudo');
       const protocoloNum = document.getElementById('txt-protocolo').textContent;
-      const options = {
-        margin:       10,
+      
+      // Opções para centralizar e formatar perfeitamente no PDF gerado sem os botões de ação
+      const opt = {
+        margin:       15,
         filename:     `Protocolo_RTEC_${protocoloNum}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
-      html2pdf().from(element).set(options).save();
+
+      // Oculta temporariamente os botões apenas para gerar o PDF limpo
+      const botoesAcao = element.querySelector('div:last-child');
+      botoesAcao.style.display = 'none';
+
+      html2pdf().from(element).set(opt).save().then(() => {
+        botoesAcao.style.display = 'block';
+      });
     }
 
     function fecharModal() {
