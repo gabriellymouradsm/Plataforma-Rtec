@@ -9,6 +9,37 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function(){ emailjs.init({ publicKey: "4g-zOx6kZsPzplL3F" }); })();
+  </script>
+    <style>
+    .success-message { display: none; animation: slideIn 0.5s ease-out; }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    /* Impressão: exibe apenas o modal de protocolo */
+    @media print {
+        body * { display: none !important; visibility: hidden !important; }
+        #modalProtocolo, #modalProtocolo * { display: block !important; visibility: visible !important; }
+        #modalProtocolo {
+            position: static !important; background: #fff !important;
+            box-shadow: none !important; margin: 0 auto !important;
+            padding: 0 !important; width: 100% !important; height: auto !important;
+        }
+        #modalProtocolo > div {
+            margin: 0 auto !important; width: 90mm !important; padding: 10mm !important;
+            background: #fff !important; box-shadow: none !important;
+            border: none !important; text-align: center;
+        }
+        #modalProtocolo button, #modalProtocolo svg,
+        #modalProtocolo .space-y-3, #modalProtocolo p.text-sm { display: none !important; }
+        #modalProtocolo h3, #modalProtocolo p, #modalProtocolo span { text-align: center !important; margin: 0 auto !important; }
+        @page { margin: 10mm; }
+    }
+</style>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     html, body { width: 100%; min-height: 100vh; background-color: #15803d; overflow-x: hidden; }
