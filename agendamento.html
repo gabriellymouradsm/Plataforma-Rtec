@@ -369,5 +369,119 @@
       chatBody.scrollTop = chatBody.scrollHeight;
     }
   </script>
+
+  <script src="assets/js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const agendamentoForm = document.getElementById('agendamentoForm');
+    if (!agendamentoForm) return;
+
+    /* ---------- Validação da data: mínimo = hoje; apenas Seg-Sex ---------- */
+    const dataInput = document.getElementById('data_agendada');
+    dataInput.min = new Date().toISOString().split('T')[0];
+
+    dataInput.addEventListener('input', (e) => {
+        const valor = e.target.value;
+        if (!valor) return;
+        const [ano, mes, dia] = valor.split('-').map(Number);
+        const diaDaSemana = new Date(ano, mes - 1, dia).getDay(); // 0=Dom, 6=Sáb
+        if (diaDaSemana === 0 || diaDaSemana === 6) {
+            alert('Agendamentos são permitidos apenas de segunda a sexta-feira.');
+            e.target.value = '';
+        }
+    });
+
+    /* ---------- Validação do horário: 09:00 às 17:00 ---------- */
+    const horaInput = document.getElementById('hora_agendada');
+    horaInput.addEventListener('blur', (e) => {
+        const valor = e.target.value;
+        if (!valor) return;
+        const [hora, minuto] = valor.split(':').map(Number);
+        if (hora < 9 || hora > 17 || (hora === 17 && minuto > 0)) {
+            alert('O horário de agendamento é das 09:00 às 17:00.');
+            e.target.value = '';
+        }
+    });
+
+    /* ---------- Envio: salva no PHP, dispara e-mail e abre o modal ---------- */
+    agendamentoForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const data = Object.fromEntries(new FormData(this).entries());
+        const residuoSelect = document.getElementById('id_tipo_residuo');
+        const residuoTexto = residuoSelect.options[residuoSelect.selectedIndex].text;
+
+        try {
+            const response = await fetch('processar_agendamento.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const responseData = await response.json();
+
+            if (!response.ok || responseData.status !== 'success') {
+                throw new Error(responseData.message || 'Erro desconhecido do servidor.');
+            }
+
+            const protocoloGerado = responseData.protocoloGerado;
+            console.log('✅ Dados salvos no banco:', responseData);
+
+            // E-mail de confirmação (não bloqueia o fluxo se falhar)
+            emailjs.send('Teste_Rtec', 'template_teste', {
+                email_usuario: responseData.email_usuario,
+                tipo_pessoa: responseData.tipo_pessoa,
+                tipo_residuo: residuoTexto,
+                data_entrega: responseData.data_agendada_formatada,
+                horario: responseData.hora_agendada,
+                protocolo: protocoloGerado
+            }).then(
+                (res) => console.log('✅ E-mail enviado!', res),
+                (err) => {
+                    console.error('❌ Erro ao enviar e-mail:', err);
+                    alert('Agendamento salvo, mas houve um erro ao enviar o e-mail de confirmação.');
+                }
+            );
+
+            // Preenche e exibe o modal de protocolo
+            document.getElementById('numeroProtocolo').innerText = protocoloGerado;
+            document.getElementById('protocoloEmail').innerText = responseData.email_usuario;
+            document.getElementById('protocoloNome').innerText = responseData.tipo_pessoa === 'Doador' ? 'Doador' : 'Coletor';
+            document.getElementById('protocoloData').innerText = responseData.data_agendada_formatada;
+            document.getElementById('protocoloHora').innerText = responseData.hora_agendada;
+            document.getElementById('protocoloResiduos').innerText = residuoTexto;
+
+            const modal = document.getElementById('modalProtocolo');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            this.reset();
+        } catch (error) {
+            console.error('❌ Erro ao salvar agendamento:', error);
+            if (error instanceof SyntaxError) {
+                alert('Não foi possível salvar seu agendamento. O servidor respondeu com um erro. Verifique o console (F12 > Network).');
+            } else {
+                alert('Não foi possível salvar seu agendamento: ' + error.message);
+            }
+        }
+    });
+});
+
+/* ---------- Funções do modal (usadas via onclick) ---------- */
+function imprimirProtocolo() { window.print(); }
+
+function fecharModalProtocolo() {
+    const modal = document.getElementById('modalProtocolo');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+}
+
+function novoAgendamento() {
+    fecharModalProtocolo();
+    document.getElementById('agendamentoForm')?.reset();
+}
+</script>
+
 </body>
 </html>
