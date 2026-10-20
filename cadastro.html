@@ -8,197 +8,34 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    
-    html, body {
-      width: 100%;
-      min-height: 100vh;
-      background-color: #ffffff;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .app-container { 
-      width: 100%; 
-      min-height: 100vh; 
-      background: #ffffff; 
-      display: flex; 
-      flex-direction: column; 
-      position: relative; 
-      margin: 0;
-      padding: 0;
-    }
-
-    header { 
-      background: #ffffff; 
-      width: 100%;
-      height: 70px;
-      padding: 0 24px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      position: fixed; 
-      top: 0; 
-      left: 0;
-      z-index: 1000; 
-      border-bottom: 1px solid #f1f5f9;
-    }
-    
+    html, body { width: 100%; min-height: 100vh; background-color: #ffffff; overflow-x: hidden; display: flex; flex-direction: column; }
+    .app-container { width: 100%; min-height: 100vh; background: #ffffff; display: flex; flex-direction: column; position: relative; }
+    header { background: #ffffff; width: 100%; height: 70px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; border-bottom: 1px solid #f1f5f9; }
     .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .logo-icon { width: 36px; height: 36px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #16a34a; font-size: 18px; }
     .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #16a34a; letter-spacing: -0.5px; }
-    
-    /* Alternador Desktop (Padrão para Tablet / Notebook) */
-    .auth-switcher {
-      display: flex;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 4px;
-      border-radius: 30px;
-      gap: 4px;
-    }
-
-    .switcher-btn {
-      background: transparent;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 24px;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #64748b;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .switcher-btn.active {
-      background: #16a34a;
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
-    }
-
-    /* Botão de Menu Hambúrguer (Oculto em telas grandes, visível apenas em Mobile) */
-    .hamburger-btn {
-      display: none;
-      background: #f0fdf4;
-      border: 1px solid #d1fae5;
-      color: #16a34a;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .hamburger-btn:hover { background: #dcfce7; }
-
-    /* Menu Mobile Dropdown (Visível apenas em Celulares ao clicar no menu) */
-    .mobile-dropdown-menu {
-      display: none;
-      position: fixed;
-      top: 70px;
-      left: 0;
-      width: 100%;
-      background: #ffffff;
-      flex-direction: column;
-      padding: 20px;
-      gap: 10px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-      border-bottom-left-radius: 24px;
-      border-bottom-right-radius: 24px;
-      border-top: 1px solid #f1f5f9;
-      z-index: 999;
-      animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .mobile-dropdown-menu.open { display: flex; }
-
-    .mobile-menu-item {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 14.5px;
-      font-weight: 700;
-      text-align: center;
-      border-radius: 14px;
-      text-decoration: none;
-      color: #64748b;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-    }
-    .mobile-menu-item.active {
-      background: #16a34a;
-      color: #ffffff;
-      border-color: #16a34a;
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-10px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Regra responsiva para Celular (Max-width 768px) */
-    @media (max-width: 768px) {
-      .auth-switcher {
-        display: none !important;
-      }
-      .hamburger-btn {
-        display: flex !important;
-      }
-    }
-    
-    main { 
-      flex: 1; 
-      background: #16a34a; 
-      width: 100%;
-      padding: 96px 16px 40px 16px;
-      display: flex; 
-      flex-direction: column;
-      justify-content: center; 
-      align-items: center;
-    }
-
-    .content-card { 
-      background: #ffffff; 
-      border-radius: 32px; 
-      padding: 36px 28px; 
-      box-shadow: 0 20px 45px rgba(0,0,0,0.15); 
-      width: 100%;
-      max-width: 440px;
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .user-avatar-icon {
-      width: 64px;
-      height: 64px;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #16a34a;
-      margin: 0 auto 16px auto;
-      font-size: 32px;
-    }
-
+    .auth-switcher { display: flex; background: #f8fafc; border: 1px solid #e2e8f0; padding: 4px; border-radius: 30px; gap: 4px; }
+    .switcher-btn { background: transparent; border: none; padding: 8px 20px; border-radius: 24px; font-size: 13.5px; font-weight: 700; color: #64748b; cursor: pointer; text-decoration: none; }
+    .switcher-btn.active { background: #16a34a; color: #ffffff; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3); }
+    main { flex: 1; background: #16a34a; width: 100%; padding: 96px 16px 40px 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .content-card { background: #ffffff; border-radius: 32px; padding: 36px 28px; box-shadow: 0 20px 45px rgba(0,0,0,0.15); width: 100%; max-width: 440px; text-align: center; margin-bottom: 24px; }
+    .user-avatar-icon { width: 64px; height: 64px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #16a34a; margin: 0 auto 16px auto; font-size: 32px; }
     .input-group { margin-bottom: 16px; text-align: left; }
     .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
-    .input-wrapper input { 
-      width: 100%; height: 52px; padding: 0 16px 0 46px; border: 1px solid #cbd5e1; border-radius: 14px; 
-      font-size: 14px; color: #0f172a; outline: none; background: #ffffff; font-weight: 500; 
-    }
-    .input-wrapper input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12); }
+    .input-wrapper input { width: 100%; height: 52px; padding: 0 16px 0 46px; border: 1px solid #cbd5e1; border-radius: 14px; font-size: 14px; color: #0f172a; outline: none; background: #ffffff; font-weight: 500; }
     .input-icon { position: absolute; left: 16px; color: #64748b; font-size: 20px; pointer-events: none; }
-
-    .btn-submit { 
-      width: 100%; height: 52px; background: #16a34a; color: white; border: none; border-radius: 14px; 
-      font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s, transform 0.1s; 
-      display: flex; align-items: center; justify-content: center; gap: 8px; 
-      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); margin-top: 8px; 
-    }
+    .btn-submit { width: 100%; height: 52px; background: #16a34a; color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); margin-top: 8px; }
     .btn-submit:hover { background: #15803d; }
   </style>
 </head>
@@ -209,55 +46,43 @@
         <div class="logo-icon"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span></div>
         <span class="logo-text">RTEC</span>
       </a>
-
-      <!-- Opções visíveis em Tablet / Notebook (Ocultas no telemóvel) -->
       <div class="auth-switcher">
         <a href="index.html" class="switcher-btn">Login</a>
         <a href="cadastro.html" class="switcher-btn active">Cadastro</a>
       </div>
-
-      <!-- Botão de três risquinhos visível APENAS em Celular -->
-      <button class="hamburger-btn" onclick="toggleMobileMenu()">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
-
-      <!-- Menu suspenso para telemóveis contendo as opções -->
-      <nav class="mobile-dropdown-menu" id="mobileMenu">
-        <a href="index.html" class="mobile-menu-item">Login</a>
-        <a href="cadastro.html" class="mobile-menu-item active">Cadastro</a>
-      </nav>
     </header>
 
     <main>
       <div class="content-card">
-        <div class="user-avatar-icon">
-          <span class="material-symbols-outlined" style="font-size: 32px;">person_add</span>
-        </div>
+        <div class="user-avatar-icon"><span class="material-symbols-outlined" style="font-size: 32px;">person_add</span></div>
         <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Crie sua Conta</h2>
         <p style="font-size: 13px; color: #64748b; margin-bottom: 24px;">Preencha os dados para começar</p>
 
-        <form onsubmit="fazerCadastro(event)">
+        <form onsubmit="fazerCadastroReal(event)">
           <div class="input-group">
             <div class="input-wrapper">
               <span class="material-symbols-outlined input-icon">badge</span>
-              <input type="text" placeholder="Nome completo ou Empresa" required>
+              <input type="text" id="cad-nome" placeholder="Nome" required>
             </div>
           </div>
-
+          <div class="input-group">
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined input-icon">badge</span>
+              <input type="text" id="cad-sobrenome" placeholder="Sobrenome" required>
+            </div>
+          </div>
           <div class="input-group">
             <div class="input-wrapper">
               <span class="material-symbols-outlined input-icon">mail</span>
-              <input type="email" placeholder="Seu E-mail" required>
+              <input type="email" id="cad-email" placeholder="Seu E-mail" required>
             </div>
           </div>
-
           <div class="input-group">
             <div class="input-wrapper">
               <span class="material-symbols-outlined input-icon">lock</span>
-              <input type="password" placeholder="Crie uma senha" required>
+              <input type="password" id="cad-senha" placeholder="Crie uma senha" required>
             </div>
           </div>
-
           <button type="submit" class="btn-submit">Cadastrar</button>
         </form>
 
@@ -265,23 +90,36 @@
           Já tem uma conta? <a href="index.html" style="color: #16a34a; font-weight: 700; text-decoration: none;">Faça login</a>
         </p>
       </div>
-
-      <div style="font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600; text-align: center;">
-        Franco da Rocha & Região Metropolitana · RTEC 2026
-      </div>
     </main>
   </div>
 
   <script>
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileMenu');
-      menu.classList.toggle('open');
-    }
-
-    function fazerCadastro(event) {
+    async function fazerCadastroReal(event) {
       event.preventDefault();
-      alert('Cadastro realizado com sucesso!');
-      window.location.href = 'index.html';
+      const nome = document.getElementById('cad-nome').value;
+      const sobrenome = document.getElementById('cad-sobrenome').value;
+      const email = document.getElementById('cad-email').value;
+      const senha = document.getElementById('cad-senha').value;
+
+      try {
+        const { error } = await _supabase.from('tbl_usuario').insert([
+          {
+            nome_usuario: nome,
+            sobrenome_usuario: sobrenome,
+            email_usuario: email,
+            senha_usuario: senha, 
+            tipo_usuario: 'funcionario'
+          }
+        ]);
+
+        if (error) throw error;
+
+        alert('Cadastro realizado com sucesso!');
+        window.location.href = 'index.html';
+      } catch (err) {
+        console.error("Erro no cadastro:", err);
+        alert("Erro ao cadastrar usuário: " + err.message);
+      }
     }
   </script>
 </body>
