@@ -10,6 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     html, body { width: 100%; min-height: 100vh; background-color: #15803d; overflow-x: hidden; }
@@ -17,7 +26,7 @@
     header { background: #15803d; width: 100%; height: 70px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .logo { background: #ffffff; border-radius: 50%; padding: 4px 8px; display: flex; align-items: center; justify-content: center; }
-    .logo img { height: 36px; width: 36px; display: block; }    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
+    .logo img { height: 36px; width: 36px; display: block; }    
     .top-menu { display: flex; align-items: center; gap: 6px; }
     .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 8px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; transition: all 0.2s; }
     .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
@@ -102,7 +111,6 @@
             </p>
           </div>
           <form id="agendamento-form" onsubmit="gerarProtocolo(event)">
-            <!-- NOVO CAMPO DE E-MAIL -->
             <div class="input-group">
               <label><span class="material-symbols-outlined">mail</span> E-mail de Contato</label>
               <div class="input-wrapper">
@@ -129,7 +137,6 @@
                   <option value="" disabled selected>Selecione o tipo de resíduo</option>
                   <option value="1">Eletrônicos (Computadores, Telas, PCBs)</option>
                   <option value="2">Reciclável</option>
-      
                 </select>
                 <span class="material-symbols-outlined select-icon">expand_more</span>
               </div>
@@ -183,70 +190,56 @@
     </div>
   </div>
 
-  <style>
-    .chat-fab { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: #10b981; color: white; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(0,0,0,0.25); cursor: pointer; z-index: 9999; transition: transform 0.2s, background 0.2s; }
-    .chat-fab:hover { background: #059669; transform: scale(1.05); }
-    .chat-fab span { font-size: 28px; }
-    .chat-modal { position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: calc(100vw - 32px); height: 500px; background: #ffffff; border-radius: 24px; box-shadow: 0 15px 50px rgba(0,0,0,0.25); display: none; flex-direction: column; z-index: 10000; overflow: hidden; border: 1px solid #e2e8f0; }
-    .chat-modal.active { display: flex; }
-    .chat-header { background: #15803d; color: white; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 15px; }
-    .chat-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
-    .chat-body { flex: 1; padding: 16px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 12px; }
-    .chat-bubble { max-width: 85%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.4; word-break: break-word; }
-    .chat-bubble.bot { background: #e2e8f0; color: #0f172a; align-self: flex-start; border-bottom-left-radius: 4px; }
-    .chat-bubble.user { background: #16a34a; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-    .chat-bubble.loading { background: #e2e8f0; color: #64748b; font-style: italic; }
-    .chat-footer { padding: 12px 16px; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
-    .chat-input { flex: 1; height: 42px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 13px; outline: none; background: #f8fafc; color: #0f172a; }
-    .chat-input:focus { border-color: #16a34a; background: #ffffff; }
-    .chat-send-btn { width: 42px; height: 42px; background: #16a34a; color: white; border: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
-    .chat-send-btn:hover { background: #15803d; }
-  </style>
-
-  <button class="chat-fab" onclick="toggleChat()" title="Abrir Assistente Virtual"><span class="material-symbols-outlined">chat</span></button>
-
-  <div class="chat-modal" id="chatModal">
-    <div class="chat-header">
-      <span>Assistente Virtual RTEC</span>
-      <button class="chat-close" onclick="toggleChat()">×</button>
-    </div>
-    <div class="chat-body" id="chatBody">
-      <div class="chat-bubble bot">Olá! Sou o assistente de inteligência artificial da RTEC. Como posso ajudar com seus resíduos, agendamentos ou dúvidas sobre reciclagem em Franco da Rocha?</div>
-    </div>
-    <div class="chat-footer">
-      <input type="text" class="chat-input" id="chatInput" placeholder="Digite sua pergunta..." onkeypress="handleChatKey(event)">
-      <button class="chat-send-btn" onclick="sendAiMessage()"><span class="material-symbols-outlined" style="font-size: 18px;">send</span></button>
-    </div>
-  </div>
-
   <script>
-    let chatMemory = [
-      { role: "user", parts: [{ text: "Você é um assistente virtual especialista da RTEC, uma plataforma de logística reversa e gestão de resíduos eletrônicos e recicláveis localizada em Franco da Rocha - SP (Rodovia Luiz Salomão Chama, 240). Responda sempre em português, de forma educada, prestativa e objetiva." }] },
-      { role: "model", parts: [{ text: "Entendido! Estou pronto para ajudar os usuários da RTEC." }] }
-    ];
-
     function toggleMenu() { 
       document.getElementById('topMenu').classList.toggle('open'); 
     }
 
-    function gerarProtocolo(event) {
+    async function gerarProtocolo(event) {
       event.preventDefault();
       const email = document.getElementById('user-email').value;
       const perfil = document.getElementById('user-perfil').value;
       const selectResiduo = document.getElementById('tipo-residuo');
-      const residuo = selectResiduo.options[selectResiduo.selectedIndex].text;
+      const idTipoResiduo = selectResiduo.value;
+      const residuoNome = selectResiduo.options[selectResiduo.selectedIndex].text;
       const data = document.getElementById('data_agendada').value;
       const horario = document.getElementById('hora_agendada').value; 
-      const randomProtocol = Math.floor(100000 + Math.random() * 900000);
+      const randomProtocol = Math.floor(100000 + Math.random() * 900000).toString();
       
-      document.getElementById('txt-protocolo').textContent = randomProtocol;
-      document.getElementById('res-perfil').textContent = perfil;
-      document.getElementById('res-email').textContent = email;
-      const [ano, mes, dia] = data.split('-');
-      document.getElementById('res-data').textContent = `${dia}/${mes}/${ano}`;
-      document.getElementById('res-horario').textContent = horario;
-      document.getElementById('res-residuo').textContent = residuo;
-      document.getElementById('modal-protocolo').classList.add('active');
+      const tipoPessoaEnum = perfil.toLowerCase() === 'doador' ? 'doador' : 'coletor';
+
+      try {
+        const { error } = await _supabase.from('tbl_agendamento').insert([
+          {
+            email_usuario_agendamento: email,
+            tipo_pessoa: tipoPessoaEnum,
+            id_tipo_residuo: parseInt(idTipoResiduo),
+            data_agendada: data,
+            hora_agendada: horario,
+            protocolo_agendamento: randomProtocol,
+            status: 'Agendado'
+          }
+        ]);
+
+        if (error) {
+          console.error("Erro ao salvar no Supabase:", error);
+          alert("Erro ao registrar agendamento no banco de dados: " + error.message);
+          return;
+        }
+
+        document.getElementById('txt-protocolo').textContent = randomProtocol;
+        document.getElementById('res-perfil').textContent = perfil;
+        document.getElementById('res-email').textContent = email;
+        const [ano, mes, dia] = data.split('-');
+        document.getElementById('res-data').textContent = `${dia}/${mes}/${ano}`;
+        document.getElementById('res-horario').textContent = horario;
+        document.getElementById('res-residuo').textContent = residuoNome;
+        document.getElementById('modal-protocolo').classList.add('active');
+
+      } catch (err) {
+        console.error("Erro de conexão:", err);
+        alert("Não foi possível conectar ao servidor para gravar o agendamento.");
+      }
     }
 
     function baixarPDF() {
@@ -261,86 +254,6 @@
       document.getElementById('agendamento-form').reset();
     }
 
-    function toggleChat() {
-      const modal = document.getElementById('chatModal');
-      if (modal) {
-        modal.classList.toggle('active');
-        if (modal.classList.contains('active')) {
-          document.getElementById('chatInput').focus();
-        }
-      }
-    }
-
-    function handleChatKey(e) {
-      if (e.key === 'Enter') {
-        sendAiMessage();
-      }
-    }
-
-    async function sendAiMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const chatBody = document.getElementById('chatBody');
-      const userBubble = document.createElement('div');
-      userBubble.className = 'chat-bubble user';
-      userBubble.textContent = text;
-      chatBody.appendChild(userBubble);
-      input.value = '';
-      chatBody.scrollTop = chatBody.scrollHeight;
-
-      const loadingBubble = document.createElement('div');
-      loadingBubble.className = 'chat-bubble bot loading';
-      loadingBubble.textContent = 'Pensando...';
-      chatBody.appendChild(loadingBubble);
-      chatBody.scrollTop = chatBody.scrollHeight;
-
-      chatMemory.push({ role: "user", parts: [{ text: text }] });
-
-      try {
-        const apiKey = "AQ.sua_chave_aqui"; 
-        
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: chatMemory }),
-          signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-        const data = await response.json();
-        
-        if (data.error) throw new Error(data.error.message);
-        if (!data.candidates || !data.candidates[0].content) throw new Error("Resposta inválida da API.");
-
-        const aiReply = data.candidates[0].content.parts[0].text;
-        chatBody.removeChild(loadingBubble);
-
-        const botBubble = document.createElement('div');
-        botBubble.className = 'chat-bubble bot';
-        botBubble.textContent = aiReply;
-        chatBody.appendChild(botBubble);
-
-        chatMemory.push({ role: "model", parts: [{ text: aiReply }] });
-      } catch (error) {
-        if (loadingBubble && loadingBubble.parentNode) {
-          chatBody.removeChild(loadingBubble);
-        }
-        const errorBubble = document.createElement('div');
-        errorBubble.className = 'chat-bubble bot';
-        errorBubble.textContent = error.name === 'AbortError' 
-          ? "Erro: O assistente demorou muito a responder." 
-          : "Erro: " + (error.message || "Não foi possível ligar ao assistente virtual.");
-        chatBody.appendChild(errorBubble);
-      }
-      chatBody.scrollTop = chatBody.scrollHeight;
-    }
-
-    /* ---------- Validação da data: mínimo = hoje; apenas Seg-Sex ---------- */
     const dataInput = document.getElementById('data_agendada');
     const hoje = new Date();
     dataInput.min = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
@@ -349,14 +262,13 @@
         const valor = e.target.value;
         if (!valor) return;
         const [ano, mes, dia] = valor.split('-').map(Number);
-        const diaDaSemana = new Date(ano, mes - 1, dia).getDay(); // 0=Dom, 6=Sáb
+        const diaDaSemana = new Date(ano, mes - 1, dia).getDay();
         if (diaDaSemana === 0 || diaDaSemana === 6) {
             alert('Agendamentos são permitidos apenas de segunda a sexta-feira.');
             e.target.value = '';
         }
     });
 
-    /* ---------- Validação do horário: 09:00 às 17:00 ---------- */
     const horaInput = document.getElementById('hora_agendada');
     horaInput.addEventListener('blur', (e) => {
         const valor = e.target.value;
@@ -367,7 +279,6 @@
             e.target.value = '';
         }
     });
-
   </script>
   <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
   <script>
