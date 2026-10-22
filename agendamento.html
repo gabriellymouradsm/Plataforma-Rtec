@@ -241,6 +241,18 @@
         document.getElementById('res-residuo').textContent = residuoNome;
         document.getElementById('modal-protocolo').classList.add('active');
 
+        // Envia o e-mail (se falhar, o agendamento continua valendo)
+        emailjs.send("service_2w3jjsh", "template_yori40g", {
+          protocolo: randomProtocol,
+          email_usuario: email,
+          perfil: perfil,
+          data: `${dia}/${mes}/${ano}`,
+          horario: horario,
+          residuo: residuoNome
+        })
+        .then(() => console.log("E-mail enviado!"))
+        .catch((erro) => console.error("Erro ao enviar e-mail:", erro));
+
       } catch (err) {
         console.error("Erro de conexão:", err);
         alert("Não foi possível conectar ao servidor para gravar o agendamento.");
