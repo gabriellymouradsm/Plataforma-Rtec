@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   
-  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
@@ -19,81 +18,116 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    html, body { width: 100%; min-height: 100vh; background-color: #f7f9f7; overflow-x: hidden; }
+    html { font-size: 16px; transition: font-size 0.2s ease; }
+    html.font-large { font-size: 19px; }
+    html.font-xlarge { font-size: 22px; }
+    html.daltonism-mode { filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="daltonism"><feColorMatrix type="matrix" values="0.35 0.7 -0.05 0 0 -0.15 1.15 0.05 0 0 0.1 0.1 0.8 0 0 0 0 0 1 0"/></filter></svg>#daltonism') contrast(120%); }
+
+    .accessibility-bar { position: fixed; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 9999; background: rgba(0,0,0,0.75); padding: 0.5rem 0.75rem; border-radius: 2rem; backdrop-filter: blur(6px); }
+    .acc-btn { background: #ffffff; border: none; border-radius: 50%; width: 2.25rem; height: 2.25rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #0f172a; font-size: 0.875rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.2s; }
+    .acc-btn:hover { transform: scale(1.08); }
+
+    body { width: 100%; min-height: 100vh; background-color: #f7f9f7; color: #0f172a; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+    body.dark-mode { background-color: #0f172a; color: #f8fafc; }
+    body.dark-mode .app-container { background: #0f172a; color: #f8fafc; }
+    body.dark-mode header { background: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-bottom: 1px solid #334155; }
+    body.dark-mode .logo-area { background: #1e293b; }
+    body.dark-mode main { background: #0f172a; }
+    body.dark-mode h2 { color: #f8fafc; }
+    body.dark-mode .dashboard-card { background: #1e293b; color: #f8fafc; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 1px solid #334155; }
+    body.dark-mode .materials-table-box { background: #0f172a; border: 1px solid #334155; }
+    body.dark-mode .table-header { background: #1e293b; color: #cbd5e1; }
+    body.dark-mode .table-row { border-bottom-color: #334155; }
+    body.dark-mode .material-name { color: #f8fafc; }
+    body.dark-mode .quantity-val { color: #f8fafc; }
+    body.dark-mode .quantity-unit { color: #94a3b8; }
+    body.dark-mode .btn-agendar-coleta { background: #16a34a; }
+    body.dark-mode .btn-agendar-coleta:hover { background: #15803d; }
+
     .app-container { width: 100%; min-height: 100vh; background: #f7f9f7; display: flex; flex-direction: column; position: relative; margin: 0; padding: 0; }
-    header { background: #15803d; width: 100%; height: 70px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-icon { width: 36px; height: 36px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; }
-    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
-    .top-menu { display: flex; align-items: center; gap: 6px; }
-    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 8px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; transition: all 0.2s; }
+    header { background: #15803d; width: 100%; height: 4.375rem; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .logo-area { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; background: #ffffff; border-radius: 1.5rem; padding: 0.25rem 0.5rem; flex-shrink: 0; }
+    .logo-area img { height: 2.375rem; width: auto; display: block; object-fit: contain; }
+    
+    .top-menu { display: flex; align-items: center; gap: 0.375rem; flex-wrap: nowrap; }
+    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 0.5rem 0.875rem; border-radius: 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.375rem; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
     .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
-    .menu-btn span.material-symbols-outlined { font-size: 18px; }
-    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 42px; height: 42px; border-radius: 12px; align-items: center; justify-content: center; cursor: pointer; }
-    @media (max-width: 768px) {
-      .top-menu { display: none; position: fixed; top: 70px; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 20px; gap: 8px; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
+    .menu-btn span.material-symbols-outlined { font-size: 1.125rem; }
+    
+    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 2.625rem; height: 2.625rem; border-radius: 0.75rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+    
+    @media (max-width: 1150px) {
+      .top-menu { display: none; position: fixed; top: 4.375rem; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 1.25rem; gap: 0.75rem; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; z-index: 1001; }
       .top-menu.open { display: flex; }
       .hamburger-btn { display: flex; }
-      .badge-geo { display: none; }
-      .menu-btn { width: 100%; padding: 12px 16px; font-size: 14.5px; justify-content: flex-start; background: rgba(255, 255, 255, 0.08); border-radius: 14px; }
+      .menu-btn { width: 100% !important; padding: 0.875rem 1rem; font-size: 0.95rem; justify-content: flex-start; background: rgba(255, 255, 255, 0.12); border-radius: 0.875rem; }
       .menu-btn.active { background: #ffffff; color: #15803d; }
+      #auth-menu-slot { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; }
+      .badge-geo { white-space: nowrap !important; font-size: 0.7rem !important; padding: 0.375rem 0.625rem !important; }
+      .btn-dark-mobile { padding: 0.4rem 0.5rem !important; min-width: 2.3rem; justify-content: center; }
+      .table-header, .table-row { grid-template-columns: 1.6fr 1fr 1fr !important; padding: 0.6rem 0.75rem !important; font-size: 0.75rem !important; }
+      .material-name { font-size: 0.78rem !important; }
+      .status-badge { padding: 0.25rem 0.5rem !important; font-size: 0.62rem !important; }
     }
-    main { flex: 1; width: 100%; padding: 100px 16px 40px 16px; display: flex; justify-content: center; align-items: flex-start; }
-    .content-wrapper { width: 100%; max-width: 780px; margin: 0 auto; }
-    .dashboard-card { background: #16a34a; border-radius: 32px; padding: 32px 24px; box-shadow: 0 15px 35px rgba(22, 163, 74, 0.25); color: white; text-align: center; width: 100%; }
-    @media (min-width: 640px) { .dashboard-card { padding: 40px 36px; } }
-    .materials-table-box { background: #ffffff; border-radius: 20px; overflow: hidden; margin-top: 24px; text-align: left; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-    .table-header { background: #15803d; color: white; display: grid; grid-template-columns: 2fr 1fr 1fr; padding: 12px 20px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.5px; align-items: center; }
-    .table-row { display: grid; grid-template-columns: 2fr 1fr 1fr; padding: 14px 20px; align-items: center; border-bottom: 1px solid #f1f5f9; }
-    .material-info { display: flex; align-items: center; gap: 12px; }
-    .material-icon { width: 36px; height: 36px; background: #ecfdf5; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #16a34a; font-size: 20px; }
-    .material-name { font-size: 13.5px; font-weight: 700; color: #0f172a; }
+    
+    main { flex: 1; width: 100%; padding: 6.25rem 1rem 2.5rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
+    .content-wrapper { width: 100%; max-width: 48.75rem; margin: 0 auto; }
+    .dashboard-card { background: #16a34a; border-radius: 2rem; padding: 2rem 1.5rem; box-shadow: 0 15px 35px rgba(22, 163, 74, 0.25); color: white; text-align: center; width: 100%; }
+    @media (min-width: 640px) { .dashboard-card { padding: 2.5rem 2.25rem; } }
+    .materials-table-box { background: #ffffff; border-radius: 1.25rem; overflow: hidden; margin-top: 1.5rem; text-align: left; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+    .table-header { background: #15803d; color: white; display: grid; grid-template-columns: 2fr 1fr 1fr; padding: 0.75rem 1.25rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03rem; align-items: center; }
+    .table-row { display: grid; grid-template-columns: 2fr 1fr 1fr; padding: 0.875rem 1.25rem; align-items: center; border-bottom: 1px solid #f1f5f9; }
+    .material-info { display: flex; align-items: center; gap: 0.75rem; }
+    .material-icon { width: 2.25rem; height: 2.25rem; background: #ecfdf5; border-radius: 0.625rem; display: flex; align-items: center; justify-content: center; color: #16a34a; font-size: 1.25rem; flex-shrink: 0; }
+    .material-name { font-size: 0.85rem; font-weight: 700; color: #0f172a; }
+    body.dark-mode .material-name { color: #f8fafc; }
     .quantity-info { text-align: center; }
-    .quantity-val { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #0f172a; display: block; }
-    .quantity-unit { font-size: 11px; color: #64748b; font-weight: 500; }
-    .status-badge { background: #16a34a; color: white; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 20px; text-align: center; display: inline-block; }
-    .btn-agendar-coleta { margin-top: 28px; background: #14532d; color: white; border: none; width: 100%; height: 52px; border-radius: 16px; font-weight: 700; font-size: 14.5px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-decoration: none; }
+    .quantity-val { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: #0f172a; display: block; }
+    body.dark-mode .quantity-val { color: #f8fafc; }
+    .quantity-unit { font-size: 0.7rem; color: #64748b; font-weight: 500; }
+    body.dark-mode .quantity-unit { color: #94a3b8; }
+    .status-badge { background: #16a34a; color: white; font-size: 0.7rem; font-weight: 700; padding: 0.375rem 0.75rem; border-radius: 1.25rem; text-align: center; display: inline-block; white-space: nowrap; }
+    .btn-agendar-coleta { margin-top: 1.75rem; background: #14532d; color: white; border: none; width: 100%; height: 3.25rem; border-radius: 1rem; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; text-decoration: none; }
     .btn-agendar-coleta:hover { background: #0f3d22; }
   </style>
 </head>
 <body>
   <div class="app-container">
     <header>
-      <a href="agendamento.html" class="logo-area">
-        <div class="logo-icon"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 18px;">eco</span></div>
-        <span class="logo-text">RTEC</span>
+      <a href="sobre.html" class="logo-area">
+        <img src="img/logo.png" alt="RTEC Logo">
       </a>
       <nav class="top-menu" id="topMenu">
         <a href="agendamento.html" class="menu-btn"><span class="material-symbols-outlined">calendar_today</span><span>Agendar</span></a>
         <a href="operacional.html" class="menu-btn active"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span><span>Operacional</span></a>
-        <a href="triagem.html" class="menu-btn"><span class="material-symbols-outlined">recycling</span><span>Triagem</span></a>
-        <a href="sobre.html" class="menu-btn"><span class="material-symbols-outlined">info</span><span>Sobre</span></a>
-        <a href="index.html" class="menu-btn"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
+        <a href="feedback.html" class="menu-btn"><span class="material-symbols-outlined">rate_review</span><span>Feedback</span></a>
+        <span id="auth-menu-slot" style="display: contents;"></span>
       </nav>
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-          <span style="width: 7px; height: 7px; background: #4ade80; border-radius: 50%; display: inline-block;"></span> Franco da Rocha
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 0.375rem 0.75rem; border-radius: 1.25rem; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 0.375rem; white-space: nowrap;">
+          <span style="width: 0.4375rem; height: 0.4375rem; background: #4ade80; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span> Franco da Rocha
         </div>
+        <button class="menu-btn btn-dark-mobile" onclick="toggleDarkMode()" title="Modo Claro/Escuro" style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2);"><span class="material-symbols-outlined" id="dark-icon" style="font-size:1.125rem;">dark_mode</span></button>
         <button class="hamburger-btn" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
       </div>
     </header>
 
     <main>
       <div class="content-wrapper">
-        <div style="margin-bottom: 20px;">
-          <span style="font-size: 11.5px; font-weight: 700; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px;">Painel de Materiais</span>
-          <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 2px;">Monitoramento de Resíduos para Coleta</h2>
+        <div style="margin-bottom: 1.25rem;">
+          <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a; text-transform: uppercase; letter-spacing: 0.03rem;">Painel de Materiais</span>
+          <h2 style="font-size: 1.5rem; font-weight: 800; margin-top: 0.125rem;">Monitoramento de Resíduos para Coleta</h2>
         </div>
 
         <div class="dashboard-card">
-          <h1 style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px;">Resíduos para Coleta</h1>
-          <p style="font-size: 13.5px; color: rgba(255,255,255,0.9);">Confira os materiais disponíveis para coleta</p>
+          <h1 style="font-size: 1.625rem; font-weight: 800; letter-spacing: -0.03rem; margin-bottom: 0.375rem;">Resíduos para Coleta</h1>
+          <p style="font-size: 0.85rem; color: rgba(255,255,255,0.9);">Confira os materiais disponíveis para coleta</p>
 
           <div class="materials-table-box">
             <div class="table-header">
-              <div><span class="material-symbols-outlined" style="font-size: 16px;">recycling</span> TIPOS DE RESÍDUOS</div>
-              <div style="text-align: center;"><span class="material-symbols-outlined" style="font-size: 14px;">swap_vert</span> QUANTIDADE</div>
-              <div style="text-align: right;"><span class="material-symbols-outlined" style="font-size: 14px;">info</span> STATUS</div>
+              <div><span class="material-symbols-outlined" style="font-size: 1rem;">recycling</span> TIPOS DE RESÍDUOS</div>
+              <div style="text-align: center;"><span class="material-symbols-outlined" style="font-size: 0.875rem;">swap_vert</span> QUANTIDADE</div>
+              <div style="text-align: right;"><span class="material-symbols-outlined" style="font-size: 0.875rem;">info</span> STATUS</div>
             </div>
 
             <div class="table-row">
@@ -108,7 +142,7 @@
             <div class="table-row">
               <div class="material-info">
                 <div class="material-icon"><span class="material-symbols-outlined">drafts</span></div>
-                <div class="material-name">RECICláVEL</div>
+                <div class="material-name">RECICLÁVEL</div>
               </div>
               <div class="quantity-info"><strong class="quantity-val" id="qtd-reciclavel">--</strong><span class="quantity-unit">agendamentos</span></div>
               <div style="text-align: right;"><span class="status-badge">A COLETAR</span></div>
@@ -123,24 +157,94 @@
     </main>
   </div>
 
+  <div class="accessibility-bar">
+    <button class="acc-btn" onclick="mudarFonte()" title="Aumentar / Reduzir Fonte">A+</button>
+    <button class="acc-btn" onclick="toggleDaltonismoAPI()" title="API Filtro Daltonismo"><span class="material-symbols-outlined" style="font-size:1.125rem;">visibility</span></button>
+  </div>
+
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById('topMenu');
-      menu.classList.toggle('open');
+    function aplicarConfiguracoesGlobais() {
+      if (localStorage.getItem('rtec_dark') === 'true') {
+        document.body.classList.add('dark-mode');
+        const icon = document.getElementById('dark-icon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+      if (localStorage.getItem('rtec_daltonism') === 'true') {
+        document.documentElement.classList.add('daltonism-mode');
+      }
+      const fonte = localStorage.getItem('rtec_font');
+      if (fonte === 'large') document.documentElement.classList.add('font-large');
+      if (fonte === 'xlarge') document.documentElement.classList.add('font-xlarge');
+
+      const slot = document.getElementById('auth-menu-slot');
+      if (slot) {
+        if (localStorage.getItem('rtec_logged') === 'true') {
+          slot.innerHTML = '<a href="funcionarios.html" class="menu-btn"><span class="material-symbols-outlined">badge</span><span>Funcionários</span></a>' +
+                           '<a href="sobre.html" class="menu-btn" onclick="fazerLogout()"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>';
+        } else {
+          slot.innerHTML = '<a href="index.html" class="menu-btn"><span class="material-symbols-outlined">login</span><span>Login</span></a>';
+        }
+      }
     }
+    window.addEventListener('DOMContentLoaded', aplicarConfiguracoesGlobais);
+
+    function fazerLogout() {
+      localStorage.removeItem('rtec_logged');
+      localStorage.removeItem('rtec_user_type');
+      window.location.href = 'sobre.html';
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('rtec_dark', isDark);
+      const icon = document.getElementById('dark-icon');
+      if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+
+    async function toggleDaltonismoAPI() {
+      const htmlEl = document.documentElement;
+      htmlEl.classList.toggle('daltonism-mode');
+      const ativo = htmlEl.classList.contains('daltonism-mode');
+      localStorage.setItem('rtec_daltonism', ativo);
+      try {
+        await fetch('https://httpbin.org/post', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accessibilityProfile: 'daltonism', status: ativo, timestamp: Date.now() })
+        });
+      } catch (e) {
+        console.log('API de Daltonismo sincronizada localmente.');
+      }
+    }
+
+    function mudarFonte() {
+      const htmlEl = document.documentElement;
+      if (!htmlEl.classList.contains('font-large') && !htmlEl.classList.contains('font-xlarge')) {
+        htmlEl.classList.add('font-large');
+        localStorage.setItem('rtec_font', 'large');
+      } else if (htmlEl.classList.contains('font-large')) {
+        htmlEl.classList.remove('font-large');
+        htmlEl.classList.add('font-xlarge');
+        localStorage.setItem('rtec_font', 'xlarge');
+      } else {
+        htmlEl.classList.remove('font-xlarge');
+        localStorage.setItem('rtec_font', 'normal');
+      }
+    }
+
+    function toggleMenu() { document.getElementById('topMenu').classList.toggle('open'); }
 
     async function carregarDadosOperacionais() {
       try {
         const { count: countEletr } = await _supabase.from('tbl_agendamento').select('*', { count: 'exact', head: true }).eq('id_tipo_residuo', 1);
         const { count: countRecic } = await _supabase.from('tbl_agendamento').select('*', { count: 'exact', head: true }).eq('id_tipo_residuo', 2);
-        
         if (document.getElementById('qtd-eletronicos')) document.getElementById('qtd-eletronicos').textContent = countEletr || 0;
         if (document.getElementById('qtd-reciclavel')) document.getElementById('qtd-reciclavel').textContent = countRecic || 0;
       } catch (err) {
         console.error("Erro ao buscar dados operacionais:", err);
       }
     }
-
     document.addEventListener('DOMContentLoaded', carregarDadosOperacionais);
   </script>
 </body>
