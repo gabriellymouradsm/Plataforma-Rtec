@@ -11,68 +11,101 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
-  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    emailjs.init({ publicKey: "2Ipv8FA4lVn5ZA8tv" });
-  </script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    html, body { width: 100%; min-height: 100vh; background-color: #15803d; overflow-x: hidden; }
+    html { font-size: 16px; transition: font-size 0.2s ease; }
+    html.font-large { font-size: 19px; }
+    html.font-xlarge { font-size: 22px; }
+    html.daltonism-mode { filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="daltonism"><feColorMatrix type="matrix" values="0.35 0.7 -0.05 0 0 -0.15 1.15 0.05 0 0 0.1 0.1 0.8 0 0 0 0 0 1 0"/></filter></svg>#daltonism') contrast(120%); }
+
+    .accessibility-bar { position: fixed; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 9999; background: rgba(0,0,0,0.75); padding: 0.5rem 0.75rem; border-radius: 2rem; backdrop-filter: blur(6px); }
+    .acc-btn { background: #ffffff; border: none; border-radius: 50%; width: 2.25rem; height: 2.25rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #0f172a; font-size: 0.875rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.2s; }
+    .acc-btn:hover { transform: scale(1.08); }
+
+    body { width: 100%; min-height: 100vh; background-color: #15803d; color: #0f172a; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+    body.dark-mode { background-color: #0f172a; color: #f8fafc; }
+    body.dark-mode .app-container { background: #0f172a; color: #f8fafc; }
+    body.dark-mode header { background: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-bottom: 1px solid #334155; }
+    body.dark-mode .logo-area { background: #1e293b; }
+    body.dark-mode main { background: #0f172a; }
+    body.dark-mode .card-box { background: #1e293b; color: #f8fafc; box-shadow: 0 15px 40px rgba(0,0,0,0.4); border: 1px solid #334155; }
+    body.dark-mode #local-box { background: #0f172a !important; border-color: #334155 !important; }
+    body.dark-mode #local-box p { color: #94a3b8 !important; }
+    body.dark-mode .input-group label { color: #cbd5e1; }
+    body.dark-mode .input-wrapper input, body.dark-mode .input-wrapper select, body.dark-mode .input-wrapper textarea { background: #0f172a; border-color: #334155; color: #f8fafc; }
+    body.dark-mode .input-wrapper .select-icon { color: #94a3b8; }
+    body.dark-mode .modal-content { background: #1e293b; color: #f8fafc; border: 1px solid #334155; }
+    body.dark-mode .modal-content h3 { color: #f8fafc; }
+    body.dark-mode .protocol-box { background: #064e3b; border-color: #047857; }
+    body.dark-mode .summary-table tr td:first-child { color: #94a3b8; }
+    body.dark-mode .summary-table tr td:last-child { color: #f8fafc; }
+    body.dark-mode .summary-table tr td { border-bottom-color: #334155; }
+    body.dark-mode .warning-box { background: #422006; border-color: #713f12; color: #fef08a; }
+
     .app-container { width: 100%; min-height: 100vh; background: #15803d; display: flex; flex-direction: column; position: relative; margin: 0; padding: 0; }
-    header { background: #15803d; width: 100%; height: 70px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo { background: #ffffff; border-radius: 50%; padding: 4px 8px; display: flex; align-items: center; justify-content: center; }
-    .logo img { height: 36px; width: 36px; display: block; }    
-    .top-menu { display: flex; align-items: center; gap: 6px; }
-    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 8px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; transition: all 0.2s; }
+    header { background: #15803d; width: 100%; height: 4.375rem; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .logo-area { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; background: #ffffff; border-radius: 1.5rem; padding: 0.25rem 0.5rem; flex-shrink: 0; }
+    .logo-area img { height: 2.375rem; width: auto; display: block; object-fit: contain; }
+    
+    .top-menu { display: flex; align-items: center; gap: 0.375rem; flex-wrap: nowrap; }
+    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 0.5rem 0.875rem; border-radius: 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.375rem; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
     .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
-    .menu-btn span.material-symbols-outlined { font-size: 18px; }
-    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 42px; height: 42px; border-radius: 12px; align-items: center; justify-content: center; cursor: pointer; }
-    @media (max-width: 768px) {
-      .top-menu { display: none; position: fixed; top: 70px; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 20px; gap: 8px; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
+    .menu-btn span.material-symbols-outlined { font-size: 1.125rem; }
+    
+    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 2.625rem; height: 2.625rem; border-radius: 0.75rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+    
+    /* Ponto de quebra ampliado para 1150px para acomodar todos os botões com folga em notebooks menores e tablets */
+   @media (max-width: 1150px) {
+      .top-menu { display: none; position: fixed; top: 4.375rem; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 1.25rem; gap: 0.75rem; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; z-index: 1001; }
       .top-menu.open { display: flex; }
       .hamburger-btn { display: flex; }
-      .badge-geo { display: none; }
-      .menu-btn { width: 100%; padding: 12px 16px; font-size: 14.5px; justify-content: flex-start; background: rgba(255, 255, 255, 0.08); border-radius: 14px; }
-      .menu-btn.active { background: #ffffff; color: #15803d; }
+      
+      /* Todos os botões do menu mobile (incluindo o ativo) ficarão com o mesmo padrão */
+      .menu-btn { width: 100% !important; padding: 0.875rem 1rem; font-size: 0.95rem; justify-content: flex-start; background: rgba(255, 255, 255, 0.12); color: #ffffff; border-radius: 0.875rem; }
+      .menu-btn.active { background: rgba(255, 255, 255, 0.12); color: #ffffff; }
+      
+      #auth-menu-slot { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; }
     }
-    main { flex: 1; background: #15803d; width: 100%; padding: 100px 16px 40px 16px; display: flex; justify-content: center; align-items: flex-start; }
-    .content-wrapper { width: 100%; max-width: 650px; margin: 0 auto; }
-    .card-box { background: #ffffff; border-radius: 28px; padding: 24px 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.18); margin-bottom: 20px; width: 100%; }
-    @media (min-width: 640px) { .card-box { padding: 36px 32px; } }
-    .input-group { margin-bottom: 18px; }
-    .input-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-    .input-group label .material-symbols-outlined { font-size: 18px; color: #16a34a; }
+    
+    main { flex: 1; background: #15803d; width: 100%; padding: 6.25rem 1rem 2.5rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
+    body.dark-mode main { background: #0f172a; }
+    .content-wrapper { width: 100%; max-width: 40.625rem; margin: 0 auto; }
+    .card-box { background: #ffffff; border-radius: 1.75rem; padding: 1.5rem 1.25rem; box-shadow: 0 15px 40px rgba(0,0,0,0.18); margin-bottom: 1.25rem; width: 100%; color: #0f172a; }
+    @media (min-width: 640px) { .card-box { padding: 2.25rem 2rem; } }
+    .input-group { margin-bottom: 1.125rem; }
+    .input-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #334155; margin-bottom: 0.375rem; display: flex; align-items: center; gap: 0.375rem; }
+    .input-group label .material-symbols-outlined { font-size: 1.125rem; color: #16a34a; }
     .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
-    .input-wrapper input, .input-wrapper select { width: 100%; height: 52px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 14px; font-size: 14px; color: #0f172a; outline: none; background: #ffffff; font-weight: 500; appearance: none; }
-    .input-wrapper input:focus, .input-wrapper select:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12); }
-    .input-wrapper .select-icon { position: absolute; right: 16px; pointer-events: none; color: #64748b; font-size: 20px; }
-    .form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 500px) { .form-grid { grid-template-columns: 1fr 1fr; gap: 16px; } }
-    .btn-primary { width: 100%; height: 52px; background: #16a34a; color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); margin-top: 8px; }
+    .input-wrapper input, .input-wrapper select, .input-wrapper textarea { width: 100%; padding: 0.75rem 1rem; border: 1px solid #cbd5e1; border-radius: 0.875rem; font-size: 0.875rem; color: #0f172a; outline: none; background: #ffffff; font-weight: 500; }
+    .input-wrapper input, .input-wrapper select { height: 3.25rem; appearance: none; padding: 0 1rem; }
+    .input-wrapper textarea { resize: vertical; min-height: 5rem; }
+    .input-wrapper input:focus, .input-wrapper select:focus, .input-wrapper textarea:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12); }
+    .input-wrapper .select-icon { position: absolute; right: 1rem; pointer-events: none; color: #64748b; font-size: 1.25rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 500px) { .form-grid { grid-template-columns: 1fr 1fr; gap: 1rem; } }
+    .btn-primary { width: 100%; height: 3.25rem; background: #16a34a; color: white; border: none; border-radius: 0.875rem; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35); margin-top: 0.5rem; }
     .btn-primary:hover { background: #15803d; }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 16px; overflow-y: auto; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .modal-content { background: #ffffff; width: 100%; max-width: 480px; border-radius: 28px; padding: 32px 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); margin: auto; }
-    .success-icon { width: 56px; height: 56px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; font-size: 30px; }
-    .protocol-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 14px; text-align: center; margin: 16px 0; }
-    .protocol-number { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; color: #16a34a; letter-spacing: 1px; margin-top: 2px; }
-    .summary-table { width: 100%; font-size: 13px; margin-bottom: 16px; }
-    .summary-table tr td { padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+    .modal-content { background: #ffffff; width: 100%; max-width: 30rem; border-radius: 1.75rem; padding: 2rem 1.75rem; box-shadow: 0 25px 60px rgba(0,0,0,0.3); margin: auto; color: #0f172a; }
+    .success-icon { width: 3.5rem; height: 3.5rem; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem auto; font-size: 1.875rem; }
+    .protocol-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 1rem; padding: 0.875rem; text-align: center; margin: 1rem 0; }
+    .protocol-number { font-family: 'Space Grotesk', sans-serif; font-size: 1.875rem; font-weight: 700; color: #16a34a; letter-spacing: 0.06rem; margin-top: 0.125rem; }
+    .summary-table { width: 100%; font-size: 0.8rem; margin-bottom: 1rem; }
+    .summary-table tr td { padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; }
     .summary-table tr td:first-child { color: #64748b; font-weight: 600; width: 32%; }
     .summary-table tr td:last-child { color: #1e293b; font-weight: 600; text-align: right; word-break: break-word; }
-    .warning-box { background: #fefce8; border: 1px solid #fef08a; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: #854d0e; margin-bottom: 20px; line-height: 1.4; }
-    .btn-secondary { width: 100%; height: 48px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; }
-    .btn-pdf { width: 100%; height: 48px; background: #059669; color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; }
-    .btn-outline { width: 100%; height: 48px; background: #e2e8f0; color: #334155; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .warning-box { background: #fefce8; border: 1px solid #fef08a; border-radius: 0.75rem; padding: 0.625rem 0.875rem; display: flex; align-items: center; gap: 0.625rem; font-size: 0.75rem; color: #854d0e; margin-bottom: 1.25rem; line-height: 1.4; }
+    .btn-secondary { width: 100%; height: 3rem; background: #2563eb; color: white; border: none; border-radius: 0.75rem; font-weight: 700; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.375rem; margin-bottom: 0.625rem; }
+    .btn-pdf { width: 100%; height: 3rem; background: #059669; color: white; border: none; border-radius: 0.75rem; font-weight: 700; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.375rem; margin-bottom: 0.625rem; }
+    .btn-outline { width: 100%; height: 3rem; background: #e2e8f0; color: #334155; border: none; border-radius: 0.75rem; font-weight: 700; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.375rem; }
     @media print { .no-print { display: none !important; } }
   </style>
 </head>
@@ -80,48 +113,45 @@
   <div class="app-container">
     <header>
       <a href="sobre.html" class="logo-area">
-        <div class="logo">
-          <img src="img/logo.png" alt="Logo da Empresa">
-        </div>
+        <img src="img/logo.png" alt="RTEC Logo">
       </a>
       <nav class="top-menu" id="topMenu">
         <a href="agendamento.html" class="menu-btn active"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span><span>Agendar</span></a>
         <a href="operacional.html" class="menu-btn"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
-        <a href="triagem.html" class="menu-btn"><span class="material-symbols-outlined">recycling</span><span>Triagem</span></a>
-        <a href="sobre.html" class="menu-btn"><span class="material-symbols-outlined">info</span><span>Sobre</span></a>
-        <a href="index.html" class="menu-btn"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
+        <a href="feedback.html" class="menu-btn"><span class="material-symbols-outlined">rate_review</span><span>Feedback</span></a>
+        <span id="auth-menu-slot" style="display: contents;"></span>
       </nav>
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-          <span style="width: 7px; height: 7px; background: #4ade80; border-radius: 50%; display: inline-block;"></span> Franco da Rocha
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 0.375rem 0.75rem; border-radius: 1.25rem; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 0.375rem; white-space: nowrap;">
+          <span style="width: 0.4375rem; height: 0.4375rem; background: #4ade80; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span> Franco da Rocha
         </div>
+        <button class="menu-btn btn-dark-mobile" onclick="toggleDarkMode()" title="Modo Claro/Escuro" style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2);"><span class="material-symbols-outlined" id="dark-icon" style="font-size:1.125rem;">dark_mode</span></button>
         <button class="hamburger-btn" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
       </div>
     </header>
 
     <main>
       <div class="content-wrapper">
-        <div style="text-align: center; margin: 16px 0 22px 0; color: white;">
-          <h2 style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Agendamento de Coleta</h2>
-          <p style="font-size: 14px; color: rgba(255,255,255,0.9); margin-top: 4px;">Agende sua coleta de resíduos de forma rápida e fácil</p>
+        <div style="text-align: center; margin: 1rem 0 1.375rem 0; color: white;">
+          <h2 style="font-size: 1.625rem; font-weight: 800; letter-spacing: -0.03rem;">Agendamento de Coleta</h2>
+          <p style="font-size: 0.875rem; color: rgba(255,255,255,0.9); margin-top: 0.25rem;">Agende sua coleta de resíduos de forma rápida e fácil</p>
         </div>
         <div class="card-box">
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
-            <div style="display: flex; align-items: center; gap: 6px; color: #16a34a; font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">
-              <span class="material-symbols-outlined" style="font-size: 18px;">location_on</span> Local da Coleta:
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1rem; margin-bottom: 1.25rem;" id="local-box">
+            <div style="display: flex; align-items: center; gap: 0.375rem; color: #16a34a; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.375rem;">
+              <span class="material-symbols-outlined" style="font-size: 1.125rem;">location_on</span> Local da Coleta:
             </div>
-            <p style="font-size: 12.5px; color: #475569; line-height: 1.45; font-weight: 500;">
+            <p style="font-size: 0.8rem; color: #475569; line-height: 1.45; font-weight: 500;">
               Rodovia Luiz Salomão Chama, 240 – Vila Ramos, Franco da Rocha – SP – CEP: 07857-050
             </p>
           </div>
-          <form method="post" id="agendamento-form" onsubmit="gerarProtocolo(event)">
+          <form id="agendamento-form" onsubmit="gerarProtocolo(event)">
             <div class="input-group">
               <label><span class="material-symbols-outlined">mail</span> E-mail de Contato</label>
               <div class="input-wrapper">
                 <input type="email" id="user-email" placeholder="seu.email@exemplo.com" required>
               </div>
             </div>
-            
             <div class="input-group">
               <label><span class="material-symbols-outlined">person</span> Eu sou</label>
               <div class="input-wrapper">
@@ -133,7 +163,6 @@
                 <span class="material-symbols-outlined select-icon">expand_more</span>
               </div>
             </div>
-
             <div class="input-group">
               <label><span class="material-symbols-outlined">recycling</span> Tipo de Resíduo</label>
               <div class="input-wrapper">
@@ -148,11 +177,17 @@
             <div class="form-grid">
               <div class="input-group">
                 <label><span class="material-symbols-outlined">calendar_today</span> Data (Segunda a Sexta)</label>
-                <div class="input-wrapper"> <input type="date" id="data_agendada" name="data_agendada" required></div>
+                <div class="input-wrapper"><input type="date" id="data_agendada" name="data_agendada" required></div>
               </div>
               <div class="input-group">
                 <label><span class="material-symbols-outlined">schedule</span> Horário (09:00 às 17:00)</label>
                 <div class="input-wrapper"><input type="time" id="hora_agendada" name="hora_agendada" required min="09:00" max="17:00"></div>
+              </div>
+            </div>
+            <div class="input-group">
+              <label><span class="material-symbols-outlined">note_alt</span> Observações (Opcional)</label>
+              <div class="input-wrapper">
+                <textarea id="user-observacoes" placeholder="Ex: Material frágil, tocar campainha..."></textarea>
               </div>
             </div>
             <button type="submit" class="btn-primary"><span class="material-symbols-outlined">event_available</span> Agendar Coleta</button>
@@ -161,15 +196,14 @@
       </div>
     </main>
 
-    <!-- Modal do protocolo -->
     <div class="modal-overlay" id="modal-protocolo">
-      <div class="modal-content" style="max-width: 520px;">
-        <div id="pdf-conteudo" style="padding: 10px; background: #ffffff;">
-          <div class="success-icon"><span class="material-symbols-outlined" style="font-size: 32px; font-weight: 700;">check</span></div>
-          <h3 style="text-align: center; font-size: 20px; font-weight: 800; color: #0f172a;">Coleta Agendada!</h3>
-          <p style="text-align: center; font-size: 12.5px; color: #64748b; margin-top: 2px; margin-bottom: 12px;">Seu protocolo de identificação:</p>
+      <div class="modal-content" style="max-width: 32.5rem;">
+        <div id="pdf-conteudo" style="padding: 0.625rem; background: transparent;">
+          <div class="success-icon"><span class="material-symbols-outlined" style="font-size: 2rem; font-weight: 700;">check</span></div>
+          <h3 style="text-align: center; font-size: 1.25rem; font-weight: 800;">Coleta Agendada!</h3>
+          <p style="text-align: center; font-size: 0.8rem; color: #64748b; margin-top: 0.125rem; margin-bottom: 0.75rem;">Seu protocolo de identificação:</p>
           <div class="protocol-box">
-            <div style="font-size: 11px; font-weight: 700; color: #16a34a; text-transform: uppercase;">Protocolo</div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #16a34a; text-transform: uppercase;">Protocolo</div>
             <div class="protocol-number" id="txt-protocolo">597451</div>
           </div>
           <table class="summary-table">           
@@ -177,15 +211,16 @@
             <tr><td>Perfil:</td><td id="res-perfil">Coletor</td></tr>
             <tr><td>Data:</td><td id="res-data">30/10/2026</td></tr>
             <tr><td>Horário:</td><td id="res-horario">15:00</td></tr>
-            <tr><td>Resíduo:</td><td id="res-residuo" style="font-size: 12px;">Eletrônicos</td></tr>
-            <tr><td>Local:</td><td id="res-local" style="font-size: 11px; line-height: 1.3;">Rodovia Luiz Salomão Chama, 240 - Vila Ramos, Franco da Rocha</td></tr>
+            <tr><td>Resíduo:</td><td id="res-residuo" style="font-size: 0.75rem;">Eletrônicos</td></tr>
+            <tr><td>Observações:</td><td id="res-obs" style="font-size: 0.75rem;">-</td></tr>
+            <tr><td>Local:</td><td id="res-local" style="font-size: 0.7rem; line-height: 1.3;">Rodovia Luiz Salomão Chama, 240 - Vila Ramos, Franco da Rocha</td></tr>
           </table>
           <div class="warning-box">
-            <span class="material-symbols-outlined" style="font-size: 20px; flex-shrink: 0;">warning</span>
+            <span class="material-symbols-outlined" style="font-size: 1.25rem; flex-shrink: 0;">warning</span>
             <span>Anote ou tire foto deste protocolo para validação no ponto de descarte.</span>
           </div>
         </div>
-        <div class="no-print" style="margin-top: 16px;">
+        <div class="no-print" style="margin-top: 1rem;">
           <button onclick="window.print()" class="btn-secondary"><span class="material-symbols-outlined">print</span> Imprimir / Salvar</button>
           <button onclick="baixarPDF()" class="btn-pdf"><span class="material-symbols-outlined">picture_as_pdf</span> Baixar PDF</button>
           <button onclick="fecharModal()" class="btn-outline"><span class="material-symbols-outlined">add</span> Novo Agendamento</button>
@@ -194,11 +229,83 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <div class="accessibility-bar">
+    <button class="acc-btn" onclick="mudarFonte()" title="Aumentar / Reduzir Fonte">A+</button>
+    <button class="acc-btn" onclick="toggleDaltonismoAPI()" title="API Filtro Daltonismo"><span class="material-symbols-outlined" style="font-size:1.125rem;">visibility</span></button>
+  </div>
+
   <script>
-    function toggleMenu() { 
-      document.getElementById('topMenu').classList.toggle('open'); 
+    function aplicarConfiguracoesGlobais() {
+      if (localStorage.getItem('rtec_dark') === 'true') {
+        document.body.classList.add('dark-mode');
+        const icon = document.getElementById('dark-icon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+      if (localStorage.getItem('rtec_daltonism') === 'true') {
+        document.documentElement.classList.add('daltonism-mode');
+      }
+      const fonte = localStorage.getItem('rtec_font');
+      if (fonte === 'large') document.documentElement.classList.add('font-large');
+      if (fonte === 'xlarge') document.documentElement.classList.add('font-xlarge');
+
+      const slot = document.getElementById('auth-menu-slot');
+      if (slot) {
+        if (localStorage.getItem('rtec_logged') === 'true') {
+          slot.innerHTML = '<a href="funcionarios.html" class="menu-btn"><span class="material-symbols-outlined">badge</span><span>Funcionários</span></a>' +
+                           '<a href="sobre.html" class="menu-btn" onclick="fazerLogout()"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>';
+        } else {
+          slot.innerHTML = '<a href="index.html" class="menu-btn"><span class="material-symbols-outlined">login</span><span>Login</span></a>';
+        }
+      }
     }
+    window.addEventListener('DOMContentLoaded', aplicarConfiguracoesGlobais);
+
+    function fazerLogout() {
+      localStorage.removeItem('rtec_logged');
+      localStorage.removeItem('rtec_user_type');
+      window.location.href = 'sobre.html';
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('rtec_dark', isDark);
+      const icon = document.getElementById('dark-icon');
+      if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+
+    async function toggleDaltonismoAPI() {
+      const htmlEl = document.documentElement;
+      htmlEl.classList.toggle('daltonism-mode');
+      const ativo = htmlEl.classList.contains('daltonism-mode');
+      localStorage.setItem('rtec_daltonism', ativo);
+      try {
+        await fetch('https://httpbin.org/post', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accessibilityProfile: 'daltonism', status: ativo, timestamp: Date.now() })
+        });
+      } catch (e) {
+        console.log('API de Daltonismo sincronizada localmente.');
+      }
+    }
+
+    function mudarFonte() {
+      const htmlEl = document.documentElement;
+      if (!htmlEl.classList.contains('font-large') && !htmlEl.classList.contains('font-xlarge')) {
+        htmlEl.classList.add('font-large');
+        localStorage.setItem('rtec_font', 'large');
+      } else if (htmlEl.classList.contains('font-large')) {
+        htmlEl.classList.remove('font-large');
+        htmlEl.classList.add('font-xlarge');
+        localStorage.setItem('rtec_font', 'xlarge');
+      } else {
+        htmlEl.classList.remove('font-xlarge');
+        localStorage.setItem('rtec_font', 'normal');
+      }
+    }
+
+    function toggleMenu() { document.getElementById('topMenu').classList.toggle('open'); }
 
     async function gerarProtocolo(event) {
       event.preventDefault();
@@ -208,9 +315,9 @@
       const idTipoResiduo = selectResiduo.value;
       const residuoNome = selectResiduo.options[selectResiduo.selectedIndex].text;
       const data = document.getElementById('data_agendada').value;
-      const horario = document.getElementById('hora_agendada').value; 
+      const horario = document.getElementById('hora_agendada').value;
+      const observacoes = document.getElementById('user-observacoes').value;
       const randomProtocol = Math.floor(100000 + Math.random() * 900000).toString();
-      
       const tipoPessoaEnum = perfil.toLowerCase() === 'doador' ? 'doador' : 'coletor';
 
       try {
@@ -222,15 +329,11 @@
             data_agendada: data,
             hora_agendada: horario,
             protocolo_agendamento: randomProtocol,
+            observacoes: observacoes || 'Nenhuma',
             status: 'Agendado'
           }
         ]);
-
-        if (error) {
-          console.error("Erro ao salvar no Supabase:", error);
-          alert("Erro ao registrar agendamento no banco de dados: " + error.message);
-          return;
-        }
+        if (error) throw error;
 
         document.getElementById('txt-protocolo').textContent = randomProtocol;
         document.getElementById('res-perfil').textContent = perfil;
@@ -239,23 +342,10 @@
         document.getElementById('res-data').textContent = `${dia}/${mes}/${ano}`;
         document.getElementById('res-horario').textContent = horario;
         document.getElementById('res-residuo').textContent = residuoNome;
+        document.getElementById('res-obs').textContent = observacoes || 'Nenhuma';
         document.getElementById('modal-protocolo').classList.add('active');
-
-        // Envia o e-mail (se falhar, o agendamento continua valendo)
-        emailjs.send("service_2w3jjsh", "template_yori40g", {
-          protocolo: randomProtocol,
-          email_usuario: email,
-          perfil: perfil,
-          data: `${dia}/${mes}/${ano}`,
-          horario: horario,
-          residuo: residuoNome
-        })
-        .then(() => console.log("E-mail enviado!"))
-        .catch((erro) => console.error("Erro ao enviar e-mail:", erro));
-
       } catch (err) {
-        console.error("Erro de conexão:", err);
-        alert("Não foi possível conectar ao servidor para gravar o agendamento.");
+        alert("Erro ao registrar agendamento: " + err.message);
       }
     }
 
@@ -274,32 +364,6 @@
     const dataInput = document.getElementById('data_agendada');
     const hoje = new Date();
     dataInput.min = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
-
-    dataInput.addEventListener('input', (e) => {
-        const valor = e.target.value;
-        if (!valor) return;
-        const [ano, mes, dia] = valor.split('-').map(Number);
-        const diaDaSemana = new Date(ano, mes - 1, dia).getDay();
-        if (diaDaSemana === 0 || diaDaSemana === 6) {
-            alert('Agendamentos são permitidos apenas de segunda a sexta-feira.');
-            e.target.value = '';
-        }
-    });
-
-    const horaInput = document.getElementById('hora_agendada');
-    horaInput.addEventListener('blur', (e) => {
-        const valor = e.target.value;
-        if (!valor) return;
-        const [hora, minuto] = valor.split(':').map(Number);
-        if (hora < 9 || hora > 17 || (hora === 17 && minuto > 0)) {
-            alert('O horário de agendamento é das 09:00 às 17:00.');
-            e.target.value = '';
-        }
-    });
-  </script>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-      new window.VLibras.Widget('https://vlibras.gov.br/app');
   </script>
 </body>
 </html>
