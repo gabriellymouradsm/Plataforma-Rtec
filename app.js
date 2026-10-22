@@ -75,3 +75,20 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
     }
 });
+
+
+
+// Formata a data de 2026-10-30 para 30/10/2026
+const [anoEmail, mesEmail, diaEmail] = data.split('-');
+
+// Envia o e-mail (se falhar, o agendamento continua valendo)
+emailjs.send("service_2w3jjsh", "template_yori40g", {
+  protocolo: randomProtocol,
+  email_usuario: email,
+  perfil: perfil,
+  data: `${diaEmail}/${mesEmail}/${anoEmail}`,
+  horario: horario,
+  residuo: residuoNome
+})
+.then(() => console.log("E-mail enviado!"))
+.catch((erro) => console.error("Erro ao enviar e-mail:", erro));
