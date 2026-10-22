@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>RTEC - Painel de Controle do Funcionário</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#00873a",
+            "primary-dark": "#006b2c",
+            "primary-light": "#00a84a",
+            "brand-green": "#558b2f",
+            "brand-emerald": "#00875a",
+            surface: "#faf8ff",
+            "card-gray": "#e9eee9",
+            "card-gray-subtle": "#ecefec"
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    .pb-safe {
+      padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+    }
+    .pt-safe {
+      padding-top: max(0.5rem, env(safe-area-inset-top));
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-[#f4f6f4] text-gray-800 font-sans antialiased min-h-screen flex justify-center selection:bg-primary/20">
+<!-- Mobile Screen Container -->
+<div class="w-full max-w-[480px] min-h-screen flex flex-col bg-white shadow-2xl relative">
+<!-- TopBar Clean: Logo RTEC (esquerda) + Hamburguer verde (direita) conforme imagem #4 -->
+<header class="w-full bg-[#f8faf8] border-b border-gray-200/70 px-5 pt-safe pb-3 flex items-center justify-between sticky top-0 z-30 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+<div class="flex items-center gap-2">
+<!-- Ícone / Logo RTEC com símbolo de reciclagem -->
+<div class="w-9 h-9 rounded-lg flex items-center justify-center relative">
+<svg class="w-8 h-8 text-[#4a8335]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"></path>
+<path d="M11 19h8.2a1.8 1.8 0 0 0 1.57-.88 1.78 1.78 0 0 0 .004-1.78L17 10"></path>
+<path d="m13 3.5 3.955 6.85a1.8 1.8 0 0 1-.004 1.78 1.8 1.8 0 0 1-1.57.87H8.8"></path>
+</svg>
+<span class="absolute text-[8px] font-bold text-[#2d571f] font-mono tracking-tighter bottom-2.5">Rtec</span>
+</div>
+</div>
+<!-- Botão Hambúrguer Verde (3 barras uniformes) -->
+<button aria-label="Abrir menu principal" class="flex flex-col justify-center items-center gap-1.5 w-10 h-10 rounded-lg hover:bg-gray-100 active:scale-95 transition-all">
+<span class="w-7 h-[3.5px] bg-[#4a8335] rounded-full"></span>
+<span class="w-7 h-[3.5px] bg-[#4a8335] rounded-full"></span>
+<span class="w-7 h-[3.5px] bg-[#4a8335] rounded-full"></span>
+</button>
+</header>
+<!-- Conteúdo Principal -->
+<main class="flex-1 px-4 py-5 space-y-6 pb-12">
+<!-- ============================================== -->
+<!-- PARTE 1: PAINEL DO FUNCIONÁRIO (Conforme Imagem #4) -->
+<!-- ============================================== -->
+<section class="space-y-4">
+<!-- Título Centralizado em Verde: "Funcionário" -->
+<div class="text-center pt-1 pb-1">
+<h1 class="text-[34px] leading-tight font-extrabold text-[#4a8335] tracking-tight">
+            Funcionário
+          </h1>
+</div>
+<!-- Grid de 2 Cards superiores: Relatórios & Doações -->
+<div class="grid grid-cols-2 gap-3.5">
+<!-- Card Relatórios -->
+<div class="bg-[#e9eee9] rounded-[28px] p-5 flex flex-col min-h-[145px] shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-[#dfe5df]">
+<h2 class="text-[19px] font-bold text-[#4a8335] mb-3">
+              Relatórios
+            </h2>
+<div class="space-y-2 text-[15px] font-semibold text-gray-800">
+<div class="flex items-center justify-between">
+<span>Rtec 1</span>
+<span class="text-gray-700 font-medium">11/05</span>
+</div>
+<div class="flex items-center justify-between">
+<span>Rtec 2</span>
+<span class="text-gray-700 font-medium">19/05</span>
+</div>
+</div>
+</div>
+<!-- Card Doações -->
+<div class="bg-[#e9eee9] rounded-[28px] p-5 flex flex-col min-h-[145px] shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-[#dfe5df]">
+<h2 class="text-[19px] font-bold text-[#4a8335] mb-3">
+              Doações
+            </h2>
+<div class="space-y-2 text-[14px] font-semibold text-gray-800 leading-tight">
+<div>3 computadores</div>
+<div>1 mouse</div>
+</div>
+</div>
+</div>
+<!-- Card Inferior Largo: Agendamentos -->
+<div class="bg-[#e9eee9] rounded-[28px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-[#dfe5df]">
+<h2 class="text-[19px] font-bold text-[#4a8335] mb-3.5">
+            Agendamentos
+          </h2>
+<div class="space-y-2.5 text-[15px] font-semibold text-gray-800">
+<div class="flex items-center justify-between pr-4">
+<span>Fulano</span>
+<span class="text-gray-700 font-medium">11/05</span>
+</div>
+<div class="flex items-center justify-between pr-4">
+<span>Ciclano</span>
+<span class="text-gray-700 font-medium">13/05</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================== -->
+<!-- PARTE 2: RESÍDUOS PARA COLETA (Conforme Imagem #11) -->
+<!-- ============================================== -->
+<section class="space-y-3 pt-3">
+<!-- Subtítulo de Contexto Operacional -->
+<div class="px-1">
+<span class="text-[11px] font-bold tracking-wider text-[#4a8335] uppercase block mb-0.5">Painel de Materiais</span>
+<h3 class="text-lg font-bold text-gray-900 leading-snug">Monitoramento de Resíduos para Coleta</h3>
+</div>
+<!-- Bloco Verde Vívido com Cantos Arredondados -->
+<div class="bg-[#008744] rounded-[26px] p-4 text-white shadow-md space-y-4">
+<!-- Cabeçalho do Bloco Verde -->
+<div class="text-center pt-1">
+<h4 class="text-[26px] font-extrabold leading-tight text-white tracking-tight">
+              Resíduos para Coleta
+            </h4>
+<p class="text-xs text-white/90 font-medium mt-1">
+              Confira os materiais disponíveis para coleta
+            </p>
+</div>
+<!-- Tabela / Card Branco Arredondado com Materiais -->
+<div class="bg-white text-gray-800 rounded-2xl overflow-hidden shadow-sm">
+<!-- Cabeçalho da Tabela Verde Suave / Tipos | Quantidade | Status -->
+<div class="bg-[#007038] text-white px-3.5 py-2.5 grid grid-cols-12 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider items-center">
+<div class="col-span-5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">recycling</span>
+<span>Tipos de Resíduos</span>
+</div>
+<div class="col-span-4 text-center flex items-center justify-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">swap_vert</span>
+<span>Quantidade</span>
+</div>
+<div class="col-span-3 text-right flex items-center justify-end gap-0.5">
+<span class="material-symbols-outlined text-[13px]">info</span>
+<span>Status</span>
+</div>
+</div>
+<!-- Lista de Itens -->
+<div class="divide-y divide-gray-100">
+<!-- Linha 1: PAPELÃO -->
+<div class="px-3.5 py-3 grid grid-cols-12 items-center hover:bg-gray-50/80 transition-colors">
+<div class="col-span-5 flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-[#008744] shrink-0">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+</div>
+<span class="text-[12px] font-bold text-gray-800 uppercase tracking-tight">Papelão</span>
+</div>
+<div class="col-span-4 text-center">
+<span class="text-[15px] font-extrabold text-gray-900 block leading-none">24</span>
+<span class="text-[10px] text-gray-500 font-medium">unidades</span>
+</div>
+<div class="col-span-3 text-right">
+<span class="inline-block bg-[#008744] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">
+                    A Coletar
+                  </span>
+</div>
+</div>
+<!-- Linha 2: COMPUTADORES -->
+<div class="px-3.5 py-3 grid grid-cols-12 items-center hover:bg-gray-50/80 transition-colors">
+<div class="col-span-5 flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-[#008744] shrink-0">
+<span class="material-symbols-outlined text-[18px]">desktop_windows</span>
+</div>
+<span class="text-[12px] font-bold text-gray-800 uppercase tracking-tight">Computadores</span>
+</div>
+<div class="col-span-4 text-center">
+<span class="text-[15px] font-extrabold text-gray-900 block leading-none">12</span>
+<span class="text-[10px] text-gray-500 font-medium">unidades</span>
+</div>
+<div class="col-span-3 text-right">
+<span class="inline-block bg-[#008744] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">
+                    A Coletar
+                  </span>
+</div>
+</div>
+<!-- Linha 3: CELULARES -->
+<div class="px-3.5 py-3 grid grid-cols-12 items-center hover:bg-gray-50/80 transition-colors">
+<div class="col-span-5 flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-[#008744] shrink-0">
+<span class="material-symbols-outlined text-[18px]">smartphone</span>
+</div>
+<span class="text-[12px] font-bold text-gray-800 uppercase tracking-tight">Celulares</span>
+</div>
+<div class="col-span-4 text-center">
+<span class="text-[15px] font-extrabold text-gray-900 block leading-none">17</span>
+<span class="text-[10px] text-gray-500 font-medium">unidades</span>
+</div>
+<div class="col-span-3 text-right">
+<span class="inline-block bg-[#008744] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">
+                    A Coletar
+                  </span>
+</div>
+</div>
+<!-- Linha 4: PILHAS -->
+<div class="px-3.5 py-3 grid grid-cols-12 items-center hover:bg-gray-50/80 transition-colors">
+<div class="col-span-5 flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-[#008744] shrink-0">
+<span class="material-symbols-outlined text-[18px]">battery_charging_full</span>
+</div>
+<span class="text-[12px] font-bold text-gray-800 uppercase tracking-tight">Pilhas</span>
+</div>
+<div class="col-span-4 text-center">
+<span class="text-[15px] font-extrabold text-gray-900 block leading-none">9</span>
+<span class="text-[10px] text-gray-500 font-medium">unidades</span>
+</div>
+<div class="col-span-3 text-right">
+<span class="inline-block bg-[#008744] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">
+                    A Coletar
+                  </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Botão de Ação: Agendar Coleta (exatamente como imagem #11) -->
+<div class="flex justify-center pt-1 pb-1">
+<button class="bg-[#007038] hover:bg-[#006030] text-white font-bold text-sm px-6 py-2.5 rounded-xl flex items-center gap-2 shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">event</span>
+<span>Agendar Coleta</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>
