@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <title>RTEC - Painel de Funcionários</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem('rtec_logged') !== 'true') {
+      window.location.href = 'index.html';
+    }
+    const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    html { font-size: 16px; transition: font-size 0.2s ease; }
+    html.font-large { font-size: 19px; }
+    html.font-xlarge { font-size: 22px; }
+    html.daltonism-mode { filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="daltonism"><feColorMatrix type="matrix" values="0.35 0.7 -0.05 0 0 -0.15 1.15 0.05 0 0 0.1 0.1 0.8 0 0 0 0 0 1 0"/></filter></svg>#daltonism') contrast(120%); }
+
+    .accessibility-bar { position: fixed; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 9999; background: rgba(0,0,0,0.75); padding: 0.5rem 0.75rem; border-radius: 2rem; backdrop-filter: blur(6px); }
+    .acc-btn { background: #ffffff; border: none; border-radius: 50%; width: 2.25rem; height: 2.25rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #0f172a; font-size: 0.875rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.2s; }
+    .acc-btn:hover { transform: scale(1.08); }
+
+    body { width: 100%; min-height: 100vh; background-color: #f7f9f7; color: #0f172a; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+    body.dark-mode { background-color: #0f172a; color: #f8fafc; }
+    body.dark-mode header { background: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-bottom: 1px solid #334155; }
+    body.dark-mode .logo-area { background: #1e293b; }
+    body.dark-mode main { background: #0f172a; }
+    body.dark-mode .card { background: #1e293b; color: #f8fafc; border: 1px solid #334155; }
+    body.dark-mode .card h3, body.dark-mode .stat-value { color: #f8fafc; }
+    body.dark-mode .card p, body.dark-mode .muted { color: #94a3b8; }
+    body.dark-mode .search-input { background: #0f172a; border-color: #334155; color: #f8fafc; }
+    body.dark-mode .row-mobile { border-color: #334155 !important; }
+    body.dark-mode thead { background: #1e293b; }
+
+    .app-container { width: 100%; min-height: 100vh; background: #f7f9f7; display: flex; flex-direction: column; }
+    header { background: #15803d; width: 100%; min-height: 4.375rem; padding: 0.5rem 1rem; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); gap: 0.5rem; flex-wrap: nowrap; }
+    .logo-area { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; background: #ffffff; border-radius: 1.5rem; padding: 0.25rem 0.5rem; flex-shrink: 0; }
+    .logo-area img { height: 2.25rem; width: auto; display: block; object-fit: contain; }
+    .top-menu { display: flex; align-items: center; gap: 0.375rem; }
+    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 0.5rem 0.875rem; border-radius: 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.375rem; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
+    .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
+    .menu-btn span.material-symbols-outlined { font-size: 1.125rem; }
+    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 2.625rem; height: 2.625rem; border-radius: 0.75rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+
+    @media (max-width: 900px) {
+      .top-menu { display: none; position: fixed; top: 4.375rem; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 1.25rem; gap: 0.5rem; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; z-index: 1001; }
+      .top-menu.open { display: flex; }
+      .hamburger-btn { display: flex; }
+      .badge-geo { display: none !important; }
+      .menu-btn { width: 100%; padding: 0.75rem 1rem; font-size: 0.9rem; justify-content: flex-start; background: rgba(255, 255, 255, 0.08); border-radius: 0.875rem; }
+      .menu-btn.active { background: #ffffff; color: #15803d; }
+    }
+
+    main { flex: 1; width: 100%; padding: 6rem 1rem 3rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
+    .content-wrapper { width: 100%; max-width: 72rem; margin: 0 auto; }
+
+    .card { background: #ffffff; border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .muted { color: #64748b; font-size: 0.85rem; }
+
+    /* Abas */
+    .tab-bar { display: flex; gap: 0.5rem; background: #ffffff; border-radius: 1rem; padding: 0.375rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); flex-wrap: wrap; }
+    body.dark-mode .tab-bar { background: #1e293b; }
+    .tab-btn { flex: 1; min-width: 9rem; border: none; background: transparent; padding: 0.75rem 1rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 0.375rem; transition: all 0.2s; }
+    .tab-btn.active { background: #15803d; color: #ffffff; }
+
+    .btn-pdf { background: #dc2626; color: #fff; border: none; padding: 0.75rem 1.25rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.375rem; transition: background 0.2s; }
+    .btn-pdf:hover { background: #b91c1c; }
+
+    /* Cards de estatísticas */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.625rem; } }
+    .stat-card { background: #ffffff; border-radius: 1rem; padding: 1rem; box-shadow: 0 6px 20px rgba(0,0,0,0.07); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 2px solid transparent; }
+    .stat-card:hover { transform: translateY(-3px); }
+    .stat-card.selected { border-color: currentColor; }
+    body.dark-mode .stat-card { background: #1e293b; border: 1px solid #334155; }
+    .stat-label { font-size: 0.7rem; font-weight: 600; color: #64748b; }
+    .stat-value { font-size: 1.5rem; font-weight: 800; }
+    @media (max-width: 480px) { .stat-value { font-size: 1.25rem; } }
+
+    /* Tabela desktop / Lista mobile */
+    .table-desktop { display: block; width: 100%; overflow-x: auto; }
+    .table-desktop table { width: 100%; border-collapse: collapse; }
+    .table-desktop th { text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; padding: 0.75rem 1rem; background: #f8fafc; }
+    body.dark-mode .table-desktop th { background: #1e293b; }
+    .table-desktop td { padding: 0.875rem 1rem; font-size: 0.85rem; border-top: 1px solid #e2e8f0; }
+    body.dark-mode .table-desktop td { border-color: #334155; }
+    .list-mobile { display: none; }
+    @media (max-width: 767px) {
+      .table-desktop { display: none; }
+      .list-mobile { display: block; }
+    }
+    .row-mobile { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.875rem 0; border-bottom: 1px solid #e2e8f0; cursor: pointer; }
+    .row-mobile:last-child { border-bottom: none; }
+
+    .badge { display: inline-block; padding: 0.25rem 0.625rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-yellow { background: #fef9c3; color: #854d0e; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    body.dark-mode .badge-green { background: #14532d; color: #86efac; }
+    body.dark-mode .badge-yellow { background: #713f12; color: #fde047; }
+    body.dark-mode .badge-blue { background: #1e3a8a; color: #93c5fd; }
+
+    /* Cards de protocolo */
+    .proto-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    @media (max-width: 767px) { .proto-grid { grid-template-columns: 1fr; } }
+    .proto-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.125rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    body.dark-mode .proto-card { background: #1e293b; border-color: #334155; }
+    .btn { border: none; border-radius: 0.625rem; padding: 0.5rem 0.875rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem; transition: filter 0.2s; }
+    .btn:hover { filter: brightness(1.1); }
+    .btn-blue { background: #2563eb; color: #fff; }
+    .btn-green { background: #16a34a; color: #fff; }
+    .btn-gray { background: #e2e8f0; color: #334155; }
+    body.dark-mode .btn-gray { background: #334155; color: #e2e8f0; }
+
+    .search-input { width: 100%; border: 1px solid #cbd5e1; border-radius: 0.75rem; padding: 0.625rem 1rem; font-size: 0.85rem; outline: none; background: #fff; }
+    .search-input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.15); }
+
+    .progress-track { width: 100%; background: #e2e8f0; border-radius: 999px; height: 0.625rem; }
+    body.dark-mode .progress-track { background: #334155; }
+    .progress-fill { height: 0.625rem; border-radius: 999px; transition: width 0.8s ease; }
+
+    .month-row { border-radius: 0.75rem; background: #f8fafc; }
+    body.dark-mode .month-row { background: #1e293b; }
+    .month-detail { display: none; padding: 0.75rem 1rem; border-top: 1px solid #e2e8f0; font-size: 0.8rem; }
+    body.dark-mode .month-detail { border-color: #334155; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #ffffff; border-radius: 1.25rem; max-width: 26rem; width: 100%; max-height: 90vh; overflow-y: auto; padding: 1.75rem; position: relative; }
+    body.dark-mode .modal-box { background: #1e293b; color: #f8fafc; }
+    .modal-close { position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8; line-height: 1; }
+
+    /* Estrelas */
+    .star { color: #facc15; }
+    .star-empty { color: #cbd5e1; }
+    body.dark-mode .star-empty { color: #475569; }
+
+    @media print {
+      header, .accessibility-bar, .tab-bar, .btn-pdf, .btn, .search-input, .hamburger-btn { display: none !important; }
+      main { padding: 0; }
+      body { background: #fff; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <a href="sobre.html" class="logo-area">
+        <img src="img/logo.png" alt="RTEC Logo">
+      </a>
+      <nav class="top-menu" id="topMenu">
+        <a href="funcionarios.html" class="menu-btn active"><span class="material-symbols-outlined">dashboard</span><span>Painel</span></a>
+        <a href="funcionarios.html?filtro=hoje" class="menu-btn"><span class="material-symbols-outlined">calendar_today</span><span>Agendamentos do Dia</span></a>
+        <a href="triagem.html" class="menu-btn"><span class="material-symbols-outlined">recycling</span><span>Triagem</span></a>
+        <a href="operacional.html" class="menu-btn"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
+        <a href="feedback.html" class="menu-btn"><span class="material-symbols-outlined">rate_review</span><span>Feedback</span></a>
+        <a href="sobre.html" class="menu-btn" onclick="fazerLogout(); return false;"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 0.375rem 0.75rem; border-radius: 1.25rem; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 0.375rem; white-space: nowrap;">
+          <span style="width: 0.4375rem; height: 0.4375rem; background: #4ade80; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span> Franco da Rocha
+        </div>
+        <button class="menu-btn" onclick="toggleDarkMode()" title="Modo Claro/Escuro" style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2);"><span class="material-symbols-outlined" id="dark-icon" style="font-size:1.125rem;">dark_mode</span></button>
+        <button class="hamburger-btn" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
+      </div>
+    </header>
+
+    <main>
+      <div class="content-wrapper">
+
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a; text-transform: uppercase;">Portal Interno</span>
+          <h2 style="font-size: 1.625rem; font-weight: 800; margin-top: 0.25rem;">Painel de Gerenciamento - RTEC</h2>
+          <p class="muted" style="margin-top: 0.375rem;">Acompanhe as doações recebidas e o aproveitamento dos materiais para fins educacionais</p>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; align-items: center; margin-bottom: 1.5rem;">
+          <div class="tab-bar" style="flex: 1; min-width: 17rem; max-width: 32rem;">
+            <button class="tab-btn active" id="tabDoacoes" onclick="showReport('donations')"><i class="fas fa-donate"></i> Visão Geral</button>
+            <button class="tab-btn" id="tabEduc" onclick="showReport('educational')"><i class="fas fa-graduation-cap"></i> Material Educacional</button>
+          </div>
+          <button class="btn-pdf" onclick="window.print()"><i class="fas fa-file-pdf"></i> Gerar PDF</button>
+        </div>
+
+        <!-- ============ VISÃO GERAL ============ -->
+        <section id="donationsReport">
+          <div class="stats-grid" style="margin-bottom: 1.5rem;">
+            <div class="stat-card" id="cardTotal" onclick="aplicarFiltro('total')" style="color:#16a34a;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div><p class="stat-label">Total de Doações</p><p class="stat-value" style="color:#16a34a;" id="statTotal">0</p></div>
+                <i class="fas fa-box" style="color:#16a34a; opacity:0.6;"></i>
+              </div>
+            </div>
+            <div class="stat-card" id="cardProcessados" onclick="aplicarFiltro('processados')" style="color:#2563eb;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div><p class="stat-label">Itens Processados</p><p class="stat-value" style="color:#2563eb;" id="statProcessados">0</p></div>
+                <i class="fas fa-check-circle" style="color:#2563eb; opacity:0.6;"></i>
+              </div>
+            </div>
+            <div class="stat-card" id="cardMes" onclick="aplicarFiltro('mes')" style="color:#9333ea;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div><p class="stat-label">Doações do Mês</p><p class="stat-value" style="color:#9333ea;" id="statMes">0</p></div>
+                <i class="fas fa-users" style="color:#9333ea; opacity:0.6;"></i>
+              </div>
+            </div>
+            <div class="stat-card" id="cardColetados" onclick="aplicarFiltro('coletados')" style="color:#ea580c;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div><p class="stat-label">Coletado</p><p class="stat-value" style="color:#ea580c;" id="statColetados">0</p></div>
+                <i class="fas fa-truck-loading" style="color:#ea580c; opacity:0.6;"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Agendamentos Recentes -->
+          <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 1.5rem;">
+            <div style="padding: 1.125rem 1.25rem; border-bottom: 1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+              <h3 style="font-size: 1rem; font-weight: 800;"><i class="fas fa-calendar-alt" style="color:#16a34a;"></i> Agendamentos Recentes</h3>
+              <span class="muted">Toque para ver detalhes</span>
+            </div>
+            <div class="table-desktop">
+              <table>
+                <thead><tr><th>Data</th><th>Tipo</th><th>Resíduo</th><th>Status</th></tr></thead>
+                <tbody id="tbodyRecentes"></tbody>
+              </table>
+            </div>
+            <div class="list-mobile" style="padding: 0 1.25rem;" id="listaRecentesMobile"></div>
+          </div>
+
+          <!-- Lista de Protocolos -->
+          <div class="card" id="lista_protocolos_section" style="margin-bottom: 1.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.75rem; margin-bottom: 1rem;">
+              <div>
+                <h3 style="font-size: 1.1rem; font-weight: 800;"><i class="fas fa-clipboard-list" style="color:#16a34a;"></i> <span id="tituloProtocolos">Todos os Protocolos</span></h3>
+                <span class="muted" id="descProtocolos">Listagem completa de agendamentos</span>
+              </div>
+              <button class="btn btn-gray" id="btnLimparFiltro" onclick="aplicarFiltro('geral')" style="display:none;"><i class="fas fa-times"></i> Limpar Filtro</button>
+            </div>
+            <input type="text" id="buscarProtocolo" class="search-input" placeholder="🔍 Buscar na lista atual..." style="margin-bottom: 1rem;">
+            <div class="proto-grid" id="listaProtocolos"></div>
+          </div>
+
+          <!-- Feedbacks -->
+          <div class="card" style="padding: 0; overflow: hidden;">
+            <div style="padding: 1.125rem 1.25rem; border-bottom: 1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+              <h3 style="font-size: 1rem; font-weight: 800;"><i class="fas fa-comment-dots" style="color:#16a34a;"></i> Feedbacks dos Usuários</h3>
+              <span class="muted">Avaliações recentes</span>
+            </div>
+            <div id="listaFeedbacks" style="padding: 0 1.25rem;"></div>
+          </div>
+        </section>
+
+        <!-- ============ MATERIAL EDUCACIONAL ============ -->
+        <section id="educationalReport" style="display:none;">
+          <div class="stats-grid" style="margin-bottom: 1.5rem;">
+            <div class="stat-card" style="color:#16a34a;"><p class="stat-label">Total Itens Monitoria</p><p class="stat-value" style="color:#16a34a;" id="statMatTotal">0</p></div>
+            <div class="stat-card" style="color:#2563eb;"><p class="stat-label">Material para Aulas</p><p class="stat-value" style="color:#2563eb;" id="statMatAula">0</p></div>
+            <div class="stat-card" style="color:#ca8a04;"><p class="stat-label">Itens Pendentes</p><p class="stat-value" style="color:#ca8a04;" id="statMatPendente">0</p></div>
+            <div class="stat-card" style="color:#ea580c;"><p class="stat-label">Itens para Coleta</p><p class="stat-value" style="color:#ea580c;" id="statMatColeta">0</p></div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="educ-grid">
+            <div class="card">
+              <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 1rem;">Tipos de Materiais Coletados (Top 5)</h3>
+              <div id="listaTiposMaterial" style="display:flex; flex-direction:column; gap: 0.875rem;"></div>
+            </div>
+            <div class="card">
+              <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 1rem;">Tendência Mensal (Materiais)</h3>
+              <div id="listaTendencia" style="display:flex; flex-direction:column; gap: 0.625rem;"></div>
+            </div>
+          </div>
+          <style>@media(min-width: 1024px){ .educ-grid { grid-template-columns: 1fr 1fr !important; } }</style>
+
+          <div class="card" style="padding: 0; overflow: hidden;">
+            <div style="padding: 1.125rem 1.25rem; border-bottom: 1px solid #e2e8f0;">
+              <h3 style="font-size: 1rem; font-weight: 800;">Itens Recentes Destinados para Aulas</h3>
+            </div>
+            <div class="table-desktop">
+              <table>
+                <thead><tr><th>Data Cadastro</th><th>Material</th><th>Monitor</th><th>Status</th></tr></thead>
+                <tbody id="tbodyMateriais"></tbody>
+              </table>
+            </div>
+            <div class="list-mobile" style="padding: 0 1.25rem;" id="listaMateriaisMobile"></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Protocolo -->
+  <div class="modal-overlay" id="visualizarProtocolo" onclick="if(event.target===this) fecharModalProtocolo()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="fecharModalProtocolo()">&times;</button>
+      <div style="text-align:center;">
+        <div style="width:3.5rem; height:3.5rem; background:#dcfce7; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 0.75rem;">
+          <i class="fas fa-clipboard-list" style="color:#16a34a; font-size:1.5rem;"></i>
+        </div>
+        <h3 style="font-size:1.25rem; font-weight:800;">Detalhes do Protocolo</h3>
+        <p class="muted" style="margin-bottom:1rem;">Informações completas da coleta agendada</p>
+        <div style="background:#f0fdf4; border:2px solid #bbf7d0; border-radius:0.75rem; padding:0.875rem; margin-bottom:1rem;">
+          <div style="font-size:0.75rem; color:#64748b;">Protocolo:</div>
+          <div id="protocoloNumero" style="font-size:1.375rem; font-weight:800; color:#16a34a; font-family:monospace;"></div>
+        </div>
+        <div style="text-align:left; background:#f8fafc; border-radius:0.75rem; padding:1rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.5rem; font-size:0.85rem;">
+          <div style="display:flex; justify-content:space-between; gap:0.5rem;"><span class="muted">Tipo:</span><strong id="protocoloTipo"></strong></div>
+          <div style="display:flex; justify-content:space-between; gap:0.5rem;"><span class="muted">Resíduo:</span><strong id="protocoloResiduo"></strong></div>
+          <div style="display:flex; justify-content:space-between; gap:0.5rem;"><span class="muted">Data:</span><strong id="protocoloData"></strong></div>
+          <div style="display:flex; justify-content:space-between; gap:0.5rem;"><span class="muted">Horário:</span><strong id="protocoloHora"></strong></div>
+          <div style="display:flex; justify-content:space-between; gap:0.5rem;"><span class="muted">Local:</span><strong id="protocoloLocal" style="text-align:right;"></strong></div>
+        </div>
+        <button class="btn btn-green" onclick="fecharModalProtocolo()" style="width:100%; justify-content:center; padding:0.75rem;">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="accessibility-bar">
+    <button class="acc-btn" onclick="mudarFonte()" title="Aumentar / Reduzir Fonte">A+</button>
+    <button class="acc-btn" onclick="toggleDaltonismoAPI()" title="API Filtro Daltonismo"><span class="material-symbols-outlined" style="font-size:1.125rem;">visibility</span></button>
+  </div>
+
+  <script>
+    /* ================================================================
+       DADOS — ajuste os nomes de tabelas/colunas conforme seu schema
+       Supabase. Se a consulta falhar, o painel usa dados de exemplo
+       (modo demo) para não ficar em branco.
+       ================================================================ */
+    let DEMO_MODE = false;
+    let agendamentos = [];
+    let materiais = [];
+    let feedbacks = [];
+    let filtroAtual = 'geral';
+    const ENDERECO_COLETA = 'Ecoponto - Franco da Rocha/SP';
+
+    const demoAgendamentos = [
+      { id: 1, protocolo_agendamento: 'RTEC-2026-001', tipo_pessoa: 'fisica', nome_residuo: 'Monitor CRT', status: 'Concluido', data_agendamento: '2026-10-20', hora_agendamento: '09:00' },
+      { id: 2, protocolo_agendamento: 'RTEC-2026-002', tipo_pessoa: 'juridica', nome_residuo: 'Notebook', status: 'Agendado', data_agendamento: '2026-10-22', hora_agendamento: '14:00' },
+      { id: 3, protocolo_agendamento: 'RTEC-2026-003', tipo_pessoa: 'fisica', nome_residuo: 'Cabo de rede', status: 'Pendente', data_agendamento: '2026-10-23', hora_agendamento: '10:30' },
+      { id: 4, protocolo_agendamento: 'RTEC-2026-004', tipo_pessoa: 'fisica', nome_residuo: 'Fonte ATX', status: 'Concluido', data_agendamento: '2026-10-15', hora_agendamento: '08:00' },
+    ];
+    const demoMateriais = [
+      { id: 1, nome_material: 'Monitor LCD', destino: 'aula', status_processamento: 'Processado', monitor_nome: 'Ana Souza', data_cadastro: '2026-10-18' },
+      { id: 2, nome_material: 'Notebook', destino: 'aula', status_processamento: 'Em Espera', monitor_nome: 'Carlos Lima', data_cadastro: '2026-10-20' },
+      { id: 3, nome_material: 'Teclado', destino: 'coleta', status_processamento: 'Em Processo', monitor_nome: 'Ana Souza', data_cadastro: '2026-10-21' },
+      { id: 4, nome_material: 'Mouse', destino: 'pendente', status_processamento: 'Em Espera', monitor_nome: 'Bruno Reis', data_cadastro: '2026-10-21' },
+    ];
+    const demoFeedbacks = [
+      { id: 1, avaliacao_estrelas: 5, recomendaria: 'sim', data_envio: '2026-10-20' },
+      { id: 2, avaliacao_estrelas: 4, recomendaria: 'sim', data_envio: '2026-10-19' },
+    ];
+
+    function formatData(iso) {
+      if (!iso) return 'N/D';
+      const d = new Date(iso + 'T00:00:00');
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    async function carregarDados() {
+      try {
+        const [rAgen, rMat, rFeed] = await Promise.all([
+          _supabase.from('agendamentos').select('*').order('data_agendamento', { ascending: false }),
+          _supabase.from('materiais_monitoria').select('*').order('data_cadastro', { ascending: false }),
+          _supabase.from('feedbacks').select('*').order('data_envio', { ascending: false }).limit(10),
+        ]);
+        if (rAgen.error || rMat.error || rFeed.error) throw new Error('schema');
+        agendamentos = rAgen.data || [];
+        materiais = rMat.data || [];
+        feedbacks = rFeed.data || [];
+        if (!agendamentos.length && !materiais.length) throw new Error('vazio');
+      } catch (e) {
+        DEMO_MODE = true;
+        agendamentos = demoAgendamentos;
+        materiais = demoMateriais;
+        feedbacks = demoFeedbacks;
+        console.warn('Supabase indisponível — exibindo dados de demonstração.');
+      }
+      renderTudo();
+    }
+
+    /* ===================== RENDERIZAÇÃO ===================== */
+    function badgeStatus(status) {
+      const map = {
+        'Concluido': 'badge-green', 'Concluído': 'badge-green', 'Processado': 'badge-green', 'Finalizado': 'badge-green',
+        'Pendente': 'badge-yellow', 'Em Espera': 'badge-yellow',
+        'Agendado': 'badge-blue', 'Em Processo': 'badge-blue', 'Preparando': 'badge-blue',
+      };
+      return `<span class="badge ${map[status] || 'badge-blue'}">${status || 'N/D'}</span>`;
+    }
+
+    function renderTudo() {
+      // Estatísticas
+      const hoje = new Date().toISOString().slice(0, 10);
+      const mesAtual = hoje.slice(0, 7);
+      document.getElementById('statTotal').textContent = agendamentos.length;
+      document.getElementById('statProcessados').textContent = agendamentos.filter(a => a.status === 'Concluido').length;
+      document.getElementById('statMes').textContent = agendamentos.filter(a => (a.data_agendamento || '').startsWith(mesAtual)).length;
+      document.getElementById('statColetados').textContent = agendamentos.filter(a => a.status === 'Concluido').length;
+
+      // Agendamentos recentes (últimos 5) — desktop e mobile
+      const recentes = agendamentos.slice(0, 5);
+      document.getElementById('tbodyRecentes').innerHTML = recentes.length
+        ? recentes.map(a => `<tr onclick='abrirModalProtocolo(${JSON.stringify(a).replace(/'/g, "&#39;")})'>
+            <td>${formatData(a.data_agendamento)}</td>
+            <td>${(a.tipo_pessoa || 'N/D').charAt(0).toUpperCase() + (a.tipo_pessoa || '').slice(1)}</td>
+            <td>${a.nome_residuo || 'N/D'}</td>
+            <td>${badgeStatus(a.status)}</td></tr>`).join('')
+        : '<tr><td colspan="4" style="text-align:center;" class="muted">Nenhuma doação recente encontrada.</td></tr>';
+
+      document.getElementById('listaRecentesMobile').innerHTML = recentes.length
+        ? recentes.map(a => `<div class="row-mobile" onclick='abrirModalProtocolo(${JSON.stringify(a).replace(/'/g, "&#39;")})'>
+            <div><strong style="font-size:0.85rem;">${a.nome_residuo || 'N/D'}</strong><br>
+            <span class="muted">${formatData(a.data_agendamento)} · ${(a.tipo_pessoa || '').charAt(0).toUpperCase() + (a.tipo_pessoa || '').slice(1)}</span></div>
+            ${badgeStatus(a.status)}</div>`).join('')
+        : '<p class="muted" style="text-align:center; padding:1rem 0;">Nenhuma doação recente.</p>';
+
+      renderProtocolos();
+      renderFeedbacks();
+      renderEducacional();
+      aplicarFiltro(new URLSearchParams(location.search).get('filtro') || 'geral', true);
+    }
+
+    function filtrarAgendamentos(f) {
+      const hoje = new Date().toISOString().slice(0, 10);
+      const mesAtual = hoje.slice(0, 7);
+      switch (f) {
+        case 'total': return agendamentos;
+        case 'processados': return agendamentos.filter(a => a.status === 'Concluido');
+        case 'mes': return agendamentos.filter(a => (a.data_agendamento || '').startsWith(mesAtual));
+        case 'coletados': return agendamentos.filter(a => a.status === 'Concluido');
+        case 'hoje': return agendamentos.filter(a => a.data_agendamento === hoje);
+        default: return agendamentos;
+      }
+    }
+
+    function aplicarFiltro(f, silencioso) {
+      filtroAtual = f;
+      const lista = filtrarAgendamentos(f);
+      const titulos = {
+        geral: ['Todos os Protocolos', 'Listagem completa de agendamentos'],
+        total: ['Todos os Protocolos', 'Total de doações registradas'],
+        processados: ['Itens Processados', 'Agendamentos já concluídos'],
+        mes: ['Doações do Mês', 'Agendamentos do mês corrente'],
+        coletados: ['Itens Coletados', 'Materiais já coletados'],
+        hoje: ['Agendamentos do Dia', 'Coletas agendadas para hoje'],
+      };
+      const t = titulos[f] || titulos.geral;
+      document.getElementById('tituloProtocolos').textContent = t[0];
+      document.getElementById('descProtocolos').textContent = t[1];
+      document.getElementById('btnLimparFiltro').style.display = f === 'geral' ? 'none' : 'inline-flex';
+
+      ['cardTotal','cardProcessados','cardMes','cardColetados'].forEach(id => document.getElementById(id).classList.remove('selected'));
+      if (f === 'total') document.getElementById('cardTotal').classList.add('selected');
+      if (f === 'processados') document.getElementById('cardProcessados').classList.add('selected');
+      if (f === 'mes') document.getElementById('cardMes').classList.add('selected');
+      if (f === 'coletados') document.getElementById('cardColetados').classList.add('selected');
+
+      const termo = (document.getElementById('buscarProtocolo').value || '').toLowerCase();
+      const filtrados = termo ? lista.filter(a => JSON.stringify(a).toLowerCase().includes(termo)) : lista;
+
+      document.getElementById('listaProtocolos').innerHTML = filtrados.length
+        ? filtrados.map(a => `
+          <div class="proto-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.625rem; gap:0.5rem; flex-wrap:wrap;">
+              <strong style="color:#15803d; font-family:monospace; font-size:0.9rem;">#${a.protocolo_agendamento || 'N/D'}</strong>
+              ${badgeStatus(a.status)}
+            </div>
+            <div style="font-size:0.82rem; display:flex; flex-direction:column; gap:0.375rem; color:inherit;">
+              <p><strong>Tipo:</strong> ${(a.tipo_pessoa || 'N/D').charAt(0).toUpperCase() + (a.tipo_pessoa || '').slice(1)}</p>
+              <p><strong>Resíduo:</strong> ${a.nome_residuo || 'N/D'}</p>
+              <p><strong>Data:</strong> ${formatData(a.data_agendamento)} às ${a.hora_agendamento || '--:--'}</p>
+            </div>
+            <div style="margin-top:0.875rem; display:flex; justify-content:flex-end; gap:0.5rem; flex-wrap:wrap;">
+              <button class="btn btn-blue" onclick='abrirModalProtocolo(${JSON.stringify(a).replace(/'/g, "&#39;")})'><i class="fas fa-eye"></i> Detalhes</button>
+              ${a.status !== 'Concluido' ? `<button class="btn btn-green" onclick="concluirAgendamento(${a.id})"><i class="fas fa-check"></i> Concluir</button>` : ''}
+            </div>
+          </div>`).join('')
+        : '<p class="muted" style="grid-column:1/-1; text-align:center; padding:1.5rem 0;">Nenhum registro encontrado para este filtro.</p>';
+
+      if (!silencioso && f !== 'geral') {
+        showReport('donations');
+        setTimeout(() => document.getElementById('lista_protocolos_section').scrollIntoView({ behavior: 'smooth' }), 150);
+      }
+    }
+
+    async function concluirAgendamento(id) {
+      if (!confirm('Tem certeza que deseja marcar este agendamento como CONCLUÍDO? Esta ação não pode ser desfeita.')) return;
+      if (!DEMO_MODE) {
+        try {
+          const { error } = await _supabase.from('agendamentos').update({ status: 'Concluido' }).eq('id', id);
+          if (error) throw error;
+        } catch (e) {
+          alert('Erro ao concluir: ' + e.message);
+          return;
+        }
+      }
+      const item = agendamentos.find(a => a.id === id);
+      if (item) item.status = 'Concluido';
+      renderTudo();
+    }
+
+    function renderFeedbacks() {
+      document.getElementById('listaFeedbacks').innerHTML = feedbacks.length
+        ? feedbacks.map(f => `
+          <div style="padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+            <div style="margin-bottom:0.375rem;">${[1,2,3,4,5].map(i => `<i class="fas fa-star ${i <= (f.avaliacao_estrelas || 0) ? 'star' : 'star-empty'}"></i>`).join('')}</div>
+            <p style="font-size:0.82rem;"><strong>Recomendaria:</strong> ${f.recomendaria === 'sim' ? 'Sim' : 'Não'}</p>
+            <p class="muted" style="font-size:0.72rem; margin-top:0.375rem;">Enviado em ${formatData(f.data_envio)}</p>
+          </div>`).join('')
+        : '<p class="muted" style="text-align:center; padding:1.5rem 0;">Nenhum feedback recebido ainda.</p>';
+    }
+
+    function renderEducacional() {
+      document.getElementById('statMatTotal').textContent = materiais.length;
+      document.getElementById('statMatAula').textContent = materiais.filter(m => m.destino === 'aula').length;
+      document.getElementById('statMatPendente').textContent = materiais.filter(m => m.destino === 'pendente' || m.status_processamento === 'Em Espera').length;
+      document.getElementById('statMatColeta').textContent = materiais.filter(m => m.destino === 'coleta').length;
+
+      // Top 5 tipos
+      const contagem = {};
+      materiais.forEach(m => { const k = m.nome_material || 'Outros'; contagem[k] = (contagem[k] || 0) + 1; });
+      const top = Object.entries(contagem).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      const cores = ['#16a34a', '#2563eb', '#9333ea', '#ea580c', '#dc2626'];
+      document.getElementById('listaTiposMaterial').innerHTML = top.length
+        ? top.map(([nome, qtd], i) => {
+            const pct = materiais.length ? Math.round((qtd / materiais.length) * 100) : 0;
+            return `<div><div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:0.25rem;"><span>${nome}</span><span class="muted">${pct}%</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:${pct}%; background:${cores[i % 5]};"></div></div></div>`;
+          }).join('')
+        : '<p class="muted" style="text-align:center;">Nenhum material cadastrado.</p>';
+
+      // Tendência mensal
+      const porMes = {};
+      materiais.forEach(m => {
+        const mes = (m.data_cadastro || '').slice(0, 7);
+        if (!mes) return;
+        porMes[mes] = (porMes[mes] || 0) + 1;
+      });
+      const meses = Object.entries(porMes).sort().reverse();
+      document.getElementById('listaTendencia').innerHTML = meses.length
+        ? meses.map(([mes, total], i) => {
+            const anterior = meses[i + 1] ? meses[i + 1][1] : null;
+            let icone = 'fas fa-minus', cor = '#64748b';
+            if (anterior !== null) {
+              if (total > anterior) { icone = 'fas fa-arrow-up'; cor = '#16a34a'; }
+              else if (total < anterior) { icone = 'fas fa-arrow-down'; cor = '#dc2626'; }
+            }
+            const [ano, mm] = mes.split('-');
+            const nomeMes = new Date(ano, mm - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            return `<div class="month-row">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 1rem; cursor:pointer;" onclick="toggleMonthDetail(this)">
+                <span style="font-weight:600; font-size:0.85rem; text-transform:capitalize;">${nomeMes}</span>
+                <span style="font-weight:800; font-size:0.85rem; color:${cor};"><i class="${icone}" style="margin-right:0.375rem;"></i>${total} itens<i class="fas fa-chevron-down" style="margin-left:0.5rem; font-size:0.65rem; color:#94a3b8;"></i></span>
+              </div>
+              <div class="month-detail"><strong>Itens no mês:</strong> ${total}</div>
+            </div>`;
+          }).join('')
+        : '<p class="muted" style="text-align:center;">Nenhum histórico mensal de materiais.</p>';
+
+      // Recentes para aula
+      const paraAula = materiais.filter(m => m.destino === 'aula').slice(0, 5);
+      document.getElementById('tbodyMateriais').innerHTML = paraAula.length
+        ? paraAula.map(m => `<tr><td>${formatData(m.data_cadastro)}</td><td>${m.nome_material || 'N/D'}</td><td>${m.monitor_nome || 'N/D'}</td><td>${badgeStatus(m.status_processamento)}</td></tr>`).join('')
+        : '<tr><td colspan="4" style="text-align:center;" class="muted">Nenhum material destinado para aula encontrado.</td></tr>';
+      document.getElementById('listaMateriaisMobile').innerHTML = paraAula.length
+        ? paraAula.map(m => `<div class="row-mobile">
+            <div><strong style="font-size:0.85rem;">${m.nome_material || 'N/D'}</strong><br>
+            <span class="muted">${formatData(m.data_cadastro)} · ${m.monitor_nome || 'N/D'}</span></div>
+            ${badgeStatus(m.status_processamento)}</div>`).join('')
+        : '<p class="muted" style="text-align:center; padding:1rem 0;">Nenhum material destinado para aula.</p>';
+    }
+
+    /* ===================== UI ===================== */
+    function showReport(tipo) {
+      document.getElementById('donationsReport').style.display = tipo === 'donations' ? 'block' : 'none';
+      document.getElementById('educationalReport').style.display = tipo === 'educational' ? 'block' : 'none';
+      document.getElementById('tabDoacoes').classList.toggle('active', tipo === 'donations');
+      document.getElementById('tabEduc').classList.toggle('active', tipo === 'educational');
+    }
+
+    function abrirModalProtocolo(a) {
+      document.getElementById('protocoloNumero').textContent = '#' + (a.protocolo_agendamento || 'N/D');
+      document.getElementById('protocoloTipo').textContent = a.tipo_pessoa ? a.tipo_pessoa.charAt(0).toUpperCase() + a.tipo_pessoa.slice(1) : 'N/D';
+      document.getElementById('protocoloResiduo').textContent = a.nome_residuo || 'N/D';
+      document.getElementById('protocoloData').textContent = formatData(a.data_agendamento);
+      document.getElementById('protocoloHora').textContent = a.hora_agendamento || 'N/D';
+      document.getElementById('protocoloLocal').textContent = ENDERECO_COLETA;
+      document.getElementById('visualizarProtocolo').classList.add('open');
+    }
+    function fecharModalProtocolo() { document.getElementById('visualizarProtocolo').classList.remove('open'); }
+
+    function toggleMonthDetail(el) {
+      const det = el.nextElementSibling;
+      if (det) det.style.display = det.style.display === 'block' ? 'none' : 'block';
+    }
+
+    document.getElementById('buscarProtocolo').addEventListener('input', () => aplicarFiltro(filtroAtual, true));
+
+    /* Configurações globais (originais do funcionarios.html) */
+    function aplicarConfiguracoesGlobais() {
+      if (localStorage.getItem('rtec_dark') === 'true') {
+        document.body.classList.add('dark-mode');
+        const icon = document.getElementById('dark-icon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+      if (localStorage.getItem('rtec_daltonism') === 'true') document.documentElement.classList.add('daltonism-mode');
+      const fonte = localStorage.getItem('rtec_font');
+      if (fonte === 'large') document.documentElement.classList.add('font-large');
+      if (fonte === 'xlarge') document.documentElement.classList.add('font-xlarge');
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      aplicarConfiguracoesGlobais();
+      carregarDados();
+    });
+
+    function fazerLogout() {
+      localStorage.removeItem('rtec_logged');
+      localStorage.removeItem('rtec_user_type');
+      window.location.href = 'sobre.html';
+    }
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('rtec_dark', isDark);
+      document.getElementById('dark-icon').textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+    async function toggleDaltonismoAPI() {
+      const htmlEl = document.documentElement;
+      htmlEl.classList.toggle('daltonism-mode');
+      const ativo = htmlEl.classList.contains('daltonism-mode');
+      localStorage.setItem('rtec_daltonism', ativo);
+      try {
+        await fetch('https://httpbin.org/post', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accessibilityProfile: 'daltonism', status: ativo, timestamp: Date.now() })
+        });
+      } catch (e) { console.log('API de Daltonismo sincronizada localmente.'); }
+    }
+    function mudarFonte() {
+      const htmlEl = document.documentElement;
+      if (!htmlEl.classList.contains('font-large') && !htmlEl.classList.contains('font-xlarge')) {
+        htmlEl.classList.add('font-large'); localStorage.setItem('rtec_font', 'large');
+      } else if (htmlEl.classList.contains('font-large')) {
+        htmlEl.classList.remove('font-large'); htmlEl.classList.add('font-xlarge');
+        localStorage.setItem('rtec_font', 'xlarge');
+      } else {
+        htmlEl.classList.remove('font-xlarge'); localStorage.setItem('rtec_font', 'normal');
+      }
+    }
+    function toggleMenu() { document.getElementById('topMenu').classList.toggle('open'); }
+  </script>
+</body>
+</html>

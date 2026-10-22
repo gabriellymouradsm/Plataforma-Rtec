@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <title>RTEC - Monitor de Materiais</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem('rtec_logged') !== 'true') {
+      window.location.href = 'index.html';
+    }
+    const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    html { font-size: 16px; transition: font-size 0.2s ease; scroll-behavior: smooth; }
+    html.font-large { font-size: 19px; }
+    html.font-xlarge { font-size: 22px; }
+    html.daltonism-mode { filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="daltonism"><feColorMatrix type="matrix" values="0.35 0.7 -0.05 0 0 -0.15 1.15 0.05 0 0 0.1 0.1 0.8 0 0 0 0 0 1 0"/></filter></svg>#daltonism') contrast(120%); }
+
+    .accessibility-bar { position: fixed; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 9999; background: rgba(0,0,0,0.75); padding: 0.5rem 0.75rem; border-radius: 2rem; backdrop-filter: blur(6px); }
+    .acc-btn { background: #ffffff; border: none; border-radius: 50%; width: 2.25rem; height: 2.25rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #0f172a; font-size: 0.875rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.2s; }
+    .acc-btn:hover { transform: scale(1.08); }
+
+    body { width: 100%; min-height: 100vh; background-color: #f7f9f7; color: #0f172a; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+    body.dark-mode { background-color: #0f172a; color: #f8fafc; }
+    body.dark-mode header { background: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-bottom: 1px solid #334155; }
+    body.dark-mode .logo-area { background: #1e293b; }
+    body.dark-mode main { background: #0f172a; }
+    body.dark-mode .card { background: #1e293b; color: #f8fafc; border: 1px solid #334155; }
+    body.dark-mode .card h3, body.dark-mode .stat-value { color: #f8fafc; }
+    body.dark-mode .card p, body.dark-mode .muted { color: #94a3b8; }
+    body.dark-mode .search-input, body.dark-mode select, body.dark-mode input[type="text"], body.dark-mode input[type="email"] { background: #0f172a; border-color: #334155; color: #f8fafc; }
+    body.dark-mode thead { background: #1e293b; }
+    body.dark-mode .row-mobile { border-color: #334155 !important; }
+    body.dark-mode .dist-item { background: #0f172a; }
+    body.dark-mode .opt-card { background: #0f172a; }
+    body.dark-mode .pending-item { background: #0f172a; }
+
+    .app-container { width: 100%; min-height: 100vh; background: #f7f9f7; display: flex; flex-direction: column; }
+    header { background: #15803d; width: 100%; min-height: 4.375rem; padding: 0.5rem 1rem; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); gap: 0.5rem; }
+    .logo-area { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; background: #ffffff; border-radius: 1.5rem; padding: 0.25rem 0.5rem; flex-shrink: 0; }
+    .logo-area img { height: 2.25rem; width: auto; display: block; object-fit: contain; }
+    .top-menu { display: flex; align-items: center; gap: 0.375rem; }
+    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 0.5rem 0.875rem; border-radius: 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.375rem; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
+    .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
+    .menu-btn span.material-symbols-outlined { font-size: 1.125rem; }
+    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 2.625rem; height: 2.625rem; border-radius: 0.75rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+
+    @media (max-width: 900px) {
+      .top-menu { display: none; position: fixed; top: 4.375rem; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 1.25rem; gap: 0.5rem; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; z-index: 1001; }
+      .top-menu.open { display: flex; }
+      .hamburger-btn { display: flex; }
+      .badge-geo { display: none !important; }
+      .menu-btn { width: 100%; padding: 0.75rem 1rem; font-size: 0.9rem; justify-content: flex-start; background: rgba(255, 255, 255, 0.08); border-radius: 0.875rem; }
+      .menu-btn.active { background: #ffffff; color: #15803d; }
+    }
+
+    main { flex: 1; width: 100%; padding: 6rem 1rem 3rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
+    .content-wrapper { width: 100%; max-width: 72rem; margin: 0 auto; }
+
+    .card { background: #ffffff; border-radius: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; }
+    .card-pad { padding: 1.5rem; }
+    .muted { color: #64748b; font-size: 0.85rem; }
+
+    /* Abas de categoria */
+    .cat-bar { display: flex; gap: 0.5rem; background: #ffffff; border-radius: 1rem; padding: 0.375rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    body.dark-mode .cat-bar { background: #1e293b; }
+    .cat-btn { flex: 1; border: none; background: transparent; padding: 0.75rem 1rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 0.375rem; transition: all 0.2s; }
+    .cat-btn.active-green { background: #15803d; color: #ffffff; }
+    .cat-btn.active-brown { background: #d97706; color: #ffffff; }
+
+    .btn { border: none; border-radius: 0.75rem; padding: 0.625rem 1rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; transition: filter 0.2s; width: 100%; }
+    .btn:hover { filter: brightness(1.1); }
+    .btn-blue { background: #2563eb; color: #fff; }
+    .btn-teal { background: #0d9488; color: #fff; }
+    .btn-red { background: #dc2626; color: #fff; }
+    .btn-green { background: #16a34a; color: #fff; }
+
+    .badge { display: inline-block; padding: 0.25rem 0.625rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-yellow { background: #fef9c3; color: #854d0e; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    body.dark-mode .badge-green { background: #14532d; color: #86efac; }
+    body.dark-mode .badge-yellow { background: #713f12; color: #fde047; }
+    body.dark-mode .badge-red { background: #7f1d1d; color: #fca5a5; }
+
+    /* Distribuição */
+    .dist-item { background: #f8fafc; border-radius: 0.875rem; padding: 0.875rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+    body.dark-mode .dist-item { background: #0f172a; }
+
+    /* Tabela desktop / Lista mobile */
+    .table-desktop { display: block; width: 100%; overflow-x: auto; }
+    .table-desktop table { width: 100%; border-collapse: collapse; }
+    .table-desktop th { text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; padding: 0.75rem 1rem; background: #f8fafc; }
+    body.dark-mode .table-desktop th { background: #1e293b; }
+    .table-desktop td { padding: 0.875rem 1rem; font-size: 0.85rem; border-top: 1px solid #e2e8f0; }
+    body.dark-mode .table-desktop td { border-color: #334155; }
+    .list-mobile { display: none; }
+    @media (max-width: 767px) {
+      .table-desktop { display: none; }
+      .list-mobile { display: block; }
+    }
+    .row-mobile { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.875rem 0; border-bottom: 1px solid #e2e8f0; }
+    .row-mobile:last-child { border-bottom: none; }
+
+    /* Pendências */
+    .pending-item { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: #f8fafc; border-left: 4px solid #facc15; border-radius: 0.625rem; padding: 0.75rem; }
+    body.dark-mode .pending-item { background: #0f172a; }
+    .btn-baixa { background: none; border: none; color: #16a34a; cursor: pointer; font-size: 1.25rem; padding: 0.375rem; border-radius: 50%; transition: background 0.2s; flex-shrink: 0; }
+    .btn-baixa:hover { background: #dcfce7; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #ffffff; border-radius: 1.25rem; max-width: 34rem; width: 100%; max-height: 90vh; overflow-y: auto; }
+    body.dark-mode .modal-box { background: #1e293b; color: #f8fafc; }
+    .modal-head { padding: 1.25rem 1.5rem; border-radius: 1.25rem 1.25rem 0 0; display: flex; justify-content: space-between; align-items: center; }
+    .modal-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; line-height: 1; }
+    .field { margin-bottom: 1.25rem; }
+    .field label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .field select, .field input { width: 100%; border: 2px solid #e2e8f0; border-radius: 0.75rem; padding: 0.625rem 0.875rem; font-size: 0.9rem; outline: none; background: #fff; color: #0f172a; font-family: inherit; }
+    body.dark-mode .field select, body.dark-mode .field input { background: #0f172a; border-color: #334155; color: #f8fafc; }
+    .field select:focus, .field input:focus { border-color: #16a34a; }
+    .opt-grid { display: grid; grid-template-columns: 1fr; gap: 0.625rem; }
+    @media (min-width: 640px) { .opt-grid { grid-template-columns: 1fr 1fr; } }
+    .opt-card { display: flex; align-items: center; gap: 0.625rem; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+    body.dark-mode .opt-card { background: #0f172a; }
+    .opt-card:hover { border-color: #94a3b8; }
+    .opt-card:has(input:checked) { border-color: #16a34a; background: #f0fdf4; }
+    body.dark-mode .opt-card:has(input:checked) { background: #14532d; }
+    .opt-card.opt-brown:has(input:checked) { border-color: #d97706; background: #fffbeb; }
+    body.dark-mode .opt-card.opt-brown:has(input:checked) { background: #78350f; }
+    .opt-card.opt-red:has(input:checked) { border-color: #dc2626; background: #fef2f2; }
+    body.dark-mode .opt-card.opt-red:has(input:checked) { background: #7f1d1d; }
+    .opt-card.opt-blue:has(input:checked) { border-color: #2563eb; background: #eff6ff; }
+    body.dark-mode .opt-card.opt-blue:has(input:checked) { background: #1e3a8a; }
+
+    .stats-flex { display: flex; align-items: center; gap: 1rem; }
+    @media print {
+      header, .accessibility-bar, .btn, .cat-bar, .hamburger-btn, .btn-baixa { display: none !important; }
+      main { padding: 0; }
+      body { background: #fff; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <a href="sobre.html" class="logo-area">
+        <img src="img/logo.png" alt="RTEC Logo">
+      </a>
+      <nav class="top-menu" id="topMenu">
+        <a href="funcionarios.html" class="menu-btn"><span class="material-symbols-outlined">dashboard</span><span>Painel</span></a>
+        <a href="monitoria.html" class="menu-btn active"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">recycling</span><span>Monitor</span></a>
+        <a href="operacional.html" class="menu-btn"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
+        <a href="funcionarios.html#relatorios" class="menu-btn"><span class="material-symbols-outlined">rate_review</span><span>Feedback</span></a>
+        <a href="sobre.html" class="menu-btn" onclick="fazerLogout(); return false;"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 0.375rem 0.75rem; border-radius: 1.25rem; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 0.375rem; white-space: nowrap;">
+          <span style="width: 0.4375rem; height: 0.4375rem; background: #4ade80; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span> Franco da Rocha
+        </div>
+        <button class="menu-btn" onclick="toggleDarkMode()" title="Modo Claro/Escuro" style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2);"><span class="material-symbols-outlined" id="dark-icon" style="font-size:1.125rem;">dark_mode</span></button>
+        <button class="hamburger-btn" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
+      </div>
+    </header>
+
+    <main>
+      <div class="content-wrapper">
+
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a; text-transform: uppercase;">Portal Interno</span>
+          <h2 style="font-size: 1.625rem; font-weight: 800; margin-top: 0.25rem;">Monitor de Materiais</h2>
+          <p class="muted" style="margin-top: 0.375rem;">Acompanhe a separação e processamento de materiais eletrônicos por categoria</p>
+        </div>
+
+        <!-- Seleção de categoria + ações -->
+        <div style="display:grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="top-grid">
+          <div class="card card-pad">
+            <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 0.75rem; text-align: center;">Selecionar Categoria</h3>
+            <div class="cat-bar">
+              <button class="cat-btn active-green" id="greenTab" onclick="showCategory('green')"><i class="fas fa-desktop"></i> Informática</button>
+              <button class="cat-btn" id="brownTab" onclick="showCategory('brown')"><i class="fas fa-tv"></i> Áudio/Vídeo</button>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="stats-flex" style="justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+              <div class="stats-flex">
+                <div style="background: #dcfce7; border-radius: 50%; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <i class="fas fa-recycle" style="color: #16a34a; font-size: 1.25rem;"></i>
+                </div>
+                <div>
+                  <p class="muted" style="font-size: 0.78rem;">Coleta do Mês</p>
+                  <p class="stat-value" id="recyclingRate" style="font-size: 1.75rem; font-weight: 800; color: #16a34a;">0%</p>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 11rem;">
+                <button class="btn btn-blue" onclick="openNewMaterialModal()"><i class="fas fa-plus"></i> Cadastrar Material</button>
+                <button class="btn btn-teal" onclick="openEmailModal()"><i class="fas fa-envelope"></i> Enviar E-mail</button>
+                <button class="btn btn-red" id="pdfButtonMonitor" onclick="generatePDF()"><i class="fas fa-file-pdf"></i> <span id="pdfButtonTextMonitor">Gerar PDF</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <style>@media(min-width: 900px){ .top-grid { grid-template-columns: 1fr 1fr !important; } }</style>
+
+        <!-- RELATÓRIO VERDE -->
+        <section id="greenReport">
+          <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem;">Equipamentos de Informática e Telefonia</h3>
+          <div style="display:grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="report-grid">
+            <div class="card card-pad">
+              <h4 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 1rem; padding-bottom: 0.625rem; border-bottom: 1px solid #e2e8f0;">Distribuição por Tipo</h4>
+              <div id="distGreen" style="display: flex; flex-direction: column; gap: 0.625rem;"></div>
+            </div>
+            <div class="card">
+              <div style="background: #15803d; padding: 1.125rem 1.25rem;"><h4 style="color: #fff; font-size: 0.95rem; font-weight: 800;"><i class="fas fa-clock" style="margin-right:0.5rem;"></i>Processamento Recente</h4></div>
+              <div class="table-desktop">
+                <table>
+                  <thead><tr><th>Data</th><th>Material</th><th>Status</th></tr></thead>
+                  <tbody id="tbodyGreen"></tbody>
+                </table>
+              </div>
+              <div class="list-mobile" style="padding: 0 1.25rem;" id="listaGreenMobile"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RELATÓRIO MARROM -->
+        <section id="brownReport" style="display: none;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem;">Equipamentos de Áudio e Vídeo</h3>
+          <div style="display:grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="report-grid">
+            <div class="card card-pad">
+              <h4 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 1rem; padding-bottom: 0.625rem; border-bottom: 1px solid #e2e8f0;">Distribuição por Tipo</h4>
+              <div id="distBrown" style="display: flex; flex-direction: column; gap: 0.625rem;"></div>
+            </div>
+            <div class="card">
+              <div style="background: #d97706; padding: 1.125rem 1.25rem;"><h4 style="color: #fff; font-size: 0.95rem; font-weight: 800;"><i class="fas fa-clock" style="margin-right:0.5rem;"></i>Processamento Recente</h4></div>
+              <div class="table-desktop">
+                <table>
+                  <thead><tr><th>Data</th><th>Material</th><th>Status</th></tr></thead>
+                  <tbody id="tbodyBrown"></tbody>
+                </table>
+              </div>
+              <div class="list-mobile" style="padding: 0 1.25rem;" id="listaBrownMobile"></div>
+            </div>
+          </div>
+        </section>
+        <style>@media(min-width: 1024px){ .report-grid { grid-template-columns: 1fr 1fr !important; } }</style>
+
+        <!-- RELATÓRIOS ANTERIORES -->
+        <section id="relatorios" style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem;">Relatórios Anteriores</h3>
+          <div class="card card-pad" id="listaRelatorios"></div>
+        </section>
+
+        <!-- PENDÊNCIAS -->
+        <section id="pendingArea">
+          <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem;"><i class="fas fa-boxes" style="color: #2563eb; margin-right:0.375rem;"></i> Pendências de Destino</h3>
+          <div style="display:grid; grid-template-columns: 1fr; gap: 1rem;" class="pending-grid">
+            <div class="card card-pad" style="border-top: 4px solid #dc2626;">
+              <h4 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 0.875rem;"><i class="fas fa-truck-loading" style="color: #dc2626; margin-right:0.375rem;"></i> Aguardando Coleta/Reciclagem</h4>
+              <div id="listColeta" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 14rem; overflow-y: auto;"></div>
+            </div>
+            <div class="card card-pad" style="border-top: 4px solid #2563eb;">
+              <h4 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 0.875rem;"><i class="fas fa-school" style="color: #2563eb; margin-right:0.375rem;"></i> Aguardando Aula/Reaproveitamento</h4>
+              <div id="listAula" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 14rem; overflow-y: auto;"></div>
+            </div>
+          </div>
+        </section>
+        <style>@media(min-width: 1024px){ .pending-grid { grid-template-columns: 1fr 1fr !important; } }</style>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL: Cadastrar Material -->
+  <div class="modal-overlay" id="newMaterialModal" onclick="if(event.target===this) closeNewMaterialModal()">
+    <div class="modal-box">
+      <div class="modal-head" style="background: #2563eb;">
+        <h3 style="color: #fff; font-size: 1.05rem; font-weight: 800;"><i class="fas fa-plus-circle" style="margin-right:0.5rem;"></i>Cadastrar Novo Material</h3>
+        <button class="modal-close" onclick="closeNewMaterialModal()">&times;</button>
+      </div>
+      <form id="newMaterialForm" style="padding: 1.5rem;">
+        <div class="field">
+          <label>Vincular a um Agendamento (Opcional)</label>
+          <select id="agendamentoSelect" name="id_agendamento"><option value="">Não vincular (Material Avulso)</option></select>
+        </div>
+        <div class="field">
+          <label>Tipo de Material</label>
+          <select id="materialType" name="id_tipo_material" required><option value="">Selecione um tipo</option></select>
+        </div>
+        <div class="field">
+          <label>Categoria</label>
+          <div class="opt-grid">
+            <label class="opt-card"><input type="radio" name="category" value="green" required style="accent-color:#16a34a;"><i class="fas fa-laptop" style="color:#16a34a;"></i> Informática e Telefonia</label>
+            <label class="opt-card opt-brown"><input type="radio" name="category" value="brown" required style="accent-color:#d97706;"><i class="fas fa-tv" style="color:#d97706;"></i> Áudio e Vídeo</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Destino Final</label>
+          <div class="opt-grid" id="destinoOptions"></div>
+        </div>
+        <div class="field">
+          <label>Possíveis Problemas <span class="muted" style="font-weight:400;">(Opcional)</span></label>
+          <div class="opt-grid" id="problemaOptions"></div>
+        </div>
+        <button type="submit" class="btn btn-green" style="padding: 0.875rem; font-size: 0.95rem; margin-top: 0.5rem;"><i class="fas fa-check-circle"></i> Salvar Novo Material</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Enviar E-mail -->
+  <div class="modal-overlay" id="emailReportModal" onclick="if(event.target===this) closeEmailModal()">
+    <div class="modal-box" style="max-width: 26rem;">
+      <div class="modal-head" style="background: #0d9488;">
+        <h3 style="color: #fff; font-size: 1rem; font-weight: 800;"><i class="fas fa-paper-plane" style="margin-right:0.5rem;"></i>Enviar Relatório por E-mail</h3>
+        <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+      </div>
+      <form id="emailReportForm" style="padding: 1.5rem;">
+        <div class="field">
+          <label for="recipientEmail">E-mail do Destinatário</label>
+          <input type="email" id="recipientEmail" placeholder="exemplo@email.com" required>
+        </div>
+        <button type="submit" id="sendEmailBtn" class="btn btn-teal" style="padding: 0.875rem; font-size: 0.95rem;">
+          <span id="sendEmailBtnText"><i class="fas fa-check-circle"></i> Enviar Relatório</span>
+          <i id="sendEmailSpinner" class="fas fa-spinner fa-spin" style="display:none;"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="accessibility-bar">
+    <button class="acc-btn" onclick="mudarFonte()" title="Aumentar / Reduzir Fonte">A+</button>
+    <button class="acc-btn" onclick="toggleDaltonismoAPI()" title="API Filtro Daltonismo"><span class="material-symbols-outlined" style="font-size:1.125rem;">visibility</span></button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">(function(){ emailjs.init("4g-zOx6kZsPzplL3F"); })();</script>
+
+  <script>
+    /* ================================================================
+       DADOS — ajuste os nomes de tabelas/colunas conforme seu schema
+       Supabase. Se a consulta falhar, o modo demo é ativado.
+       ================================================================ */
+    let DEMO_MODE = false;
+    let materiais = [], agendamentos = [], tiposMaterial = [], tiposDestino = [], tiposProblema = [];
+
+    const demoMateriais = [
+      { id: 1, nome_material: 'Monitor LCD', categoria: 'green', status_processamento: 'Processado', destino: 'coleta', data_cadastro: '2026-10-20' },
+      { id: 2, nome_material: 'Notebook', categoria: 'green', status_processamento: 'Em Espera', destino: 'aula', data_cadastro: '2026-10-21' },
+      { id: 3, nome_material: 'Teclado', categoria: 'green', status_processamento: 'Em Processo', destino: 'coleta', data_cadastro: '2026-10-18' },
+      { id: 4, nome_material: 'TV LED', categoria: 'brown', status_processamento: 'Processado', destino: 'coleta', data_cadastro: '2026-10-19' },
+      { id: 5, nome_material: 'Caixa de Som', categoria: 'brown', status_processamento: 'Em Espera', destino: 'aula', data_cadastro: '2026-10-21' },
+      { id: 6, nome_material: 'Mouse', categoria: 'green', status_processamento: 'Em Espera', destino: 'aula', data_cadastro: '2026-10-22' },
+    ];
+    const demoAgendamentos = [
+      { id: 1, protocolo_agendamento: 'RTEC-2026-001', nome_residuo: 'Monitor CRT', data_agendamento: '2026-10-20' },
+      { id: 2, protocolo_agendamento: 'RTEC-2026-002', nome_residuo: 'Notebook', data_agendamento: '2026-10-22' },
+    ];
+    const demoTiposMaterial = [
+      { id_tipo_material: 1, nome_material: 'Monitor LCD' }, { id_tipo_material: 2, nome_material: 'Notebook' },
+      { id_tipo_material: 3, nome_material: 'Teclado' }, { id_tipo_material: 4, nome_material: 'TV LED' },
+      { id_tipo_material: 5, nome_material: 'Caixa de Som' }, { id_tipo_material: 6, nome_material: 'Mouse' },
+    ];
+    const demoTiposDestino = [
+      { id_tipo_destino: 1, nome_destino: 'Para Coleta' }, { id_tipo_destino: 2, nome_destino: 'Para Aula' },
+    ];
+    const demoTiposProblema = [
+      { id_tipo_problema: 1, nome_problema: 'Tela quebrada' }, { id_tipo_problema: 2, nome_problema: 'Não liga' },
+      { id_tipo_problema: 3, nome_problema: 'Peças faltando' }, { id_tipo_problema: 4, nome_problema: 'Conector danificado' },
+    ];
+
+    function formatData(iso) {
+      if (!iso) return 'N/D';
+      const d = new Date((iso + '').replace(' ', 'T'));
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    async function carregarDados() {
+      try {
+        const [rMat, rAgen, rTipo, rDest, rProb] = await Promise.all([
+          _supabase.from('materiais_monitoria').select('*').order('data_cadastro', { ascending: false }),
+          _supabase.from('agendamentos').select('id, protocolo_agendamento, nome_residuo, data_agendamento'),
+          _supabase.from('tipos_material').select('*'),
+          _supabase.from('tipos_destino').select('*'),
+          _supabase.from('tipos_problema').select('*'),
+        ]);
+        if (rMat.error) throw rMat.error;
+        materiais = rMat.data || [];
+        agendamentos = rAgen.data || [];
+        tiposMaterial = rTipo.data || [];
+        tiposDestino = rDest.data || [];
+        tiposProblema = rProb.data || [];
+        if (!materiais.length) throw new Error('vazio');
+      } catch (e) {
+        DEMO_MODE = true;
+        materiais = demoMateriais; agendamentos = demoAgendamentos;
+        tiposMaterial = demoTiposMaterial; tiposDestino = demoTiposDestino; tiposProblema = demoTiposProblema;
+        console.warn('Supabase indisponível — modo demonstração ativo.');
+      }
+      preencherSelects();
+      renderTudo();
+    }
+
+    function preencherSelects() {
+      document.getElementById('agendamentoSelect').innerHTML =
+        '<option value="">Não vincular (Material Avulso)</option>' +
+        agendamentos.map(a => `<option value="${a.id}">Protocolo #${a.protocolo_agendamento} - ${a.nome_residuo || 'N/D'} (${formatData(a.data_agendamento)})</option>`).join('');
+      document.getElementById('materialType').innerHTML =
+        '<option value="">Selecione um tipo</option>' +
+        tiposMaterial.map(t => `<option value="${t.id_tipo_material || t.id}">${t.nome_material}</option>`).join('');
+      document.getElementById('destinoOptions').innerHTML = tiposDestino.map(t => {
+        const coleta = (t.nome_destino || '').toLowerCase().includes('coleta');
+        return `<label class="opt-card ${coleta ? 'opt-red' : 'opt-blue'}">
+          <input type="radio" name="id_tipo_destino" value="${t.id_tipo_destino || t.id}" required style="accent-color:${coleta ? '#dc2626' : '#2563eb'};">
+          <i class="fas ${coleta ? 'fa-trash-alt' : 'fa-chalkboard-teacher'}" style="color:${coleta ? '#dc2626' : '#2563eb'};"></i> ${t.nome_destino}</label>`;
+      }).join('');
+      document.getElementById('problemaOptions').innerHTML = tiposProblema.map(t =>
+        `<label class="opt-card opt-blue"><input type="checkbox" name="problems[]" value="${t.id_tipo_problema || t.id}" style="accent-color:#2563eb;"> ${t.nome_problema}</label>`).join('');
+    }
+
+    function badgeStatus(status) {
+      const s = status || '';
+      if (s === 'Processado' || s === 'Finalizado' || s === 'Concluido') return `<span class="badge badge-green">${s}</span>`;
+      if (s === 'Em Processo' || s === 'Preparando' || s === 'Em Espera') return `<span class="badge badge-yellow">${s}</span>`;
+      return `<span class="badge badge-red">${s || 'N/D'}</span>`;
+    }
+
+    function renderTudo() {
+      // % coleta do mês
+      const mesAtual = new Date().toISOString().slice(0, 7);
+      const doMes = materiais.filter(m => (m.data_cadastro || '').slice(0, 7) === mesAtual);
+      const coletados = doMes.filter(m => m.destino === 'coleta' || m.status_processamento === 'Processado').length;
+      document.getElementById('recyclingRate').textContent = (doMes.length ? Math.round((coletados / doMes.length) * 100) : 0) + '%';
+
+      ['green', 'brown'].forEach(cat => {
+        const lista = materiais.filter(m => m.categoria === cat);
+
+        // Distribuição por tipo
+        const contagem = {};
+        lista.forEach(m => { const k = m.nome_material || 'Outros'; contagem[k] = (contagem[k] || 0) + 1; });
+        const dist = Object.entries(contagem).sort((a, b) => b[1] - a[1]);
+        const elDist = document.getElementById('dist' + (cat === 'green' ? 'Green' : 'Brown'));
+        elDist.innerHTML = dist.length
+          ? dist.map(([nome, qtd]) => `<div class="dist-item">
+              <span style="font-weight: 600; font-size: 0.85rem;"><i class="fas ${cat === 'green' ? 'fa-desktop' : 'fa-tv'}" style="color: ${cat === 'green' ? '#16a34a' : '#d97706'}; margin-right: 0.5rem;"></i>${nome}</span>
+              <span class="muted">${qtd} un.</span></div>`).join('')
+          : '<p class="muted" style="text-align:center;">Nenhum material cadastrado nesta categoria.</p>';
+
+        // Processamento recente
+        const recentes = lista.slice(0, 5);
+        const tbody = document.getElementById('tbody' + (cat === 'green' ? 'Green' : 'Brown'));
+        tbody.innerHTML = recentes.length
+          ? recentes.map(m => `<tr><td class="muted">${formatData(m.data_cadastro)}</td><td style="font-weight:600;">${m.nome_material || 'N/D'}</td><td>${badgeStatus(m.status_processamento)}</td></tr>`).join('')
+          : '<tr><td colspan="3" class="muted" style="text-align:center;">Nenhum processamento recente.</td></tr>';
+        document.getElementById('lista' + (cat === 'green' ? 'Green' : 'Brown') + 'Mobile').innerHTML = recentes.length
+          ? recentes.map(m => `<div class="row-mobile">
+              <div><strong style="font-size:0.85rem;">${m.nome_material || 'N/D'}</strong><br><span class="muted">${formatData(m.data_cadastro)}</span></div>
+              ${badgeStatus(m.status_processamento)}</div>`).join('')
+          : '<p class="muted" style="text-align:center; padding:1rem 0;">Nenhum processamento recente.</p>';
+      });
+
+      renderRelatorios();
+      renderPendencias();
+    }
+
+    function renderRelatorios() {
+      const porMesCat = {};
+      materiais.forEach(m => {
+        const mes = (m.data_cadastro || '').slice(0, 7);
+        if (!mes) return;
+        const key = `${m.categoria}|${mes}`;
+        porMesCat[key] = (porMesCat[key] || 0) + 1;
+      });
+      const entradas = Object.entries(porMesCat).sort((a, b) => b[0].localeCompare(a[0]));
+      document.getElementById('listaRelatorios').innerHTML = entradas.length
+        ? entradas.map(([key, total]) => {
+            const [cat, mes] = key.split('|');
+            const [ano, mm] = mes.split('-');
+            const nomeMes = new Date(ano, mm - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            const nomeCat = cat === 'green' ? 'Informática' : 'Áudio/Vídeo';
+            return `<div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; padding:0.75rem 0; border-bottom:1px solid #e2e8f0; flex-wrap:wrap;">
+              <div><p style="font-weight:700; font-size:0.9rem;">Relatório de ${nomeCat} — <span style="text-transform:capitalize;">${nomeMes}</span></p>
+              <p class="muted">Total de ${total} itens</p></div></div>`;
+          }).join('')
+        : '<p class="muted" style="text-align:center;">Nenhum relatório anterior gerado.</p>';
+    }
+
+    function renderPendencias() {
+      const pendColeta = materiais.filter(m => m.destino === 'coleta' && m.status_processamento !== 'Processado');
+      const pendAula = materiais.filter(m => m.destino === 'aula' && m.status_processamento !== 'Processado');
+      const montar = (lista, listaId) => {
+        document.getElementById(listaId).innerHTML = lista.length
+          ? lista.map(m => `<div class="pending-item">
+              <div style="flex:1; min-width:0;"><p style="font-weight:600; font-size:0.85rem;">${m.nome_material || 'N/D'}</p>
+              <p class="muted" style="font-size:0.75rem;">Cad. em ${formatData(m.data_cadastro)}</p></div>
+              <button class="btn-baixa" data-id="${m.id}" title="Dar Baixa (Processado)"><i class="fas fa-check-circle"></i></button></div>`).join('')
+          : '<p class="muted" style="font-style:italic;">Nenhum material pendente.</p>';
+      };
+      montar(pendColeta, 'listColeta');
+      montar(pendAula, 'listAula');
+    }
+
+    async function darBaixa(event) {
+      const btn = event.target.closest('.btn-baixa');
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (!confirm(`Tem certeza que deseja dar baixa neste material (ID: ${id})?\n\nEle será movido para "Processado".`)) return;
+      btn.disabled = true;
+      btn.querySelector('i').classList.add('fa-spin');
+      if (!DEMO_MODE) {
+        try {
+          const { error } = await _supabase.from('materiais_monitoria').update({ status_processamento: 'Processado' }).eq('id', id);
+          if (error) throw error;
+        } catch (e) {
+          alert('Erro ao atualizar status: ' + e.message);
+          btn.disabled = false;
+          btn.querySelector('i').classList.remove('fa-spin');
+          return;
+        }
+      }
+      const m = materiais.find(x => x.id == id);
+      if (m) m.status_processamento = 'Processado';
+      renderTudo();
+    }
+    document.getElementById('listColeta').addEventListener('click', darBaixa);
+    document.getElementById('listAula').addEventListener('click', darBaixa);
+
+    /* ===================== UI ===================== */
+    function showCategory(cat) {
+      document.getElementById('greenReport').style.display = cat === 'green' ? 'block' : 'none';
+      document.getElementById('brownReport').style.display = cat === 'brown' ? 'block' : 'none';
+      const g = document.getElementById('greenTab'), b = document.getElementById('brownTab');
+      g.classList.toggle('active-green', cat === 'green');
+      b.classList.toggle('active-brown', cat === 'brown');
+      const rate = document.getElementById('recyclingRate');
+      rate.style.color = cat === 'green' ? '#16a34a' : '#d97706';
+      localStorage.setItem('monitorCategory', cat);
+    }
+
+    function openNewMaterialModal() { document.getElementById('newMaterialModal').classList.add('open'); }
+    function closeNewMaterialModal() { document.getElementById('newMaterialModal').classList.remove('open'); }
+    function openEmailModal() { document.getElementById('emailReportModal').classList.add('open'); }
+    function closeEmailModal() { document.getElementById('emailReportModal').classList.remove('open'); }
+
+    async function generatePDF() {
+      const btn = document.getElementById('pdfButtonMonitor');
+      const txt = document.getElementById('pdfButtonTextMonitor');
+      const icon = btn.querySelector('i');
+      btn.disabled = true; txt.innerText = 'Processando...'; icon.className = 'fas fa-spinner fa-spin';
+      try {
+        const { jsPDF } = window.jspdf;
+        const el = document.querySelector('.content-wrapper');
+        const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: document.body.classList.contains('dark-mode') ? '#0f172a' : '#f7f9f7' });
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+        const imgH = canvas.height * pageW / canvas.width;
+        let heightLeft = imgH, position = 0;
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, pageW, imgH);
+        heightLeft -= pageH;
+        while (heightLeft > 0) {
+          position = heightLeft - imgH;
+          pdf.addPage();
+          pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, pageW, imgH);
+          heightLeft -= pageH;
+        }
+        pdf.save('relatorio-monitoria.pdf');
+      } catch (e) {
+        alert('Erro ao gerar PDF: ' + e.message);
+      } finally {
+        btn.disabled = false; txt.innerText = 'Gerar PDF'; icon.className = 'fas fa-file-pdf';
+      }
+    }
+
+    // Cadastro de material
+    document.getElementById('newMaterialForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const fd = new FormData(this);
+      const idTipo = fd.get('id_tipo_material');
+      const categoria = fd.get('category');
+      const idDestino = fd.get('id_tipo_destino');
+      if (!idTipo || !categoria || !idDestino) { alert('Preencha Tipo, Categoria e Destino Final.'); return; }
+      const tipo = tiposMaterial.find(t => (t.id_tipo_material || t.id) == idTipo);
+      const destino = tiposDestino.find(t => (t.id_tipo_destino || t.id) == idDestino);
+      const ehColeta = (destino?.nome_destino || '').toLowerCase().includes('coleta');
+      const novo = {
+        id_agendamento: fd.get('id_agendamento') || null,
+        id_tipo_material: idTipo,
+        nome_material: tipo ? tipo.nome_material : 'N/D',
+        categoria,
+        id_tipo_destino: idDestino,
+        destino: ehColeta ? 'coleta' : 'aula',
+        status_processamento: 'Em Espera',
+        data_cadastro: new Date().toISOString().slice(0, 10),
+        problems: fd.getAll('problems[]'),
+      };
+      if (!DEMO_MODE) {
+        try {
+          const { error } = await _supabase.from('materiais_monitoria').insert([novo]);
+          if (error) throw error;
+        } catch (err) {
+          alert('Erro ao cadastrar: ' + err.message);
+          return;
+        }
+      }
+      novo.id = Date.now();
+      materiais.unshift(novo);
+      closeNewMaterialModal();
+      this.reset();
+      renderTudo();
+      alert('Material cadastrado com sucesso!');
+    });
+
+    /* E-mail (EmailJS) */
+    function buildColetaMesHtml() {
+      return `<p style="font-size:42px; font-weight:bold; color:#10b981; margin:10px 0;">${document.getElementById('recyclingRate').innerText}</p>
+              <p style="font-size:16px; color:#555; margin:0;">dos materiais do mês foram para coleta.</p>`;
+    }
+    function buildDistributionTableHtml(reportId) {
+      const items = document.querySelectorAll(`#${reportId} .dist-item`);
+      if (!items.length) return '<p style="font-size:16px; color:#555; text-align:center;">Nenhum material cadastrado nesta categoria.</p>';
+      let html = `<table width="100%" cellpadding="10" style="border-collapse:collapse; margin-bottom:20px; font-size:16px;">
+        <thead style="background-color:#f0fdf4;"><tr>
+        <th style="border:1px solid #c8e6c9; text-align:left; color:#1b5e20;">Material</th>
+        <th style="border:1px solid #c8e6c9; text-align:left; color:#1b5e20;">Total</th></tr></thead><tbody>`;
+      items.forEach(it => {
+        html += `<tr><td style="border:1px solid #ddd;">${it.querySelector('span').innerText}</td>
+                 <td style="border:1px solid #ddd;">${it.querySelectorAll('span')[1].innerText}</td></tr>`;
+      });
+      return html + '</tbody></table>';
+    }
+    function buildPendingListHtml(listId) {
+      const items = document.querySelectorAll(`#${listId} .pending-item`);
+      if (!items.length) return '<p style="font-size:16px; color:#555; text-align:center;">Nenhuma pendência encontrada.</p>';
+      let html = '<ul style="font-size:16px; color:#333; list-style-type:\'📦\'; padding-left:20px;">';
+      items.forEach(it => {
+        html += `<li style="margin-bottom:8px;">${it.querySelector('p').innerText} (${it.querySelectorAll('p')[1].innerText.replace('Cad. em ', '')})</li>`;
+      });
+      return html + '</ul>';
+    }
+    document.getElementById('emailReportForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const sendBtn = document.getElementById('sendEmailBtn');
+      const btnText = document.getElementById('sendEmailBtnText');
+      const spinner = document.getElementById('sendEmailSpinner');
+      sendBtn.disabled = true;
+      btnText.style.display = 'none';
+      spinner.style.display = 'inline';
+      const dataFormatada = new Date().toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' });
+      emailjs.send('relatorio_monitor', 'template_relatorio', {
+        subject: `RTEC - Relatório de Monitoria (${dataFormatada})`,
+        to_email: document.getElementById('recipientEmail').value,
+        from_name: 'Relatório de Monitoria RTEC',
+        data_geracao: dataFormatada,
+        coleta_mes_html: buildColetaMesHtml(),
+        distribuicao_green_html: buildDistributionTableHtml('greenReport'),
+        distribuicao_brown_html: buildDistributionTableHtml('brownReport'),
+        pendencias_coleta_html: buildPendingListHtml('listColeta'),
+        pendencias_aula_html: buildPendingListHtml('listAula'),
+      }).then(() => { alert('Relatório enviado com sucesso!'); closeEmailModal(); })
+        .catch(() => alert('Ocorreu um erro ao enviar o relatório. Verifique o console.'))
+        .finally(() => {
+          sendBtn.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+        });
+    });
+
+    /* Configurações globais (padrão funcionarios.html) */
+    function aplicarConfiguracoesGlobais() {
+      if (localStorage.getItem('rtec_dark') === 'true') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('dark-icon').textContent = 'light_mode';
+      }
+      if (localStorage.getItem('rtec_daltonism') === 'true') document.documentElement.classList.add('daltonism-mode');
+      const fonte = localStorage.getItem('rtec_font');
+      if (fonte === 'large') document.documentElement.classList.add('font-large');
+      if (fonte === 'xlarge') document.documentElement.classList.add('font-xlarge');
+      showCategory(localStorage.getItem('monitorCategory') || 'green');
+    }
+    window.addEventListener('DOMContentLoaded', () => { aplicarConfiguracoesGlobais(); carregarDados(); });
+
+    function fazerLogout() {
+      localStorage.removeItem('rtec_logged');
+      localStorage.removeItem('rtec_user_type');
+      window.location.href = 'sobre.html';
+    }
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('rtec_dark', isDark);
+      document.getElementById('dark-icon').textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+    async function toggleDaltonismoAPI() {
+      const htmlEl = document.documentElement;
+      htmlEl.classList.toggle('daltonism-mode');
+      const ativo = htmlEl.classList.contains('daltonism-mode');
+      localStorage.setItem('rtec_daltonism', ativo);
+      try {
+        await fetch('https://httpbin.org/post', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accessibilityProfile: 'daltonism', status: ativo, timestamp: Date.now() })
+        });
+      } catch (e) { console.log('API de Daltonismo sincronizada localmente.'); }
+    }
+    function mudarFonte() {
+      const htmlEl = document.documentElement;
+      if (!htmlEl.classList.contains('font-large') && !htmlEl.classList.contains('font-xlarge')) {
+        htmlEl.classList.add('font-large'); localStorage.setItem('rtec_font', 'large');
+      } else if (htmlEl.classList.contains('font-large')) {
+        htmlEl.classList.remove('font-large'); htmlEl.classList.add('font-xlarge');
+        localStorage.setItem('rtec_font', 'xlarge');
+      } else {
+        htmlEl.classList.remove('font-xlarge'); localStorage.setItem('rtec_font', 'normal');
+      }
+    }
+    function toggleMenu() { document.getElementById('topMenu').classList.toggle('open'); }
+  </script>
+</body>
+</html>
