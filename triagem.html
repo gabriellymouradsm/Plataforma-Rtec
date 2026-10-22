@@ -9,9 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   
-  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('rtec_logged') !== 'true') {
+        document.getElementById('customAlertModal').classList.add('active');
+      }
+    });
     const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -19,59 +23,112 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    html, body { width: 100%; min-height: 100vh; background-color: #f7f9f7; overflow-x: hidden; }
+    html { font-size: 16px; transition: font-size 0.2s ease; }
+    html.font-large { font-size: 19px; }
+    html.font-xlarge { font-size: 22px; }
+    html.daltonism-mode { filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="daltonism"><feColorMatrix type="matrix" values="0.35 0.7 -0.05 0 0 -0.15 1.15 0.05 0 0 0.1 0.1 0.8 0 0 0 0 0 1 0"/></filter></svg>#daltonism') contrast(120%); }
+
+    .accessibility-bar { position: fixed; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 9999; background: rgba(0,0,0,0.75); padding: 0.5rem 0.75rem; border-radius: 2rem; backdrop-filter: blur(6px); }
+    .acc-btn { background: #ffffff; border: none; border-radius: 50%; width: 2.25rem; height: 2.25rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #0f172a; font-size: 0.875rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.2s; }
+    .acc-btn:hover { transform: scale(1.08); }
+
+    body { width: 100%; min-height: 100vh; background-color: #f7f9f7; color: #0f172a; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+    body.dark-mode { background-color: #0f172a; color: #f8fafc; }
+    body.dark-mode .app-container { background: #0f172a; color: #f8fafc; }
+    body.dark-mode header { background: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-bottom: 1px solid #334155; }
+    body.dark-mode .logo-area { background: #1e293b; }
+    body.dark-mode main { background: #0f172a; }
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode p { color: #f8fafc; }
+    body.dark-mode .card-item-mobile { background: #1e293b; border-color: #334155; color: #f8fafc; }
+    body.dark-mode .tabela-materiais { background: #1e293b; color: #f8fafc; border: 1px solid #334155; }
+    body.dark-mode .tabela-header { background: #0f172a; color: #cbd5e1; border-bottom-color: #334155; }
+    body.dark-mode .tabela-row { border-bottom-color: #334155; color: #f8fafc; }
+    body.dark-mode .tabela-row div { color: #f8fafc !important; }
+    body.dark-mode .input-obs { background: #0f172a; border-color: #334155; color: #f8fafc; }
+    body.dark-mode .btn-action-top.secondary { background: #334155; color: #f8fafc; }
+
     .app-container { width: 100%; min-height: 100vh; background: #f7f9f7; display: flex; flex-direction: column; position: relative; margin: 0; padding: 0; }
-    header { background: #15803d; width: 100%; height: 70px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-icon { width: 36px; height: 36px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; }
-    .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
-    .top-menu { display: flex; align-items: center; gap: 6px; }
-    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 8px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; transition: all 0.2s; }
+    header { background: #15803d; width: 100%; height: 4.375rem; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .logo-area { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; background: #ffffff; border-radius: 1.5rem; padding: 0.25rem 0.5rem; flex-shrink: 0; }
+    .logo-area img { height: 2.375rem; width: auto; display: block; object-fit: contain; }
+    
+    .top-menu { display: flex; align-items: center; gap: 0.375rem; flex-wrap: nowrap; }
+    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 0.5rem 0.875rem; border-radius: 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.375rem; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
     .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
-    .menu-btn span.material-symbols-outlined { font-size: 18px; }
-    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 42px; height: 42px; border-radius: 12px; align-items: center; justify-content: center; cursor: pointer; }
-    @media (max-width: 768px) {
-      .top-menu { display: none; position: fixed; top: 70px; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 20px; gap: 8px; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
+    .menu-btn span.material-symbols-outlined { font-size: 1.125rem; }
+    
+    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 2.625rem; height: 2.625rem; border-radius: 0.75rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+    
+    @media (max-width: 1150px) {
+      .top-menu { display: none; position: fixed; top: 4.375rem; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 1.25rem; gap: 0.75rem; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; z-index: 1001; }
       .top-menu.open { display: flex; }
       .hamburger-btn { display: flex; }
-      .badge-geo { display: none; }
-      .menu-btn { width: 100%; padding: 12px 16px; font-size: 14.5px; justify-content: flex-start; background: rgba(255, 255, 255, 0.08); border-radius: 14px; }
+      .menu-btn { width: 100% !important; padding: 0.875rem 1rem; font-size: 0.95rem; justify-content: flex-start; background: rgba(255, 255, 255, 0.12); border-radius: 0.875rem; }
       .menu-btn.active { background: #ffffff; color: #15803d; }
+      #auth-menu-slot { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; }
+      .badge-geo { white-space: nowrap !important; font-size: 0.7rem !important; padding: 0.375rem 0.625rem !important; }
+      .btn-dark-mobile { padding: 0.4rem 0.5rem !important; min-width: 2.3rem; justify-content: center; }
     }
-    main { flex: 1; width: 100%; padding: 96px 20px 40px 20px; display: flex; justify-content: center; align-items: flex-start; }
-    .content-wrapper { width: 100%; max-width: 1100px; margin: 0 auto; }
-    .dashboard-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; }
-    .action-pills-group { display: flex; gap: 10px; flex-wrap: wrap; }
-    .pill-stat { background: #ffffff; border: 1px solid #e2e8f0; padding: 8px 14px; border-radius: 14px; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #1e293b; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-    .btn-action-top { background: #16a34a; color: white; border: none; padding: 9px 16px; border-radius: 12px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25); }
+    
+    main { flex: 1; width: 100%; padding: 6rem 1rem 2.5rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
+    .content-wrapper { width: 100%; max-width: 75rem; margin: 0 auto; }
+    .dashboard-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; }
+    .action-pills-group { display: flex; gap: 0.625rem; flex-wrap: wrap; }
+    .btn-action-top { background: #16a34a; color: white; border: none; padding: 0.56rem 1rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 0.375rem; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25); text-decoration: none; }
     .btn-action-top.secondary { background: #e2e8f0; color: #334155; box-shadow: none; }
-    .card-residuos-main { background: #16a34a; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(22, 163, 74, 0.2); color: white; overflow: hidden; width: 100%; }
-    .table-responsive-wrapper { width: 100%; overflow-x: auto; margin-top: 16px; }
-    .tabela-materiais { background: #ffffff; border-radius: 16px; min-width: 540px; color: #0f172a; }
-    .tabela-header { background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 12px 16px; font-size: 11px; font-weight: 700; color: #64748b; }
-    .tabela-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 14px 16px; align-items: center; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
-    .status-badge { background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-align: center; display: inline-block; }
-    .btn-agendar-interno { background: #ffffff; color: #16a34a; border: none; padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+    .card-residuos-main { background: #16a34a; border-radius: 1.5rem; padding: 1.25rem; box-shadow: 0 10px 30px rgba(22, 163, 74, 0.2); color: white; overflow: hidden; width: 100%; }
+    @media(min-width: 768px) { .card-residuos-main { padding: 1.75rem; } }
+
+    .desktop-table-view { display: block; }
+    .mobile-cards-view { display: none; }
+    @media (max-width: 850px) {
+      .desktop-table-view { display: none; }
+      .mobile-cards-view { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+    }
+
+    .tabela-materiais { background: #ffffff; border-radius: 1rem; width: 100%; overflow-x: auto; color: #0f172a; margin-top: 1rem; }
+    .tabela-header { background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: grid; grid-template-columns: 1.2fr 0.8fr 0.8fr 1.8fr 1fr 1fr; padding: 0.75rem 1rem; font-size: 0.7rem; font-weight: 700; color: #64748b; align-items: center; }
+    .tabela-row { display: grid; grid-template-columns: 1.2fr 0.8fr 0.8fr 1.8fr 1fr 1fr; padding: 0.875rem 1rem; align-items: center; border-bottom: 1px solid #f1f5f9; font-size: 0.8rem; gap: 0.5rem; }
+    
+    .card-item-mobile { background: #ffffff; border-radius: 1rem; padding: 1.125rem; color: #0f172a; box-shadow: 0 4px 15px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid #e2e8f0; }
+    .card-mobile-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.5rem; }
+    .card-mobile-body { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; }
+    .card-mobile-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem; border-top: 1px solid #f1f5f9; padding-top: 0.625rem; }
+
+    .status-badge { font-size: 0.68rem; font-weight: 700; padding: 0.25rem 0.625rem; border-radius: 1.25rem; text-align: center; display: inline-block; }
+    .status-agendado { background: #fef9c3; color: #854d0e; }
+    .status-concluido { background: #dcfce7; color: #15803d; }
+
+    .input-obs { width: 100%; padding: 0.4rem 0.6rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; font-size: 0.78rem; color: #0f172a; background: #ffffff; resize: vertical; min-height: 2.3rem; }
+    .input-obs:focus { border-color: #16a34a; outline: none; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.15); }
+    .btn-salvar-obs { background: #2563eb; color: white; border: none; padding: 0.35rem 0.6rem; border-radius: 0.4rem; font-size: 0.7rem; font-weight: 700; cursor: pointer; margin-top: 0.25rem; }
+    .btn-salvar-obs:hover { background: #1d4ed8; }
+    .btn-status-toggle { background: #e2e8f0; color: #334155; border: none; padding: 0.4rem 0.75rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
+    .btn-status-toggle.concluido { background: #16a34a; color: white; }
+    
+    .modal-overlay-custom { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 1rem; }
+    .modal-overlay-custom.active { display: flex; }
+    .custom-modal { background: #ffffff; width: 100%; max-width: 24rem; border-radius: 1.5rem; padding: 1.75rem; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .custom-modal-icon { width: 3.75rem; height: 3.75rem; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 2rem; }
   </style>
 </head>
 <body>
   <div class="app-container">
     <header>
-      <a href="agendamento.html" class="logo-area">
-        <div class="logo-icon"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 18px;">eco</span></div>
-        <span class="logo-text">RTEC</span>
+      <a href="sobre.html" class="logo-area">
+        <img src="img/logo.png" alt="RTEC Logo">
       </a>
       <nav class="top-menu" id="topMenu">
         <a href="agendamento.html" class="menu-btn"><span class="material-symbols-outlined">calendar_today</span><span>Agendar</span></a>
         <a href="operacional.html" class="menu-btn"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
-        <a href="triagem.html" class="menu-btn active"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">recycling</span><span>Triagem</span></a>
-        <a href="sobre.html" class="menu-btn"><span class="material-symbols-outlined">info</span><span>Sobre</span></a>
-        <a href="index.html" class="menu-btn"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
+        <a href="feedback.html" class="menu-btn"><span class="material-symbols-outlined">rate_review</span><span>Feedback</span></a>
+        <span id="auth-menu-slot" style="display: contents;"></span>
       </nav>
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-          <span style="width: 7px; height: 7px; background: #4ade80; border-radius: 50%; display: inline-block;"></span> Franco da Rocha
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 0.375rem 0.75rem; border-radius: 1.25rem; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 0.375rem; white-space: nowrap;">
+          <span style="width: 0.4375rem; height: 0.4375rem; background: #4ade80; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span> Franco da Rocha
         </div>
+        <button class="menu-btn btn-dark-mobile" onclick="toggleDarkMode()" title="Modo Claro/Escuro" style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2);"><span class="material-symbols-outlined" id="dark-icon" style="font-size:1.125rem;">dark_mode</span></button>
         <button class="hamburger-btn" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
       </div>
     </header>
@@ -80,9 +137,9 @@
       <div class="content-wrapper">
         <div class="dashboard-top">
           <div>
-            <span style="font-size: 11px; font-weight: 700; color: #16a34a; text-transform: uppercase;">Painel de Triagem</span>
-            <h1 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 2px;">Lista de Agendamentos Recentes</h1>
-            <p style="font-size: 13px; color: #64748b; margin-top: 2px;">Acompanhe os agendamentos registrados no banco de dados em tempo real.</p>
+            <span style="font-size: 0.7rem; font-weight: 700; color: #16a34a; text-transform: uppercase;">Área Restrita - Triagem</span>
+            <h1 style="font-size: 1.5rem; font-weight: 800; margin-top: 0.125rem;">Lista de Agendamentos e Gestão</h1>
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.125rem;">Adicione anotações, atualize status de coleta e gerencie os registros em tempo real.</p>
           </div>
           <div class="action-pills-group">
             <button onclick="carregarAgendamentosReal()" class="btn-action-top">Atualizar Lista</button>
@@ -91,66 +148,216 @@
         </div>
 
         <div class="card-residuos-main">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.625rem;">
             <div>
-              <h2 style="font-size: 18px; font-weight: 800;">Agendamentos Realizados</h2>
-              <p style="font-size: 12px; color: rgba(255,255,255,0.9); margin-top: 2px;">Solicitações cadastradas via sistema.</p>
+              <h2 style="font-size: 1.125rem; font-weight: 800;">Painel de Triagem Operacional</h2>
+              <p style="font-size: 0.75rem; color: rgba(255,255,255,0.9); margin-top: 0.125rem;">Edite observações e marque coletas concluídas diretamente.</p>
             </div>
-            <a href="agendamento.html" class="btn-agendar-interno">
-              <span class="material-symbols-outlined" style="font-size: 16px;">calendar_today</span> Novo Agendamento
+            <a href="agendamento.html" class="btn-action-top" style="text-decoration: none; background: #ffffff; color: #16a34a;">
+              <span class="material-symbols-outlined" style="font-size: 1rem;">calendar_today</span> Novo Agendamento
             </a>
           </div>
 
-          <div class="table-responsive-wrapper">
+          <div class="desktop-table-view">
             <div class="tabela-materiais">
               <div class="tabela-header">
                 <div>E-MAIL</div>
                 <div>PERFIL</div>
                 <div>DATA</div>
-                <div style="text-align: right;">PROTOCOLO</div>
+                <div>OBSERVAÇÕES (EDITÁVEL)</div>
+                <div style="text-align: center;">STATUS</div>
+                <div style="text-align: right;">AÇÃO / PROTOCOLO</div>
               </div>
-              <div id="tabela-corpo">
-                <div style="padding: 16px; text-align: center; color: #64748b;">Carregando agendamentos...</div>
+              <div id="tabela-corpo-desktop">
+                <div style="padding: 1rem; text-align: center; color: #64748b;">Carregando agendamentos...</div>
               </div>
             </div>
+          </div>
+
+          <div class="mobile-cards-view" id="tabela-corpo-mobile">
+            <div style="padding: 1rem; text-align: center; color: white;">Carregando agendamentos...</div>
           </div>
         </div>
       </div>
     </main>
   </div>
 
+  <div class="modal-overlay-custom" id="customAlertModal">
+    <div class="custom-modal">
+      <div class="custom-modal-icon"><span class="material-symbols-outlined" style="font-size: 2.25rem;">lock_person</span></div>
+      <h3>Acesso Restrito</h3>
+      <p>Você precisa fazer login ou se cadastrar para acessar a Triagem.</p>
+      <button class="custom-modal-btn" onclick="fecharAlertaPersonalizado()"><span class="material-symbols-outlined" style="font-size: 1.25rem;">login</span> Fazer Login / Cadastro</button>
+    </div>
+  </div>
+
+  <div class="accessibility-bar">
+    <button class="acc-btn" onclick="mudarFonte()" title="Aumentar / Reduzir Fonte">A+</button>
+    <button class="acc-btn" onclick="toggleDaltonismoAPI()" title="API Filtro Daltonismo"><span class="material-symbols-outlined" style="font-size:1.125rem;">visibility</span></button>
+  </div>
+
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById('topMenu');
-      menu.classList.toggle('open');
+    function aplicarConfiguracoesGlobais() {
+      if (localStorage.getItem('rtec_dark') === 'true') {
+        document.body.classList.add('dark-mode');
+        const icon = document.getElementById('dark-icon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+      if (localStorage.getItem('rtec_daltonism') === 'true') {
+        document.documentElement.classList.add('daltonism-mode');
+      }
+      const fonte = localStorage.getItem('rtec_font');
+      if (fonte === 'large') document.documentElement.classList.add('font-large');
+      if (fonte === 'xlarge') document.documentElement.classList.add('font-xlarge');
+
+      const slot = document.getElementById('auth-menu-slot');
+      if (slot) {
+        if (localStorage.getItem('rtec_logged') === 'true') {
+          slot.innerHTML = '<a href="funcionarios.html" class="menu-btn"><span class="material-symbols-outlined">badge</span><span>Funcionários</span></a>' +
+                           '<a href="sobre.html" class="menu-btn" onclick="fazerLogout()"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>';
+        } else {
+          slot.innerHTML = '<a href="index.html" class="menu-btn"><span class="material-symbols-outlined">login</span><span>Login</span></a>';
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', aplicarConfiguracoesGlobais);
+
+    function fecharAlertaPersonalizado() {
+      document.getElementById('customAlertModal').classList.remove('active');
+      window.location.href = 'index.html';
     }
 
+    function fazerLogout() {
+      localStorage.removeItem('rtec_logged');
+      localStorage.removeItem('rtec_user_type');
+      window.location.href = 'sobre.html';
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('rtec_dark', isDark);
+      const icon = document.getElementById('dark-icon');
+      if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+
+    async function toggleDaltonismoAPI() {
+      const htmlEl = document.documentElement;
+      htmlEl.classList.toggle('daltonism-mode');
+      const ativo = htmlEl.classList.contains('daltonism-mode');
+      localStorage.setItem('rtec_daltonism', ativo);
+      try {
+        await fetch('https://httpbin.org/post', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accessibilityProfile: 'daltonism', status: ativo, timestamp: Date.now() })
+        });
+      } catch (e) {
+        console.log('API de Daltonismo sincronizada localmente.');
+      }
+    }
+
+    function mudarFonte() {
+      const htmlEl = document.documentElement;
+      if (!htmlEl.classList.contains('font-large') && !htmlEl.classList.contains('font-xlarge')) {
+        htmlEl.classList.add('font-large');
+        localStorage.setItem('rtec_font', 'large');
+      } else if (htmlEl.classList.contains('font-large')) {
+        htmlEl.classList.remove('font-large');
+        htmlEl.classList.add('font-xlarge');
+        localStorage.setItem('rtec_font', 'xlarge');
+      } else {
+        htmlEl.classList.remove('font-xlarge');
+        localStorage.setItem('rtec_font', 'normal');
+      }
+    }
+
+    function toggleMenu() { document.getElementById('topMenu').classList.toggle('open'); }
+
     async function carregarAgendamentosReal() {
-      const corpo = document.getElementById('tabela-corpo');
+      const corpoDesktop = document.getElementById('tabela-corpo-desktop');
+      const corpoMobile = document.getElementById('tabela-corpo-mobile');
       try {
         const { data, error } = await _supabase.from('tbl_agendamento').select('*').order('data_criacao', { ascending: false });
         if (error) throw error;
-
         if (!data || data.length === 0) {
-          corpo.innerHTML = '<div style="padding: 16px; text-align: center; color: #64748b;">Nenhum agendamento encontrado.</div>';
+          corpoDesktop.innerHTML = '<div style="padding: 1rem; text-align: center; color: #64748b;">Nenhum agendamento encontrado.</div>';
+          corpoMobile.innerHTML = '<div style="padding: 1rem; text-align: center; color: white;">Nenhum agendamento encontrado.</div>';
           return;
         }
-
-        corpo.innerHTML = '';
+        corpoDesktop.innerHTML = '';
+        corpoMobile.innerHTML = '';
         data.forEach(item => {
-          const row = document.createElement('div');
-          row.className = 'tabela-row';
-          row.innerHTML = `
-            <div style="font-weight: 600; color: #0f172a;">${item.email_usuario_agendamento}</div>
+          const statusAtual = item.status || 'Agendado';
+          const isConcluido = statusAtual.toLowerCase() === 'concluído' || statusAtual.toLowerCase() === 'coletado';
+          const obsTexto = item.observacoes || '';
+
+          const rowDesktop = document.createElement('div');
+          rowDesktop.className = 'tabela-row';
+          rowDesktop.innerHTML = `
+            <div style="font-weight: 600; word-break: break-word;">${item.email_usuario_agendamento}</div>
             <div style="text-transform: capitalize; color: #64748b;">${item.tipo_pessoa}</div>
             <div style="color: #64748b;">${item.data_agendada}</div>
-            <div style="text-align: right;"><span class="status-badge">${item.protocolo_agendamento}</span></div>
+            <div>
+              <textarea class="input-obs" id="obs-desk-${item.protocolo_agendamento}" placeholder="Digite anotações...">${obsTexto}</textarea>
+              <button class="btn-salvar-obs" onclick="salvarObservacao('${item.protocolo_agendamento}', 'desk')">Salvar Nota</button>
+            </div>
+            <div style="text-align: center;"><span class="status-badge ${isConcluido ? 'status-concluido' : 'status-agendado'}">${isConcluido ? 'Coletado' : 'Agendado'}</span></div>
+            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.375rem;">
+              <button class="btn-status-toggle ${isConcluido ? 'concluido' : ''}" onclick="alternarStatus('${item.protocolo_agendamento}', '${statusAtual}')">${isConcluido ? '✓ Concluído' : 'Marcar Coletado'}</button>
+              <span style="font-size: 0.7rem; color: #94a3b8;">Prot: ${item.protocolo_agendamento}</span>
+            </div>
           `;
-          corpo.appendChild(row);
+          corpoDesktop.appendChild(rowDesktop);
+
+          const cardMobile = document.createElement('div');
+          cardMobile.className = 'card-item-mobile';
+          cardMobile.innerHTML = `
+            <div class="card-mobile-header">
+              <span style="font-weight: 700; font-size: 0.8rem; color: #16a34a;">Prot: ${item.protocolo_agendamento}</span>
+              <span class="status-badge ${isConcluido ? 'status-concluido' : 'status-agendado'}">${isConcluido ? 'Coletado' : 'Agendado'}</span>
+            </div>
+            <div class="card-mobile-body">
+              <div><strong>E-mail:</strong> ${item.email_usuario_agendamento}</div>
+              <div><strong>Perfil:</strong> <span style="text-transform: capitalize;">${item.tipo_pessoa}</span></div>
+              <div><strong>Data:</strong> ${item.data_agendada}</div>
+              <div style="margin-top: 0.25rem;">
+                <strong style="display: block; margin-bottom: 0.25rem; font-size: 0.75rem; color: #475569;">Observações:</strong>
+                <textarea class="input-obs" id="obs-mob-${item.protocolo_agendamento}" placeholder="Digite anotações...">${obsTexto}</textarea>
+                <button class="btn-salvar-obs" onclick="salvarObservacao('${item.protocolo_agendamento}', 'mob')">Salvar Nota</button>
+              </div>
+            </div>
+            <div class="card-mobile-footer">
+              <button class="btn-status-toggle ${isConcluido ? 'concluido' : ''}" style="width: 100%; text-align: center;" onclick="alternarStatus('${item.protocolo_agendamento}', '${statusAtual}')">${isConcluido ? '✓ Concluído (Reverter)' : 'Marcar como Coletado'}</button>
+            </div>
+          `;
+          corpoMobile.appendChild(cardMobile);
         });
       } catch (err) {
         console.error("Erro ao buscar agendamentos:", err);
-        corpo.innerHTML = '<div style="padding: 16px; text-align: center; color: #ef4444;">Erro ao carregar dados do banco.</div>';
+      }
+    }
+
+    async function salvarObservacao(protocolo, origem) {
+      const obsInput = document.getElementById(`obs-${origem}-${protocolo}`);
+      const novaObs = obsInput ? obsInput.value : '';
+      try {
+        const { error } = await _supabase.from('tbl_agendamento').update({ observacoes: novaObs }).eq('protocolo_agendamento', protocolo);
+        if (error) throw error;
+        alert("Observação salva com sucesso!");
+      } catch (err) {
+        alert("Erro ao salvar observação: " + err.message);
+      }
+    }
+
+    async function alternarStatus(protocolo, statusAtual) {
+      const novoStatus = (statusAtual.toLowerCase() === 'concluído' || statusAtual.toLowerCase() === 'coletado') ? 'Agendado' : 'Concluído';
+      try {
+        const { error } = await _supabase.from('tbl_agendamento').update({ status: novoStatus }).eq('protocolo_agendamento', protocolo);
+        if (error) throw error;
+        carregarAgendamentosReal();
+      } catch (err) {
+        alert("Erro ao atualizar o status: " + err.message);
       }
     }
 
