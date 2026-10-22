@@ -18,6 +18,10 @@
     const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    emailjs.init({ publicKey: "2Ipv8FA4lVn5ZA8tv" });
+  </script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -110,7 +114,7 @@
               Rodovia Luiz Salomão Chama, 240 – Vila Ramos, Franco da Rocha – SP – CEP: 07857-050
             </p>
           </div>
-          <form id="agendamento-form" onsubmit="gerarProtocolo(event)">
+          <form method="post" id="agendamento-form" onsubmit="gerarProtocolo(event)">
             <div class="input-group">
               <label><span class="material-symbols-outlined">mail</span> E-mail de Contato</label>
               <div class="input-wrapper">
@@ -190,6 +194,7 @@
     </div>
   </div>
 
+  <script src="app.js"></script>
   <script>
     function toggleMenu() { 
       document.getElementById('topMenu').classList.toggle('open'); 
