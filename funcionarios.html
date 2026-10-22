@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <title>RTEC - Painel de Funcionários</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem('rtec_logged') !== 'true') {
+      window.location.href = 'index.html';
+    }
+    const SUPABASE_URL = 'https://lcigujmubajgccnlyzfq.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_VA7m57PV0KTubn7sRyFv8g_Ttk_Ucc4';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    html { font-size: 16px; transition: font-size 0.2s ease; }
+    html.font-large { font-size: 19px; }
+    html.font-xlarge { font-size: 22px; }
+    html.daltonism-mode { filter: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="daltonism"><feColorMatrix type="matrix" values="0.35 0.7 -0.05 0 0 -0.15 1.15 0.05 0 0 0.1 0.1 0.8 0 0 0 0 0 1 0"/></filter></svg>#daltonism') contrast(120%); }
+
+    .accessibility-bar { position: fixed; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 9999; background: rgba(0,0,0,0.75); padding: 0.5rem 0.75rem; border-radius: 2rem; backdrop-filter: blur(6px); }
+    .acc-btn { background: #ffffff; border: none; border-radius: 50%; width: 2.25rem; height: 2.25rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #0f172a; font-size: 0.875rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.2s; }
+    .acc-btn:hover { transform: scale(1.08); }
+
+    body { width: 100%; min-height: 100vh; background-color: #f7f9f7; color: #0f172a; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+    body.dark-mode { background-color: #0f172a; color: #f8fafc; }
+    body.dark-mode .app-container { background: #0f172a; color: #f8fafc; }
+    body.dark-mode header { background: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.3); border-bottom: 1px solid #334155; }
+    body.dark-mode .logo-area { background: #1e293b; }
+    body.dark-mode main { background: #0f172a; }
+    body.dark-mode .func-card { background: #1e293b; color: #f8fafc; border: 1px solid #334155; }
+    body.dark-mode .func-card h2 { color: #f8fafc; }
+    body.dark-mode .func-card p { color: #94a3b8; }
+    body.dark-mode .action-box { background: #0f172a; border-color: #334155; color: #f8fafc; }
+    body.dark-mode .action-box strong { color: #f8fafc; }
+    body.dark-mode .action-box span { color: #94a3b8; }
+
+    .app-container { width: 100%; min-height: 100vh; background: #f7f9f7; display: flex; flex-direction: column; position: relative; margin: 0; padding: 0; }
+    header { background: #15803d; width: 100%; height: 4.375rem; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .logo-area { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; background: #ffffff; border-radius: 1.5rem; padding: 0.25rem 0.5rem; }
+    .logo-area img { height: 2.375rem; width: auto; display: block; object-fit: contain; }
+    .top-menu { display: flex; align-items: center; gap: 0.375rem; }
+    .menu-btn { background: rgba(255, 255, 255, 0.15); border: none; color: #ffffff; padding: 0.5rem 0.875rem; border-radius: 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.375rem; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
+    .menu-btn:hover, .menu-btn.active { background: #ffffff; color: #15803d; }
+    .menu-btn span.material-symbols-outlined { font-size: 1.125rem; }
+    
+    .hamburger-btn { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: #ffffff; width: 2.625rem; height: 2.625rem; border-radius: 0.75rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+    
+    @media (max-width: 768px) {
+      .top-menu { display: none; position: fixed; top: 4.375rem; left: 0; width: 100%; background: #14532d; flex-direction: column; padding: 1.25rem; gap: 0.5rem; box-shadow: 0 15px 30px rgba(0,0,0,0.25); border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; z-index: 1001; }
+      .top-menu.open { display: flex; }
+      .hamburger-btn { display: flex; }
+      
+      /* Mantém o selo em linha única contínua no mobile */
+      .badge-geo { white-space: nowrap !important; font-size: 0.7rem !important; padding: 0.375rem 0.625rem !important; }
+      
+      /* Botão de modo escuro compacto no mobile */
+      .btn-dark-mobile { padding: 0.4rem 0.5rem !important; min-width: 2.3rem; justify-content: center; }
+
+      .menu-btn { width: 100%; padding: 0.75rem 1rem; font-size: 0.9rem; justify-content: flex-start; background: rgba(255, 255, 255, 0.08); border-radius: 0.875rem; }
+      .menu-btn.active { background: #ffffff; color: #15803d; }
+    }
+
+    main { flex: 1; width: 100%; padding: 6.25rem 1.25rem 2.5rem 1.25rem; display: flex; justify-content: center; align-items: flex-start; }
+    .content-wrapper { width: 100%; max-width: 56.25rem; margin: 0 auto; }
+    .func-card { background: #ffffff; border-radius: 1.5rem; padding: 2.25rem 1.75rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; }
+    .func-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 1.5rem; }
+    @media (min-width: 640px) { .func-grid { grid-template-columns: repeat(2, 1fr); } }
+    .action-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 1.125rem; padding: 1.5rem; text-decoration: none; color: #0f172a; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; transition: transform 0.2s; }
+    .action-box:hover { transform: translateY(-4px); }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <a href="sobre.html" class="logo-area">
+        <img src="img/logo.png" alt="RTEC Logo">
+      </a>
+      <nav class="top-menu" id="topMenu">
+        <a href="agendamento.html" class="menu-btn"><span class="material-symbols-outlined">calendar_today</span><span>Agendar</span></a>
+        <a href="operacional.html" class="menu-btn"><span class="material-symbols-outlined">local_shipping</span><span>Operacional</span></a>
+        <a href="feedback.html" class="menu-btn"><span class="material-symbols-outlined">rate_review</span><span>Feedback</span></a>
+        <a href="funcionarios.html" class="menu-btn active"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">badge</span><span>Funcionários</span></a>
+        <a href="sobre.html" class="menu-btn" onclick="fazerLogout()"><span class="material-symbols-outlined">logout</span><span>Sair</span></a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="badge-geo" style="background: rgba(255,255,255,0.2); color: white; padding: 0.375rem 0.75rem; border-radius: 1.25rem; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 0.375rem; white-space: nowrap;">
+          <span style="width: 0.4375rem; height: 0.4375rem; background: #4ade80; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span> Franco da Rocha
+        </div>
+        <button class="menu-btn btn-dark-mobile" onclick="toggleDarkMode()" title="Modo Claro/Escuro" style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2);"><span class="material-symbols-outlined" id="dark-icon" style="font-size:1.125rem;">dark_mode</span></button>
+        <button class="hamburger-btn" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
+      </div>
+    </header>
+
+    <main>
+      <div class="content-wrapper">
+        <div class="func-card">
+          <span style="font-size: 0.72rem; font-weight: 700; color: #16a34a; text-transform: uppercase;">Portal Interno</span>
+          <h2 style="font-size: 1.625rem; font-weight: 800; margin-top: 0.25rem;">Painel de Funcionários</h2>
+          <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.375rem;">Selecione o módulo que deseja gerenciar</p>
+
+          <div class="func-grid">
+            <a href="triagem.html" class="action-box">
+              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: #16a34a;">recycling</span>
+              <strong style="font-size: 1rem;">Módulo de Triagem</strong>
+              <span style="font-size: 0.8rem;">Acesse a lista e controle de agendamentos em tempo real.</span>
+            </a>
+            <a href="operacional.html" class="action-box">
+              <span class="material-symbols-outlined" style="font-size: 2.5rem; color: #16a34a;">local_shipping</span>
+              <strong style="font-size: 1rem;">Módulo Operacional</strong>
+              <span style="font-size: 0.8rem;">Monitore resíduos disponíveis para recolhimento e logística.</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="accessibility-bar">
+    <button class="acc-btn" onclick="mudarFonte()" title="Aumentar / Reduzir Fonte">A+</button>
+    <button class="acc-btn" onclick="toggleDaltonismoAPI()" title="API Filtro Daltonismo"><span class="material-symbols-outlined" style="font-size:1.125rem;">visibility</span></button>
+  </div>
+
+  <script>
+    function aplicarConfiguracoesGlobais() {
+      if (localStorage.getItem('rtec_dark') === 'true') {
+        document.body.classList.add('dark-mode');
+        const icon = document.getElementById('dark-icon');
+        if (icon) icon.textContent = 'light_mode';
+      }
+      if (localStorage.getItem('rtec_daltonism') === 'true') {
+        document.documentElement.classList.add('daltonism-mode');
+      }
+      const fonte = localStorage.getItem('rtec_font');
+      if (fonte === 'large') document.documentElement.classList.add('font-large');
+      if (fonte === 'xlarge') document.documentElement.classList.add('font-xlarge');
+    }
+    window.addEventListener('DOMContentLoaded', aplicarConfiguracoesGlobais);
+
+    function fazerLogout() {
+      localStorage.removeItem('rtec_logged');
+      localStorage.removeItem('rtec_user_type');
+      window.location.href = 'sobre.html';
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('rtec_dark', isDark);
+      const icon = document.getElementById('dark-icon');
+      if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+
+    async function toggleDaltonismoAPI() {
+      const htmlEl = document.documentElement;
+      htmlEl.classList.toggle('daltonism-mode');
+      const ativo = htmlEl.classList.contains('daltonism-mode');
+      localStorage.setItem('rtec_daltonism', ativo);
+      try {
+        await fetch('https://httpbin.org/post', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accessibilityProfile: 'daltonism', status: ativo, timestamp: Date.now() })
+        });
+      } catch (e) {
+        console.log('API de Daltonismo sincronizada localmente.');
+      }
+    }
+
+    function mudarFonte() {
+      const htmlEl = document.documentElement;
+      if (!htmlEl.classList.contains('font-large') && !htmlEl.classList.contains('font-xlarge')) {
+        htmlEl.classList.add('font-large');
+        localStorage.setItem('rtec_font', 'large');
+      } else if (htmlEl.classList.contains('font-large')) {
+        htmlEl.classList.remove('font-large');
+        htmlEl.classList.add('font-xlarge');
+        localStorage.setItem('rtec_font', 'xlarge');
+      } else {
+        htmlEl.classList.remove('font-xlarge');
+        localStorage.setItem('rtec_font', 'normal');
+      }
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('topMenu');
+      menu.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
